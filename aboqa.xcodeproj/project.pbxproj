@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		3ED7858E1FA58EDF002D9B78 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7858D1FA58EDF002D9B78 /* main.cpp */; };
+		3ED7859C1FA591A3002D9B78 /* ConsoleManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785941FA591A3002D9B78 /* ConsoleManager.cpp */; };
+		3ED7859D1FA591A3002D9B78 /* LogManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785961FA591A3002D9B78 /* LogManager.cpp */; };
+		3ED7859E1FA591A3002D9B78 /* FileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785981FA591A3002D9B78 /* FileManager.cpp */; };
+		3ED7859F1FA591A3002D9B78 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7859A1FA591A3002D9B78 /* GameManager.cpp */; };
+		3ED785A21FA5B668002D9B78 /* libcurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED785A11FA5B668002D9B78 /* libcurses.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +30,15 @@
 /* Begin PBXFileReference section */
 		3ED7858A1FA58EDF002D9B78 /* aboqa */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aboqa; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED7858D1FA58EDF002D9B78 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		3ED785941FA591A3002D9B78 /* ConsoleManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleManager.cpp; sourceTree = "<group>"; };
+		3ED785951FA591A3002D9B78 /* ConsoleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleManager.h; sourceTree = "<group>"; };
+		3ED785961FA591A3002D9B78 /* LogManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogManager.cpp; sourceTree = "<group>"; };
+		3ED785971FA591A3002D9B78 /* LogManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogManager.h; sourceTree = "<group>"; };
+		3ED785981FA591A3002D9B78 /* FileManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileManager.cpp; sourceTree = "<group>"; };
+		3ED785991FA591A3002D9B78 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
+		3ED7859A1FA591A3002D9B78 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
+		3ED7859B1FA591A3002D9B78 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
+		3ED785A11FA5B668002D9B78 /* libcurses.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurses.tbd; path = usr/lib/libcurses.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED785A21FA5B668002D9B78 /* libcurses.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +58,7 @@
 			children = (
 				3ED7858C1FA58EDF002D9B78 /* aboqa */,
 				3ED7858B1FA58EDF002D9B78 /* Products */,
+				3ED785A01FA5B668002D9B78 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +73,25 @@
 		3ED7858C1FA58EDF002D9B78 /* aboqa */ = {
 			isa = PBXGroup;
 			children = (
+				3ED785941FA591A3002D9B78 /* ConsoleManager.cpp */,
+				3ED785951FA591A3002D9B78 /* ConsoleManager.h */,
+				3ED785961FA591A3002D9B78 /* LogManager.cpp */,
+				3ED785971FA591A3002D9B78 /* LogManager.h */,
+				3ED785981FA591A3002D9B78 /* FileManager.cpp */,
+				3ED785991FA591A3002D9B78 /* FileManager.h */,
+				3ED7859A1FA591A3002D9B78 /* GameManager.cpp */,
+				3ED7859B1FA591A3002D9B78 /* GameManager.h */,
 				3ED7858D1FA58EDF002D9B78 /* main.cpp */,
 			);
 			path = aboqa;
+			sourceTree = "<group>";
+		};
+		3ED785A01FA5B668002D9B78 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3ED785A11FA5B668002D9B78 /* libcurses.tbd */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,7 +151,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3ED7859D1FA591A3002D9B78 /* LogManager.cpp in Sources */,
+				3ED7859F1FA591A3002D9B78 /* GameManager.cpp in Sources */,
 				3ED7858E1FA58EDF002D9B78 /* main.cpp in Sources */,
+				3ED7859C1FA591A3002D9B78 /* ConsoleManager.cpp in Sources */,
+				3ED7859E1FA591A3002D9B78 /* FileManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
