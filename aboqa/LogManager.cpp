@@ -8,14 +8,11 @@
 
 #include "LogManager.h"
 
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <chrono>
 #include <ctime>
 #include <iomanip>
-
-#include "ConsoleManager.h"
 
 using namespace std;
 
@@ -81,10 +78,6 @@ void LogManager::logFatal(const std::string & message) const
     fs << time() << " fatal=\"true\" message=\"" << message << "\"\n";
     
     close (fs);
-    
-    cout << message << endl;
-    
-    ConsoleManager::promptPause();
     
     exit(1);
 }

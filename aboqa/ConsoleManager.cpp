@@ -8,74 +8,161 @@
 
 #include "ConsoleManager.h"
 
-#include <iostream>
-#include <limits>
 #include <stdexcept>
+#include <sstream>
 
 using namespace std;
 
-bool ConsoleManager::promptYesOrNo (const string & prompt)
+bool ConsoleManager::promptYesOrNo (WINDOW * win, const std::string & prompt, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace)
 {
-    cout << prompt << " y/n: ";
+    if (!win)
+    {
+        win = stdscr;
+    }
     
-    char input;
+    int currentY;
+    int currentX;
+    getyx(win, currentY, currentX);
+    
+    int maxX;
+    maxX = getmaxx(win);
+    
+    int width = maxX - currentX;
+    
+    int errorY = currentY + 1;
+    int errorX = currentX;
+    
+    return promptYesOrNo(win, currentY, currentX, width, errorY, errorX, width, prompt, color, errorColor, center, errorCenter, fillSpace);
+}
+
+bool ConsoleManager::promptYesOrNo (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace)
+{
+    if (!win)
+    {
+        win = stdscr;
+    }
+    
+    echo();
+    nodelay(win, false);
     
     while (true)
     {
-        cin >> input;
+        printMessage(win, y, x, width, prompt, color, center, fillSpace);
+        
+        char input = static_cast<char>(getch());
+        clrtoeol();
         
         if (input == 'y' || input == 'Y')
         {
+            noecho();
+            nodelay(win, true);
+            
             return true;
         }
         else if (input == 'n' || input == 'N')
         {
+            noecho();
+            nodelay(win, true);
+            
             return false;
         }
         else
         {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            
-            cout << "Please enter y or n: ";
+            stringstream ss;
+            ss << "Please enter y or n.";
+            printMessage(win, errorY, errorX, errorWidth, ss.str(), errorColor, errorCenter, fillSpace);
         }
     }
 }
 
-int ConsoleManager::promptNumber (const string & prompt, int minimum, int maximum)
+int ConsoleManager::promptNumber (WINDOW * win, const std::string & prompt, int minimum, int maximum, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace)
 {
-    cout << prompt;
+    if (!win)
+    {
+        win = stdscr;
+    }
     
-    int input;
+    int currentY;
+    int currentX;
+    getyx(win, currentY, currentX);
     
+    int maxX;
+    maxX = getmaxx(win);
+    
+    int width = maxX - currentX;
+    
+    int errorY = currentY + 1;
+    int errorX = currentX;
+    
+    return promptNumber(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, color, errorColor, center, errorCenter, fillSpace);
+}
+
+int ConsoleManager::promptNumber (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int minimum, int maximum, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace)
+{
+    if (!win)
+    {
+        win = stdscr;
+    }
+    
+    echo();
+    nodelay(win, false);
+    
+    const int BUFFER_CHAR_COUNT = 10;
     while (true)
     {
-        while (!(cin >> input))
-        {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            
-            cout << "Please enter a valid number: ";
-        }
+        printMessage(win, y, x, width, prompt, color, center);
         
-        if (input >= minimum && input <= maximum)
+        char buffer[BUFFER_CHAR_COUNT + 1];
+        if (wgetnstr(win, buffer, BUFFER_CHAR_COUNT) == OK)
         {
-            return input;
+            int input = stoi(buffer);
+            
+            if (input >= minimum && input <= maximum)
+            {
+                noecho();
+                nodelay(win, true);
+                
+                return input;
+            }
         }
-        cout << "Please enter a number between " << minimum << " and " << maximum << ": ";
+
+        stringstream ss;
+        ss << "Please enter a number between " << minimum << " and " << maximum << ".";
+        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorColor, errorCenter, fillSpace);
     }
 }
 
-char ConsoleManager::promptLetter (const string & prompt, char minimum, char maximum, bool enforceUpperCase)
+char ConsoleManager::promptLetter (WINDOW * win, const std::string & prompt, char minimum, char maximum, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
 {
-    cout << prompt;
+    if (!win)
+    {
+        win = stdscr;
+    }
     
-    char input;
+    int currentY;
+    int currentX;
+    getyx(win, currentY, currentX);
+    
+    int maxX;
+    maxX = getmaxx(win);
+    
+    int width = maxX - currentX;
+    
+    int errorY = currentY + 1;
+    int errorX = currentX;
+    
+    return promptLetter(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, color, errorColor, center, errorCenter, fillSpace, enforceUpperCase);
+}
+
+char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, char minimum, char maximum, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
+{
+    if (!win)
+    {
+        win = stdscr;
+    }
+    
     char minimumLower;
-    char maximumLower;
     char minimumUpper;
-    char maximumUpper;
-    
     if (minimum >= 'a' && minimum <= 'z')
     {
         minimumLower = minimum;
@@ -91,6 +178,8 @@ char ConsoleManager::promptLetter (const string & prompt, char minimum, char max
         throw logic_error("minimum must be a valid letter between a-z or A-Z.");
     }
     
+    char maximumLower;
+    char maximumUpper;
     if (maximum >= 'a' && maximum <= 'z')
     {
         maximumLower = maximum;
@@ -106,9 +195,15 @@ char ConsoleManager::promptLetter (const string & prompt, char minimum, char max
         throw logic_error("maximum must be a valid letter between a-z or A-Z.");
     }
     
+    echo();
+    nodelay(win, false);
+    
     while (true)
     {
-        cin >> input;
+        printMessage(win, y, x, width, prompt, color, center, fillSpace);
+        
+        char input = static_cast<char>(getch());
+        clrtoeol();
         
         if ((input >= minimumLower && input <= maximumLower) || (input >= minimumUpper && input <= maximumUpper))
         {
@@ -119,19 +214,119 @@ char ConsoleManager::promptLetter (const string & prompt, char minimum, char max
                 char mask = 0xdf;
                 input &= mask;
             }
+            
+            noecho();
+            nodelay(win, true);
+            
             return input;
         }
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         
-        cout << "Please enter a letter between " << minimumLower << " and " << maximumLower << ": ";
+        stringstream ss;
+        ss << "Please enter a letter between " << minimumLower << " and " << maximumLower << ".";
+        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorColor, errorCenter, fillSpace);
     }
 }
 
-void ConsoleManager::promptPause ()
+void ConsoleManager::promptPause (WINDOW * win, const std::string & prompt, chtype color, bool center, bool fillSpace)
 {
-    cout << "Press Enter to continue...";
+    if (!win)
+    {
+        win = stdscr;
+    }
     
-    string temp;
-    getline(cin, temp);
+    int currentY;
+    int currentX;
+    getyx(win, currentY, currentX);
+    
+    int maxX;
+    maxX = getmaxx(win);
+    
+    int width = maxX - currentX;
+    
+    promptPause(win, currentY, currentX, width, prompt, color, center, fillSpace);
+}
+
+void ConsoleManager::promptPause (WINDOW * win, int y, int x, int width, const std::string & prompt, chtype color, bool center, bool fillSpace)
+{
+    if (!win)
+    {
+        win = stdscr;
+    }
+    
+    printMessage(win, y, x, width, prompt, color, center, fillSpace);
+    
+    getch();
+}
+
+void ConsoleManager::printMessage (WINDOW * win, const std::string & msg, chtype color, bool center, bool fillSpace)
+{
+    if (!win)
+    {
+        win = stdscr;
+    }
+
+    int currentY;
+    int currentX;
+    getyx(win, currentY, currentX);
+    
+    int maxX = getmaxx(win);
+    
+    int width = maxX - currentX;
+    
+    printMessage(win, currentY, currentX, width, msg, color, center, fillSpace);
+}
+
+void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const std::string & msg, chtype color, bool center, bool fillSpace)
+{
+    if (!win)
+    {
+        win = stdscr;
+    }
+    
+    int messageX = x;
+    if (center)
+    {
+        messageX += (width - msg.length())/ 2;
+    }
+    
+    wattron(win, color);
+    
+    if (fillSpace)
+    {
+        wmove(win, y, x);
+        for (int i = x; i < messageX; ++i)
+        {
+            waddch(win, ' ');
+        }
+    }
+    
+    mvwprintw(win, y, messageX, "%s", msg.c_str());
+    
+    if (fillSpace)
+    {
+        int currentX = getcurx(win);
+        for (int i = currentX; i < x + width; ++i)
+        {
+            waddch(win, ' ');
+        }
+    }
+    
+    wattroff(win, color);
+}
+
+void ConsoleManager::drawBox (WINDOW * win, int y, int x, int width, int height, chtype color)
+{
+    if (!win)
+    {
+        win = stdscr;
+    }
+    
+    wattron(win, color);
+    
+    mvhline(y, x, ' ', width);
+    mvhline(y + height - 1, x, ' ', width);
+    mvvline(y + 1, x, ' ', height - 2);
+    mvvline(y + 1, x + width - 1, ' ', height - 2);
+    
+    wattroff(win, color);
 }

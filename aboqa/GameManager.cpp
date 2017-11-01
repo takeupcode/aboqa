@@ -11,6 +11,7 @@
 #include <curses.h>
 
 #include "LogManager.h"
+#include "ConsoleManager.h"
 
 using namespace std;
 
@@ -18,7 +19,13 @@ void GameManager::play ()
 {
     initialize();
     
-    loop();
+    init_pair(1, COLOR_RED, COLOR_BLACK);
+    bool result = ConsoleManager::promptYesOrNo(stdscr, 5, 10, 50, 6, 10, 50, "Would you like to play a game?", COLOR_PAIR(1), COLOR_PAIR(1));
+    
+    if (result)
+    {
+        loop();
+    }
     
     deinitialize();
 }
@@ -32,8 +39,8 @@ void GameManager::initialize ()
     raw();
     noecho();
     curs_set(0);
-    nodelay(stdscr, TRUE);
-    keypad(stdscr, TRUE);
+    nodelay(stdscr, true);
+    keypad(stdscr, true);
 
     mState = State::Normal;
 }
@@ -55,6 +62,7 @@ void GameManager::loop ()
 
 void GameManager::processInput ()
 {
+    // This relies on nodelay() == true for the main window.
     int c = getch();
     switch(c)
     {
