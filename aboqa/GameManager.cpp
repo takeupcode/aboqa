@@ -12,6 +12,7 @@
 
 #include "LogManager.h"
 #include "ConsoleManager.h"
+#include "Window.h"
 
 using namespace std;
 
@@ -21,6 +22,8 @@ void GameManager::play ()
     
     init_pair(1, COLOR_RED, COLOR_BLACK);
     bool result = ConsoleManager::promptYesOrNo(stdscr, 5, 10, 50, 6, 10, 50, "Would you like to play a game?", COLOR_PAIR(1), COLOR_PAIR(1));
+    Window w(0, 0, mScreenHeight, mScreenWidth, 1);
+    w.draw();
     
     if (result)
     {
@@ -43,6 +46,8 @@ void GameManager::initialize ()
     keypad(stdscr, true);
 
     mState = State::Normal;
+    mScreenHeight = LINES;
+    mScreenWidth = COLS;
 }
 
 void GameManager::deinitialize ()
@@ -57,6 +62,7 @@ void GameManager::loop ()
     while (mState != State::Exit)
     {
         processInput();
+        refresh();
     }
 }
 
