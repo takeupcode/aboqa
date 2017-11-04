@@ -9,10 +9,12 @@
 #ifndef Window_h
 #define Window_h
 
+#include <curses.h>
+
 class Window
 {
 public:
-    Window (int y, int x, int height, int width, bool border);
+    Window (int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
     
     virtual ~Window ();
     
@@ -43,10 +45,15 @@ public:
     void setBorder (bool border);
     
 private:
+    WINDOW * mWindowPtr;
     int mY;
     int mX;
     int mHeight;
     int mWidth;
+    int mClientForeColor;
+    int mClientBackColor;
+    int mBorderForeColor;
+    int mBorderBackColor;
     bool mBorder;
 };
 

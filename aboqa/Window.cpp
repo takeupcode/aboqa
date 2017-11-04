@@ -9,34 +9,35 @@
 #include "Window.h"
 
 #include <stdexcept>
-#include <curses.h>
+
+#include "ConsoleManager.h"
 
 using namespace std;
 
-Window::Window (int y, int x, int height, int width, bool border)
-: mY(y), mX(x), mHeight(height), mWidth(width)
+Window::Window (int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
+: mY(y), mX(x), mHeight(height), mWidth(width), mClientForeColor(clientForeColor), mClientBackColor(clientBackColor),
+  mBorderForeColor(borderForeColor), mBorderBackColor(borderBackColor), mBorder(border)
 {
-    setBorder(border);
+    mWindowPtr = newwin(mHeight, mWidth, mY, mX);
+    if (!mWindowPtr)
+    {
+        string message = "Could not create window.";
+        throw runtime_error(message);
+    }
 }
 
 Window::~Window ()
 {
-    
+    delwin(mWindowPtr);
 }
 
 void Window::draw () const
 {
     if (mBorder)
     {
-        mvaddch(mY, mX, ACS_ULCORNER);
-        mvaddch(mY, mX + mWidth - 1, ACS_URCORNER);
-        mvaddch(mY + mHeight - 1, mX, ACS_LLCORNER);
-        mvaddch(mY + mHeight - 1, mX + mWidth - 1, ACS_LRCORNER);
-        mvhline(mY, mX + 1, ACS_HLINE, mWidth - 2);
-        mvhline(mY + mHeight - 1, mX + 1, ACS_HLINE, mWidth - 2);
-        mvvline(mY + 1, mX, ACS_VLINE, mHeight - 2);
-        mvvline(mY + 1, mX + mWidth - 1, ACS_VLINE, mHeight - 2);
+        ConsoleManager::drawBox(nullptr, mY, mX, mWidth, mHeight, mBorderForeColor, mBorderBackColor);
     }
+    ConsoleManager::fillRect(nullptr, mY + 1, mX + 1, mWidth - 1, mHeight - 1, mClientForeColor, mClientBackColor);
 }
 
 int Window::y () const

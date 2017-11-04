@@ -12,9 +12,11 @@
 #include <sstream>
 #include <stdexcept>
 
+#include "Colors.h"
+
 using namespace std;
 
-bool ConsoleManager::promptYesOrNo (WINDOW * win, const std::string & prompt, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace)
+bool ConsoleManager::promptYesOrNo (WINDOW * win, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
 {
     if (!win)
     {
@@ -33,10 +35,10 @@ bool ConsoleManager::promptYesOrNo (WINDOW * win, const std::string & prompt, ch
     int errorY = currentY + 1;
     int errorX = currentX;
     
-    return promptYesOrNo(win, currentY, currentX, width, errorY, errorX, width, prompt, color, errorColor, center, errorCenter, fillSpace);
+    return promptYesOrNo(win, currentY, currentX, width, errorY, errorX, width, prompt, foreColor, backColor, errorForeColor, errorBackColor, center, errorCenter, fillSpace);
 }
 
-bool ConsoleManager::promptYesOrNo (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace)
+bool ConsoleManager::promptYesOrNo (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
 {
     if (!win)
     {
@@ -48,7 +50,7 @@ bool ConsoleManager::promptYesOrNo (WINDOW * win, int y, int x, int width, int e
     
     while (true)
     {
-        printMessage(win, y, x, width, prompt, color, center, fillSpace);
+        printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
         
         char input = static_cast<char>(getch());
         clrtoeol();
@@ -71,12 +73,12 @@ bool ConsoleManager::promptYesOrNo (WINDOW * win, int y, int x, int width, int e
         {
             stringstream ss;
             ss << "Please enter y or n.";
-            printMessage(win, errorY, errorX, errorWidth, ss.str(), errorColor, errorCenter, fillSpace);
+            printMessage(win, errorY, errorX, errorWidth, ss.str(), errorForeColor, errorBackColor, errorCenter, fillSpace);
         }
     }
 }
 
-int ConsoleManager::promptNumber (WINDOW * win, const std::string & prompt, int minimum, int maximum, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace)
+int ConsoleManager::promptNumber (WINDOW * win, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
 {
     if (!win)
     {
@@ -95,10 +97,10 @@ int ConsoleManager::promptNumber (WINDOW * win, const std::string & prompt, int 
     int errorY = currentY + 1;
     int errorX = currentX;
     
-    return promptNumber(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, color, errorColor, center, errorCenter, fillSpace);
+    return promptNumber(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, foreColor, backColor, errorForeColor, errorBackColor, center, errorCenter, fillSpace);
 }
 
-int ConsoleManager::promptNumber (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int minimum, int maximum, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace)
+int ConsoleManager::promptNumber (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
 {
     if (!win)
     {
@@ -111,7 +113,7 @@ int ConsoleManager::promptNumber (WINDOW * win, int y, int x, int width, int err
     const int BUFFER_CHAR_COUNT = 10;
     while (true)
     {
-        printMessage(win, y, x, width, prompt, color, center);
+        printMessage(win, y, x, width, prompt, foreColor, backColor, center);
         
         char buffer[BUFFER_CHAR_COUNT + 1];
         if (wgetnstr(win, buffer, BUFFER_CHAR_COUNT) == OK)
@@ -129,11 +131,11 @@ int ConsoleManager::promptNumber (WINDOW * win, int y, int x, int width, int err
 
         stringstream ss;
         ss << "Please enter a number between " << minimum << " and " << maximum << ".";
-        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorColor, errorCenter, fillSpace);
+        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorForeColor, errorBackColor, errorCenter, fillSpace);
     }
 }
 
-char ConsoleManager::promptLetter (WINDOW * win, const std::string & prompt, char minimum, char maximum, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
+char ConsoleManager::promptLetter (WINDOW * win, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
 {
     if (!win)
     {
@@ -152,10 +154,10 @@ char ConsoleManager::promptLetter (WINDOW * win, const std::string & prompt, cha
     int errorY = currentY + 1;
     int errorX = currentX;
     
-    return promptLetter(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, color, errorColor, center, errorCenter, fillSpace, enforceUpperCase);
+    return promptLetter(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, foreColor, backColor, errorForeColor, errorBackColor, center, errorCenter, fillSpace, enforceUpperCase);
 }
 
-char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, char minimum, char maximum, chtype color, chtype errorColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
+char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
 {
     if (!win)
     {
@@ -201,7 +203,7 @@ char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int er
     
     while (true)
     {
-        printMessage(win, y, x, width, prompt, color, center, fillSpace);
+        printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
         
         char input = static_cast<char>(getch());
         clrtoeol();
@@ -224,11 +226,11 @@ char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int er
         
         stringstream ss;
         ss << "Please enter a letter between " << minimumLower << " and " << maximumLower << ".";
-        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorColor, errorCenter, fillSpace);
+        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorForeColor, errorBackColor, errorCenter, fillSpace);
     }
 }
 
-void ConsoleManager::promptPause (WINDOW * win, const std::string & prompt, chtype color, bool center, bool fillSpace)
+void ConsoleManager::promptPause (WINDOW * win, const std::string & prompt, int foreColor, int backColor, bool center, bool fillSpace)
 {
     if (!win)
     {
@@ -244,28 +246,28 @@ void ConsoleManager::promptPause (WINDOW * win, const std::string & prompt, chty
     
     int width = maxX - currentX;
     
-    promptPause(win, currentY, currentX, width, prompt, color, center, fillSpace);
+    promptPause(win, currentY, currentX, width, prompt, foreColor, backColor, center, fillSpace);
 }
 
-void ConsoleManager::promptPause (WINDOW * win, int y, int x, int width, const std::string & prompt, chtype color, bool center, bool fillSpace)
+void ConsoleManager::promptPause (WINDOW * win, int y, int x, int width, const std::string & prompt, int foreColor, int backColor, bool center, bool fillSpace)
 {
     if (!win)
     {
         win = stdscr;
     }
     
-    printMessage(win, y, x, width, prompt, color, center, fillSpace);
+    printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
     
     getch();
 }
 
-void ConsoleManager::printMessage (WINDOW * win, const std::string & msg, chtype color, bool center, bool fillSpace)
+void ConsoleManager::printMessage (WINDOW * win, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
 {
     if (!win)
     {
         win = stdscr;
     }
-
+    
     int currentY;
     int currentX;
     getyx(win, currentY, currentX);
@@ -274,10 +276,10 @@ void ConsoleManager::printMessage (WINDOW * win, const std::string & msg, chtype
     
     int width = maxX - currentX;
     
-    printMessage(win, currentY, currentX, width, msg, color, center, fillSpace);
+    printMessage(win, currentY, currentX, width, msg, foreColor, backColor, center, fillSpace);
 }
 
-void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const std::string & msg, chtype color, bool center, bool fillSpace)
+void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
 {
     if (!win)
     {
@@ -290,7 +292,8 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const 
         messageX += (width - msg.length())/ 2;
     }
     
-    wattron(win, color);
+    int i = Colors::colorPairIndex(foreColor, backColor);
+    wattrset(win, COLOR_PAIR(i));
     
     if (fillSpace)
     {
@@ -301,7 +304,7 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const 
         }
     }
     
-    mvwprintw(win, y, messageX, "%s", msg.c_str());
+    printMessage(win, y, messageX, msg);
     
     if (fillSpace)
     {
@@ -311,23 +314,206 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const 
             waddch(win, ' ');
         }
     }
-    
-    wattroff(win, color);
 }
 
-void ConsoleManager::drawBox (WINDOW * win, int y, int x, int width, int height, chtype color)
+void ConsoleManager::printMessage (WINDOW * win, int y, int x, const std::string & msg)
 {
     if (!win)
     {
         win = stdscr;
     }
     
-    wattron(win, color);
+    wmove(win, y, x);
     
-    mvhline(y, x, ' ', width);
-    mvhline(y + height - 1, x, ' ', width);
-    mvvline(y + 1, x, ' ', height - 2);
-    mvvline(y + 1, x + width - 1, ' ', height - 2);
+    PrintState state = PrintState::normal;
+    int foreColor = 0;
+    int backColor = 0;
+    char firstChar = ' ';
+    char secondChar = ' ';
+    for (const char c : msg)
+    {
+        switch (state)
+        {
+        case PrintState::normal:
+            if (c == '&')
+            {
+                state = PrintState::needForeColor;
+            }
+            else
+            {
+                waddch(win, c);
+            }
+            break;
+            
+        case PrintState::needForeColor:
+            if (charToColor(c, foreColor))
+            {
+                firstChar = c;
+                state = PrintState::needBackColor;
+            }
+            else
+            {
+                waddch(win, '&');
+                waddch(win, c);
+                state = PrintState::normal;
+            }
+            break;
+            
+        case PrintState::needBackColor:
+            if (charToColor(c, backColor))
+            {
+                secondChar = c;
+                state = PrintState::needEnd;
+            }
+            else
+            {
+                waddch(win, '&');
+                waddch(win, firstChar);
+                waddch(win, c);
+                state = PrintState::normal;
+            }
+            break;
+            
+        case PrintState::needEnd:
+            if (c == ';')
+            {
+                int i = Colors::colorPairIndex(foreColor, backColor);
+                wattrset(win, COLOR_PAIR(i));
+            }
+            else
+            {
+                waddch(win, '&');
+                waddch(win, firstChar);
+                waddch(win, secondChar);
+                waddch(win, c);
+            }
+            state = PrintState::normal;
+            break;
+        }
+    }
+
+    // Look at the state one more time to see if there was an incomplete color.
+    switch (state)
+    {
+    case PrintState::normal:
+        break;
+        
+    case PrintState::needForeColor:
+        waddch(win, '&');
+        break;
+    case PrintState::needBackColor:
+        waddch(win, '&');
+        waddch(win, firstChar);
+        break;
+        
+    case PrintState::needEnd:
+        waddch(win, '&');
+        waddch(win, firstChar);
+        waddch(win, secondChar);
+        break;
+    }
+}
+
+void ConsoleManager::drawBox (WINDOW * win, int y, int x, int width, int height, int foreColor, int backColor)
+{
+    if (!win)
+    {
+        win = stdscr;
+    }
     
-    wattroff(win, color);
+    int i = Colors::colorPairIndex(foreColor, backColor);
+    wattrset(win, COLOR_PAIR(i));
+    
+    mvaddch(y, x, ACS_ULCORNER);
+    mvaddch(y, x + width - 1, ACS_URCORNER);
+    mvaddch(y + height - 1, x, ACS_LLCORNER);
+    mvaddch(y + height - 1, x + width - 1, ACS_LRCORNER);
+    mvhline(y, x + 1, ACS_HLINE, width - 2);
+    mvhline(y + height - 1, x + 1, ACS_HLINE, width - 2);
+    mvvline(y + 1, x, ACS_VLINE, height - 2);
+    mvvline(y + 1, x + width - 1, ACS_VLINE, height - 2);
+}
+
+void ConsoleManager::fillRect (WINDOW * win, int y, int x, int width, int height, int foreColor, int backColor)
+{
+    if (!win)
+    {
+        win = stdscr;
+    }
+    
+    int i = Colors::colorPairIndex(foreColor, backColor);
+    wattrset(win, COLOR_PAIR(i));
+    
+    for (int i = 0; i < height - 1; ++i)
+    {
+        mvhline(y + i, x, ' ', width - 1);
+    }
+}
+
+bool ConsoleManager::charToColor (char c, int & color)
+{
+    switch (c)
+    {
+    case 'k':
+        color = COLOR_BLACK;
+        break;
+    case 'r':
+        color = COLOR_RED;
+        break;
+    case 'g':
+        color = COLOR_GREEN;
+        break;
+    case 'y':
+        color = COLOR_YELLOW;
+        break;
+    case 'b':
+        color = COLOR_BLUE;
+        break;
+    case 'm':
+        color = COLOR_MAGENTA;
+        break;
+    case 'c':
+        color = COLOR_CYAN;
+        break;
+    case 'w':
+        color = COLOR_WHITE;
+        break;
+    default:
+        if (!Colors::useBrightColors)
+        {
+            return false;
+        }
+            
+        switch (c)
+        {
+        case 'K':
+            color = COLOR_BLACK + Colors::basicColorCount;
+            break;
+        case 'R':
+            color = COLOR_RED + Colors::basicColorCount;
+            break;
+        case 'G':
+            color = COLOR_GREEN + Colors::basicColorCount;
+            break;
+        case 'Y':
+            color = COLOR_YELLOW + Colors::basicColorCount;
+            break;
+        case 'B':
+            color = COLOR_BLUE + Colors::basicColorCount;
+            break;
+        case 'M':
+            color = COLOR_MAGENTA + Colors::basicColorCount;
+            break;
+        case 'C':
+            color = COLOR_CYAN + Colors::basicColorCount;
+            break;
+        case 'W':
+            color = COLOR_WHITE + Colors::basicColorCount;
+            break;
+        default:
+            return false;
+        }
+    }
+
+    return true;
 }

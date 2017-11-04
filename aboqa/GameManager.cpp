@@ -10,6 +10,7 @@
 
 #include <curses.h>
 
+#include "Colors.h"
 #include "LogManager.h"
 #include "ConsoleManager.h"
 #include "Window.h"
@@ -20,9 +21,9 @@ void GameManager::play ()
 {
     initialize();
     
-    init_pair(1, COLOR_RED, COLOR_BLACK);
-    bool result = ConsoleManager::promptYesOrNo(stdscr, 5, 10, 50, 6, 10, 50, "Would you like to play a game?", COLOR_PAIR(1), COLOR_PAIR(1));
-    Window w(0, 0, mScreenHeight, mScreenWidth, 1);
+    bool result = ConsoleManager::promptYesOrNo(stdscr, 5, 10, 50, 6, 10, 50, "Would you like to play a game? y/n: ",
+                                                Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, Colors::COLOR_DIM_RED, Colors::COLOR_BRIGHT_WHITE);
+    Window w(0, 0, mScreenHeight, mScreenWidth, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, true);
     w.draw();
     
     if (result)
@@ -44,6 +45,8 @@ void GameManager::initialize ()
     curs_set(0);
     nodelay(stdscr, true);
     keypad(stdscr, true);
+    
+    Colors::initializeColorPairs();
 
     mState = State::Normal;
     mScreenHeight = LINES;
