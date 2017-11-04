@@ -36,7 +36,7 @@ void Colors::initializeColorPairs()
 
 int Colors::colorPairIndex (int foreColor, int backColor)
 {
-    if (foreColor < 0 || foreColor > fullColorCount)
+    if (foreColor < 0 || foreColor >= fullColorCount)
     {
         throw std::out_of_range("foreColor out of range.");
     }
@@ -45,7 +45,7 @@ int Colors::colorPairIndex (int foreColor, int backColor)
         foreColor -= basicColorCount;
     }
     
-    if (backColor < 0 || backColor > fullColorCount)
+    if (backColor < 0 || backColor >= fullColorCount)
     {
         throw std::out_of_range("backColor out of range.");
     }
