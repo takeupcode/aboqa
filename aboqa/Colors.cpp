@@ -9,6 +9,7 @@
 #include "Colors.h"
 
 #include <curses.h>
+#include <stdexcept>
 
 void Colors::initializeColorPairs()
 {
@@ -35,11 +36,29 @@ void Colors::initializeColorPairs()
 
 int Colors::colorPairIndex (int foreColor, int backColor)
 {
+    if (foreColor < 0 || foreColor > fullColorCount)
+    {
+        throw std::out_of_range("foreColor out of range.");
+    }
+    if (!useBrightColors && foreColor >= basicColorCount)
+    {
+        foreColor -= basicColorCount;
+    }
+    
+    if (backColor < 0 || backColor > fullColorCount)
+    {
+        throw std::out_of_range("backColor out of range.");
+    }
+    if (!useBrightColors && backColor >= basicColorCount)
+    {
+        backColor -= basicColorCount;
+    }
+    
     int i = (foreColor * colorCount) + backColor + 1;
     if (i >= COLOR_PAIRS)
     {
         // Use the default color pair if we exceed the max.
-        i = 0;
+        return 0;
     }
     
     return i;

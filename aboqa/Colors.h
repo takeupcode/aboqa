@@ -14,24 +14,28 @@ class Colors
 public:
     static constexpr bool useBrightColors = true;
     static constexpr int basicColorCount = 8;
-    static constexpr int colorCount = useBrightColors ? basicColorCount * 2 : basicColorCount;
+    static constexpr int fullColorCount = basicColorCount * 2;
+    static constexpr int colorCount = useBrightColors ? fullColorCount : basicColorCount;
 
-    static constexpr int COLOR_DIM_BLACK        = 0;
-    static constexpr int COLOR_DIM_RED          = 1;
-    static constexpr int COLOR_DIM_GREEN        = 2;
-    static constexpr int COLOR_DIM_YELLOW       = 3;
-    static constexpr int COLOR_DIM_BLUE         = 4;
-    static constexpr int COLOR_DIM_MAGENTA      = 5;
-    static constexpr int COLOR_DIM_CYAN         = 6;
-    static constexpr int COLOR_DIM_WHITE        = 7;
-    static constexpr int COLOR_BRIGHT_BLACK     = 8;
-    static constexpr int COLOR_BRIGHT_RED       = 9;
-    static constexpr int COLOR_BRIGHT_GREEN     = 10;
-    static constexpr int COLOR_BRIGHT_YELLOW    = 11;
-    static constexpr int COLOR_BRIGHT_BLUE      = 12;
-    static constexpr int COLOR_BRIGHT_MAGENTA   = 13;
-    static constexpr int COLOR_BRIGHT_CYAN      = 14;
-    static constexpr int COLOR_BRIGHT_WHITE     = 15;
+    // Define basic colors which will always be available.
+    static constexpr int COLOR_DIM_BLACK      = 0;
+    static constexpr int COLOR_DIM_RED        = 1;
+    static constexpr int COLOR_DIM_GREEN      = 2;
+    static constexpr int COLOR_DIM_YELLOW     = 3;
+    static constexpr int COLOR_DIM_BLUE       = 4;
+    static constexpr int COLOR_DIM_MAGENTA    = 5;
+    static constexpr int COLOR_DIM_CYAN       = 6;
+    static constexpr int COLOR_DIM_WHITE      = 7;
+    
+    // Define bright colors which might get converted to basic colors.
+    static constexpr int COLOR_BRIGHT_BLACK   = COLOR_DIM_BLACK   + basicColorCount;
+    static constexpr int COLOR_BRIGHT_RED     = COLOR_DIM_RED     + basicColorCount;
+    static constexpr int COLOR_BRIGHT_GREEN   = COLOR_DIM_GREEN   + basicColorCount;
+    static constexpr int COLOR_BRIGHT_YELLOW  = COLOR_DIM_YELLOW  + basicColorCount;
+    static constexpr int COLOR_BRIGHT_BLUE    = COLOR_DIM_BLUE    + basicColorCount;
+    static constexpr int COLOR_BRIGHT_MAGENTA = COLOR_DIM_MAGENTA + basicColorCount;
+    static constexpr int COLOR_BRIGHT_CYAN    = COLOR_DIM_CYAN    + basicColorCount;
+    static constexpr int COLOR_BRIGHT_WHITE   = COLOR_DIM_WHITE   + basicColorCount;
 
     static void initializeColorPairs();
     
