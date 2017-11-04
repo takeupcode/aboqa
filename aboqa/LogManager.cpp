@@ -13,6 +13,7 @@
 #include <chrono>
 #include <ctime>
 #include <iomanip>
+#include <stdexcept>
 
 using namespace std;
 
