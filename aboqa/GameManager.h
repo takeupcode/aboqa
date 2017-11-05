@@ -9,22 +9,28 @@
 #ifndef GameManager_h
 #define GameManager_h
 
+#include <memory>
+#include <string>
+#include <vector>
+
 class Window;
 
 class GameManager
 {
 public:
-    enum class State
-    {
-        Exit,
-        Normal
-    };
-    
     GameManager ();
     
     ~GameManager ();
     
+    void initialize ();
+    
     void play ();
+    
+    void exit ();
+    
+    void addWindow(std::unique_ptr<Window> && window);
+    
+    void selectNextWindow(const std::string & name);
     
     int screenWidth () const;
     
@@ -43,26 +49,24 @@ public:
     void setMaxScreenDimensions (int height, int width);
     
 private:
-    void initialize ();
-    
     void deinitialize ();
     
     void loop ();
-    
-    void processInput ();
     
     int checkHeightBounds (int height) const;
 
     int checkWidthBounds (int width) const;
 
-    State mState;
     int mScreenWidth;
     int mScreenHeight;
     int mMinScreenWidth;
     int mMinScreenHeight;
     int mMaxScreenWidth;
     int mMaxScreenHeight;
-    Window * mWindow;
+    Window * mNextWindow;
+    Window * mCurrentWindow;
+    std::vector<std::unique_ptr<Window>> mWindows;
+    bool mExit;
 };
 
 #endif /* GameManager_h */

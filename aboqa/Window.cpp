@@ -14,8 +14,8 @@
 
 using namespace std;
 
-Window::Window (int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
-: mBorderWindowPtr(nullptr), mClientWindowPtr(nullptr),
+Window::Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
+: mBorderWindowPtr(nullptr), mClientWindowPtr(nullptr), mName(name),
   mY(y), mX(x), mHeight(height), mWidth(width), mClientForeColor(clientForeColor), mClientBackColor(clientBackColor),
   mBorderForeColor(borderForeColor), mBorderBackColor(borderBackColor), mBorder(border)
 {
@@ -36,11 +36,16 @@ void Window::draw () const
 {
     if (mBorder)
     {
-        ConsoleManager::drawBox(mBorderWindowPtr, 0, 0, mHeight + 2, mWidth + 2, mBorderForeColor, mBorderBackColor);
+        ConsoleManager::drawBox(mBorderWindowPtr, 0, 0, mHeight, mWidth, mBorderForeColor, mBorderBackColor);
         touchwin(mBorderWindowPtr);
         wnoutrefresh(mBorderWindowPtr);
+        
+        ConsoleManager::fillRect(mClientWindowPtr, 0, 0, mHeight - 2, mWidth - 2, mClientForeColor, mClientBackColor);
     }
-    ConsoleManager::fillRect(mClientWindowPtr, 0, 0, mHeight, mWidth, mClientForeColor, mClientBackColor);
+    else
+    {
+        ConsoleManager::fillRect(mClientWindowPtr, 0, 0, mHeight, mWidth, mClientForeColor, mClientBackColor);
+    }
     onDrawClient();
     touchwin(mClientWindowPtr);
     wnoutrefresh(mClientWindowPtr);
@@ -48,6 +53,11 @@ void Window::draw () const
 
 void Window::onDrawClient () const
 { }
+
+const std::string & Window::name () const
+{
+    return mName;
+}
 
 int Window::y () const
 {
@@ -161,31 +171,35 @@ void Window::setBorder (bool border)
 
 void Window::createWindows ()
 {
-    if (mHeight < 1 || mWidth < 1)
+    if (mY < 0 || mX < 0)
     {
-        throw std::out_of_range("height or width cannot be less than 1.");
+        throw std::out_of_range("y or x cannot be less than 0.");
     }
 
     if (mBorder)
     {
-        if (mY < 1 || mX < 1)
+        if (mHeight < 3 || mWidth < 3)
         {
-            throw std::out_of_range("y or x cannot be less than 1 when using a border.");
+            throw std::out_of_range("height or width cannot be less than 3 when using a border.");
         }
-        mBorderWindowPtr = newwin(mHeight + 2, mWidth + 2, mY - 1, mX - 1);
-        mClientWindowPtr = newwin(mHeight, mWidth, mY, mX);
+        mBorderWindowPtr = newwin(mHeight, mWidth, mY, mX);
+        mClientWindowPtr = newwin(mHeight - 2, mWidth - 2, mY + 1, mX + 1);
         if (!mBorderWindowPtr || !mClientWindowPtr)
         {
             string message = "Could not create window.";
             throw runtime_error(message);
         }
+
+        nodelay(mBorderWindowPtr, true);
+        keypad(mBorderWindowPtr, true);
     }
     else
     {
-        if (mY < 0 || mX < 0)
+        if (mHeight < 1 || mWidth < 1)
         {
-            throw std::out_of_range("y or x cannot be less than 0.");
+            throw std::out_of_range("height or width cannot be less than 1.");
         }
+        
         mClientWindowPtr = newwin(mHeight, mWidth, mY, mX);
         if (!mClientWindowPtr)
         {
@@ -193,6 +207,9 @@ void Window::createWindows ()
             throw runtime_error(message);
         }
     }
+    
+    nodelay(mClientWindowPtr, true);
+    keypad(mClientWindowPtr, true);
 }
 
 void Window::destroyWindows ()

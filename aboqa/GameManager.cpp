@@ -18,33 +18,41 @@
 using namespace std;
 
 GameManager::GameManager ()
-: mState(State::Normal), mScreenWidth(0), mScreenHeight(0),
+: mScreenWidth(0), mScreenHeight(0),
   mMinScreenWidth(0), mMinScreenHeight(0), mMaxScreenWidth(80), mMaxScreenHeight(40),
-  mWindow(nullptr)
+  mNextWindow(nullptr), mCurrentWindow(nullptr), mExit(false)
 { }
 
 GameManager::~GameManager ()
-{ }
+{
+    deinitialize();
+}
 
 void GameManager::play ()
 {
-    initialize();
-    
-    bool result;
+    loop();
+}
+
+void GameManager::exit ()
+{
+    mExit = true;
+}
+
+void GameManager::addWindow(std::unique_ptr<Window> && window)
+{
+    mWindows.push_back(std::move(window));
+}
+
+void GameManager::selectNextWindow(const std::string & name)
+{
+    for (auto & win: mWindows)
     {
-        Window splash(0, 0, mScreenHeight + 1, mScreenWidth + 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, false);
-        splash.draw();
-        doupdate();
-        result = ConsoleManager::promptYesOrNo(splash.cursesWindow(), 5, 10, 50, 6, 10, 50, "Would you like to play a game? y/n: ",
-                                               Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_BRIGHT_RED, Colors::COLOR_DIM_WHITE);
+        if (win->name() == name)
+        {
+            mNextWindow = win.get();
+            break;
+        }
     }
-    if (result)
-    {
-        mWindow = new Window(1, 1, mScreenHeight - 2, mScreenWidth - 2, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, true);
-        loop();
-    }
-    
-    deinitialize();
 }
 
 int GameManager::screenWidth () const
@@ -103,16 +111,12 @@ void GameManager::initialize ()
     
     Colors::initializeColorPairs();
 
-    mState = State::Normal;
     mScreenHeight = LINES;
     mScreenWidth = COLS;
 }
 
 void GameManager::deinitialize ()
 {
-    delete mWindow;
-    mWindow = nullptr;
-
     endwin();
     
     LogManager::deinitialize();
@@ -120,39 +124,29 @@ void GameManager::deinitialize ()
 
 void GameManager::loop ()
 {
-    while (mState != State::Exit)
+    while (!mExit)
     {
+        if (mNextWindow)
+        {
+            // Switch current window at the beginning of the loop.
+            mCurrentWindow = mNextWindow;
+        }
+        if (!mCurrentWindow)
+        {
+            break;
+        }
+        
         int maxY;
         int maxX;
-
         getmaxyx(stdscr, maxY, maxX);
-        mWindow->resize(checkHeightBounds(maxY - 2), checkWidthBounds(maxX - 2));
         
-        processInput();
-        mWindow->draw();
+        mCurrentWindow->resize(checkHeightBounds(maxY - 2), checkWidthBounds(maxX - 2));
+        
+        mCurrentWindow->processInput(this);
+        
+        mCurrentWindow->draw();
         
         doupdate();
-    }
-}
-
-void GameManager::processInput ()
-{
-    // This relies on nodelay() == true for the main window.
-    int c = wgetch(stdscr);
-    switch(c)
-    {
-        case ERR:
-            break;
-        case KEY_DOWN:
-            LogManager::instance()->logInfo("Down key pressed.");
-            break;
-        case KEY_UP:
-            break;
-        case 10: /* Enter */
-            break;
-        case KEY_F(1):
-            mState = State::Exit;
-            break;
     }
 }
 

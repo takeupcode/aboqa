@@ -10,20 +10,27 @@
 #define Window_h
 
 #include <curses.h>
+#include <string>
+
+class GameManager;
 
 class Window
 {
 public:
-    Window (int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
+    Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
 
     virtual ~Window ();
 
     WINDOW * cursesWindow () const;
+    
+    virtual void processInput (GameManager * gm) = 0;
 
     void draw () const;
 
     virtual void onDrawClient () const;
 
+    const std::string & name () const;
+    
     int y () const;
 
     void setY (int y);
@@ -56,6 +63,7 @@ private:
 
     WINDOW * mClientWindowPtr;
     WINDOW * mBorderWindowPtr;
+    std::string mName;
     int mY;
     int mX;
     int mHeight;

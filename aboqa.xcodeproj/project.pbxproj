@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		3EB347BF1FAAC28F0031025E /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347BD1FAAC28F0031025E /* Window.cpp */; };
 		3EB347C51FAAE19B0031025E /* Colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C31FAAE19B0031025E /* Colors.cpp */; };
+		3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C61FAEC57C0031025E /* SplashWindow.cpp */; };
+		3EB347CB1FAEC59E0031025E /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C91FAEC59E0031025E /* MainWindow.cpp */; };
+		3EB347CE1FAEC5B80031025E /* ExitWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347CC1FAEC5B80031025E /* ExitWindow.cpp */; };
 		3ED7858E1FA58EDF002D9B78 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7858D1FA58EDF002D9B78 /* main.cpp */; };
 		3ED7859C1FA591A3002D9B78 /* ConsoleManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785941FA591A3002D9B78 /* ConsoleManager.cpp */; };
 		3ED7859D1FA591A3002D9B78 /* LogManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785961FA591A3002D9B78 /* LogManager.cpp */; };
@@ -34,6 +37,12 @@
 		3EB347BE1FAAC28F0031025E /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		3EB347C31FAAE19B0031025E /* Colors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colors.cpp; sourceTree = "<group>"; };
 		3EB347C41FAAE19B0031025E /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
+		3EB347C61FAEC57C0031025E /* SplashWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashWindow.cpp; sourceTree = "<group>"; };
+		3EB347C71FAEC57C0031025E /* SplashWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashWindow.h; sourceTree = "<group>"; };
+		3EB347C91FAEC59E0031025E /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainWindow.cpp; sourceTree = "<group>"; };
+		3EB347CA1FAEC59E0031025E /* MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindow.h; sourceTree = "<group>"; };
+		3EB347CC1FAEC5B80031025E /* ExitWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExitWindow.cpp; sourceTree = "<group>"; };
+		3EB347CD1FAEC5B80031025E /* ExitWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExitWindow.h; sourceTree = "<group>"; };
 		3ED7858A1FA58EDF002D9B78 /* aboqa */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aboqa; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED7858D1FA58EDF002D9B78 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		3ED785941FA591A3002D9B78 /* ConsoleManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleManager.cpp; sourceTree = "<group>"; };
@@ -92,6 +101,12 @@
 				3ED7858D1FA58EDF002D9B78 /* main.cpp */,
 				3EB347BD1FAAC28F0031025E /* Window.cpp */,
 				3EB347BE1FAAC28F0031025E /* Window.h */,
+				3EB347C61FAEC57C0031025E /* SplashWindow.cpp */,
+				3EB347C71FAEC57C0031025E /* SplashWindow.h */,
+				3EB347C91FAEC59E0031025E /* MainWindow.cpp */,
+				3EB347CA1FAEC59E0031025E /* MainWindow.h */,
+				3EB347CC1FAEC5B80031025E /* ExitWindow.cpp */,
+				3EB347CD1FAEC5B80031025E /* ExitWindow.h */,
 			);
 			path = aboqa;
 			sourceTree = "<group>";
@@ -162,9 +177,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				3ED7859D1FA591A3002D9B78 /* LogManager.cpp in Sources */,
+				3EB347CE1FAEC5B80031025E /* ExitWindow.cpp in Sources */,
 				3EB347C51FAAE19B0031025E /* Colors.cpp in Sources */,
 				3EB347BF1FAAC28F0031025E /* Window.cpp in Sources */,
 				3ED7859F1FA591A3002D9B78 /* GameManager.cpp in Sources */,
+				3EB347CB1FAEC59E0031025E /* MainWindow.cpp in Sources */,
+				3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */,
 				3ED7858E1FA58EDF002D9B78 /* main.cpp in Sources */,
 				3ED7859C1FA591A3002D9B78 /* ConsoleManager.cpp in Sources */,
 				3ED7859E1FA591A3002D9B78 /* FileManager.cpp in Sources */,
