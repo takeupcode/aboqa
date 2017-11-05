@@ -45,9 +45,9 @@ public:
     
     static void printMessage (WINDOW * win, int y, int x, const std::string & msg);
     
-    static void drawBox (WINDOW * win, int y, int x, int width, int height, int foreColor, int backColor);
+    static void drawBox (WINDOW * win, int y, int x, int height, int width, int foreColor, int backColor);
     
-    static void fillRect (WINDOW * win, int y, int x, int width, int height, int foreColor, int backColor);
+    static void fillRect (WINDOW * win, int y, int x, int height, int width, int foreColor, int backColor);
     
 private:
     static bool charToColor (char c, int & color);

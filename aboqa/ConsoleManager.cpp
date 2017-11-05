@@ -51,8 +51,9 @@ bool ConsoleManager::promptYesOrNo (WINDOW * win, int y, int x, int width, int e
     while (true)
     {
         printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
+        wrefresh(win);
         
-        char input = static_cast<char>(getch());
+        char input = static_cast<char>(wgetch(win));
         clrtoeol();
         
         if (input == 'y' || input == 'Y')
@@ -114,6 +115,7 @@ int ConsoleManager::promptNumber (WINDOW * win, int y, int x, int width, int err
     while (true)
     {
         printMessage(win, y, x, width, prompt, foreColor, backColor, center);
+        wrefresh(win);
         
         char buffer[BUFFER_CHAR_COUNT + 1];
         if (wgetnstr(win, buffer, BUFFER_CHAR_COUNT) == OK)
@@ -204,8 +206,9 @@ char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int er
     while (true)
     {
         printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
+        wrefresh(win);
         
-        char input = static_cast<char>(getch());
+        char input = static_cast<char>(wgetch(win));
         clrtoeol();
         
         if ((input >= minimumLower && input <= maximumLower) || (input >= minimumUpper && input <= maximumUpper))
@@ -257,8 +260,9 @@ void ConsoleManager::promptPause (WINDOW * win, int y, int x, int width, const s
     }
     
     printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
+    wrefresh(win);
     
-    getch();
+    wgetch(win);
 }
 
 void ConsoleManager::printMessage (WINDOW * win, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
@@ -414,7 +418,7 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, const std::string
     }
 }
 
-void ConsoleManager::drawBox (WINDOW * win, int y, int x, int width, int height, int foreColor, int backColor)
+void ConsoleManager::drawBox (WINDOW * win, int y, int x, int height, int width, int foreColor, int backColor)
 {
     if (!win)
     {
@@ -424,17 +428,17 @@ void ConsoleManager::drawBox (WINDOW * win, int y, int x, int width, int height,
     int i = Colors::colorPairIndex(foreColor, backColor);
     wattrset(win, COLOR_PAIR(i));
     
-    mvaddch(y, x, ACS_ULCORNER);
-    mvaddch(y, x + width - 1, ACS_URCORNER);
-    mvaddch(y + height - 1, x, ACS_LLCORNER);
-    mvaddch(y + height - 1, x + width - 1, ACS_LRCORNER);
-    mvhline(y, x + 1, ACS_HLINE, width - 2);
-    mvhline(y + height - 1, x + 1, ACS_HLINE, width - 2);
-    mvvline(y + 1, x, ACS_VLINE, height - 2);
-    mvvline(y + 1, x + width - 1, ACS_VLINE, height - 2);
+    mvwaddch(win, y, x, ACS_ULCORNER);
+    mvwaddch(win, y, x + width - 1, ACS_URCORNER);
+    mvwaddch(win, y + height - 1, x, ACS_LLCORNER);
+    mvwaddch(win, y + height - 1, x + width - 1, ACS_LRCORNER);
+    mvwhline(win, y, x + 1, ACS_HLINE, width - 2);
+    mvwhline(win, y + height - 1, x + 1, ACS_HLINE, width - 2);
+    mvwvline(win, y + 1, x, ACS_VLINE, height - 2);
+    mvwvline(win, y + 1, x + width - 1, ACS_VLINE, height - 2);
 }
 
-void ConsoleManager::fillRect (WINDOW * win, int y, int x, int width, int height, int foreColor, int backColor)
+void ConsoleManager::fillRect (WINDOW * win, int y, int x, int height, int width, int foreColor, int backColor)
 {
     if (!win)
     {
@@ -446,7 +450,7 @@ void ConsoleManager::fillRect (WINDOW * win, int y, int x, int width, int height
     
     for (int i = 0; i < height - 1; ++i)
     {
-        mvhline(y + i, x, ' ', width - 1);
+        mvwhline(win, y + i, x, ' ', width - 1);
     }
 }
 

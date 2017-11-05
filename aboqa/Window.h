@@ -15,37 +15,47 @@ class Window
 {
 public:
     Window (int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
-    
+
     virtual ~Window ();
-    
-    virtual void draw () const;
-    
+
+    WINDOW * cursesWindow () const;
+
+    void draw () const;
+
+    virtual void onDrawClient () const;
+
     int y () const;
-    
+
     void setY (int y);
-    
+
     int x () const;
-    
+
     void setX (int x);
-    
+
     void move (int y, int x);
-    
+
     int height () const;
-    
+
     void setHeight (int height);
-    
+
     int width () const;
-    
+
     void setWidth (int width);
-    
+
     void resize (int height, int width);
-    
+
+    void moveAndResize (int y, int x, int height, int width);
+
     bool hasBorder () const;
-    
+
     void setBorder (bool border);
-    
+
 private:
-    WINDOW * mWindowPtr;
+    void createWindows ();
+    void destroyWindows ();
+
+    WINDOW * mClientWindowPtr;
+    WINDOW * mBorderWindowPtr;
     int mY;
     int mX;
     int mHeight;

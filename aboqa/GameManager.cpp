@@ -17,21 +17,76 @@
 
 using namespace std;
 
+GameManager::GameManager ()
+: mState(State::Normal), mScreenWidth(0), mScreenHeight(0),
+  mMinScreenWidth(0), mMinScreenHeight(0), mMaxScreenWidth(80), mMaxScreenHeight(40),
+  mWindow(nullptr)
+{ }
+
+GameManager::~GameManager ()
+{ }
+
 void GameManager::play ()
 {
     initialize();
     
-    bool result = ConsoleManager::promptYesOrNo(stdscr, 5, 10, 50, 6, 10, 50, "Would you like to play a game? y/n: ",
-                                                Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, Colors::COLOR_DIM_RED, Colors::COLOR_BRIGHT_WHITE);
-    Window w(0, 0, mScreenHeight, mScreenWidth, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, true);
-    w.draw();
-    
+    bool result;
+    {
+        Window splash(0, 0, mScreenHeight + 1, mScreenWidth + 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, false);
+        splash.draw();
+        doupdate();
+        result = ConsoleManager::promptYesOrNo(splash.cursesWindow(), 5, 10, 50, 6, 10, 50, "Would you like to play a game? y/n: ",
+                                               Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_BRIGHT_RED, Colors::COLOR_DIM_WHITE);
+    }
     if (result)
     {
+        mWindow = new Window(1, 1, mScreenHeight - 2, mScreenWidth - 2, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, true);
         loop();
     }
     
     deinitialize();
+}
+
+int GameManager::screenWidth () const
+{
+    return mScreenWidth;
+}
+
+int GameManager::screenHeight () const
+{
+    return mScreenHeight;
+}
+
+int GameManager::minScreenWidth () const
+{
+    return mMinScreenWidth;
+}
+
+int GameManager::minScreenHeight () const
+{
+    return mMinScreenHeight;
+}
+
+void GameManager::setMinScreenDimensions (int height, int width)
+{
+    mMinScreenHeight = height;
+    mMinScreenWidth = width;
+}
+
+int GameManager::maxScreenWidth () const
+{
+    return mMaxScreenWidth;
+}
+
+int GameManager::maxScreenHeight () const
+{
+    return mMaxScreenHeight;
+}
+
+void GameManager::setMaxScreenDimensions (int height, int width)
+{
+    mMaxScreenHeight = height;
+    mMaxScreenWidth = width;
 }
 
 void GameManager::initialize ()
@@ -55,6 +110,9 @@ void GameManager::initialize ()
 
 void GameManager::deinitialize ()
 {
+    delete mWindow;
+    mWindow = nullptr;
+
     endwin();
     
     LogManager::deinitialize();
@@ -64,15 +122,23 @@ void GameManager::loop ()
 {
     while (mState != State::Exit)
     {
+        int maxY;
+        int maxX;
+
+        getmaxyx(stdscr, maxY, maxX);
+        mWindow->resize(checkHeightBounds(maxY - 2), checkWidthBounds(maxX - 2));
+        
         processInput();
-        refresh();
+        mWindow->draw();
+        
+        doupdate();
     }
 }
 
 void GameManager::processInput ()
 {
     // This relies on nodelay() == true for the main window.
-    int c = getch();
+    int c = wgetch(stdscr);
     switch(c)
     {
         case ERR:
@@ -90,3 +156,32 @@ void GameManager::processInput ()
     }
 }
 
+int GameManager::checkHeightBounds (int height) const
+{
+    if (height < mMinScreenHeight)
+    {
+        return mMinScreenHeight;
+    }
+
+    if (height > mMaxScreenHeight)
+    {
+        return mMaxScreenHeight;
+    }
+
+    return height;
+}
+
+int GameManager::checkWidthBounds (int width) const
+{
+    if (width < mMinScreenWidth)
+    {
+        return mMinScreenWidth;
+    }
+
+    if (width > mMaxScreenWidth)
+    {
+        return mMaxScreenWidth;
+    }
+
+    return width;
+}
