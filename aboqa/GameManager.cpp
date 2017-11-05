@@ -130,6 +130,7 @@ void GameManager::loop ()
         {
             // Switch current window at the beginning of the loop.
             mCurrentWindow = mNextWindow;
+            mNextWindow = nullptr;
         }
         if (!mCurrentWindow)
         {
@@ -140,7 +141,7 @@ void GameManager::loop ()
         int maxX;
         getmaxyx(stdscr, maxY, maxX);
         
-        mCurrentWindow->resize(checkHeightBounds(maxY - 2), checkWidthBounds(maxX - 2));
+        mCurrentWindow->resize(checkHeightBounds(maxY), checkWidthBounds(maxX));
         
         mCurrentWindow->processInput(this);
         

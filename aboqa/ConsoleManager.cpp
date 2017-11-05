@@ -448,9 +448,9 @@ void ConsoleManager::fillRect (WINDOW * win, int y, int x, int height, int width
     int i = Colors::colorPairIndex(foreColor, backColor);
     wattrset(win, COLOR_PAIR(i));
     
-    for (int i = 0; i < height - 1; ++i)
+    for (int i = 0; i < height; ++i)
     {
-        mvwhline(win, y + i, x, ' ', width - 1);
+        mvwhline(win, y + i, x, ' ', width);
     }
 }
 
