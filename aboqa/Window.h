@@ -10,7 +10,9 @@
 #define Window_h
 
 #include <curses.h>
+#include <memory>
 #include <string>
+#include <vector>
 
 class GameManager;
 
@@ -60,6 +62,24 @@ public:
     bool hasBorder () const;
 
     void setBorder (bool border);
+    
+    int clientForeColor () const;
+    
+    void setClientForeColor (int color);
+    
+    int clientBackColor () const;
+    
+    void setClientBackColor (int color);
+    
+    int borderForeColor () const;
+    
+    void setBorderForeColor (int color);
+    
+    int borderBackColor () const;
+    
+    void setBorderBackColor (int color);
+    
+    void addControl(std::unique_ptr<Window> && control);
 
 private:
     void createWindows ();
@@ -76,6 +96,7 @@ private:
     int mClientBackColor;
     int mBorderForeColor;
     int mBorderBackColor;
+    std::vector<std::unique_ptr<Window>> mControls;
     bool mBorder;
 };
 

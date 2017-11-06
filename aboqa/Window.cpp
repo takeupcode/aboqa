@@ -49,6 +49,11 @@ void Window::processInput (GameManager * gm)
     default:
         onKeyPress(gm, c);
     }
+    
+    for (auto & control: mControls)
+    {
+        control->processInput(gm);
+    }
 }
 
 void Window::draw () const
@@ -68,6 +73,11 @@ void Window::draw () const
     onDrawClient();
     touchwin(mClientWindowPtr);
     wnoutrefresh(mClientWindowPtr);
+    
+    for (const auto & control: mControls)
+    {
+        control->draw();
+    }
 }
 
 void Window::onKeyPress (GameManager * gm, int key) const
@@ -192,6 +202,51 @@ void Window::setBorder (bool border)
         mBorder = border;
         createWindows();
     }
+}
+
+int Window::clientForeColor () const
+{
+    return mClientForeColor;
+}
+
+void Window::setClientForeColor (int color)
+{
+    mClientForeColor = color;
+}
+
+int Window::clientBackColor () const
+{
+    return mClientBackColor;
+}
+
+void Window::setClientBackColor (int color)
+{
+    mClientBackColor = color;
+}
+
+int Window::borderForeColor () const
+{
+    return mBorderForeColor;
+}
+
+void Window::setBorderForeColor (int color)
+{
+    mBorderForeColor = color;
+}
+
+int Window::borderBackColor () const
+{
+    return mBorderBackColor;
+}
+
+void Window::setBorderBackColor (int color)
+{
+    mBorderBackColor = color;
+}
+
+void Window::addControl(std::unique_ptr<Window> && control)
+{
+    mControls.push_back(std::move(control));
 }
 
 void Window::createWindows ()
