@@ -108,6 +108,7 @@ void GameManager::initialize ()
     curs_set(0);
     nodelay(stdscr, true);
     keypad(stdscr, true);
+    mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, nullptr);
     
     Colors::initializeColorPairs();
 

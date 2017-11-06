@@ -32,6 +32,25 @@ WINDOW * Window::cursesWindow () const
     return mClientWindowPtr;
 }
 
+void Window::processInput (GameManager * gm)
+{
+    MEVENT mouseEvent;
+    int c = wgetch(cursesWindow());
+    switch(c)
+    {
+    case ERR:
+        break;
+    case KEY_MOUSE:
+        if (getmouse(&mouseEvent) == OK)
+        {
+            onMouseEvent(gm, mouseEvent.id, mouseEvent.y, mouseEvent.x, mouseEvent.bstate);
+        }
+        break;
+    default:
+        onKeyPress(gm, c);
+    }
+}
+
 void Window::draw () const
 {
     if (mBorder)
@@ -50,6 +69,12 @@ void Window::draw () const
     touchwin(mClientWindowPtr);
     wnoutrefresh(mClientWindowPtr);
 }
+
+void Window::onKeyPress (GameManager * gm, int key) const
+{ }
+
+void Window::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
+{ }
 
 void Window::onDrawClient () const
 { }

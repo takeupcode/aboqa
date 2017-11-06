@@ -9,6 +9,7 @@
 #ifndef LogManager_h
 #define LogManager_h
 
+#include <sstream>
 #include <string>
 
 class LogManager
@@ -38,5 +39,15 @@ private:
     static LogManager * mInstance;
     std::string mLogFileName;
 };
+
+#define INTERNAL_ABOQALOG_FUNC_FINAL( level ) log ## level
+#define INTERNAL_ABOQALOG_FUNC( level ) INTERNAL_ABOQALOG_FUNC_FINAL( level )
+
+#define ABOQALOG(level, msg) \
+do { \
+    std::stringstream ss; \
+    ss << msg; \
+    LogManager::instance()->INTERNAL_ABOQALOG_FUNC(level)(ss.str()); \
+} while(false)
 
 #endif /* LogManager_h */

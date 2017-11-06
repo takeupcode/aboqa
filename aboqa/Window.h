@@ -23,10 +23,14 @@ public:
 
     WINDOW * cursesWindow () const;
     
-    virtual void processInput (GameManager * gm) = 0;
+    virtual void processInput (GameManager * gm);
 
     void draw () const;
 
+    virtual void onKeyPress (GameManager * gm, int key) const;
+    
+    virtual void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const;
+    
     virtual void onDrawClient () const;
 
     const std::string & name () const;
