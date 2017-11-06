@@ -293,7 +293,11 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const 
     int messageX = x;
     if (center)
     {
-        messageX += (width - msg.length())/ 2;
+        int delta = static_cast<int>(width - msg.length()) / 2;
+        if (delta > 0)
+        {
+            messageX += delta;
+        }
     }
     
     int i = Colors::colorPairIndex(foreColor, backColor);
@@ -327,7 +331,10 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, const std::string
         win = stdscr;
     }
     
-    wmove(win, y, x);
+    if (wmove(win, y, x) == ERR)
+    {
+        return;
+    }
     
     PrintState state = PrintState::normal;
     int foreColor = 0;

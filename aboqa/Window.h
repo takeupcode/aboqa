@@ -58,6 +58,30 @@ public:
     void resize (int height, int width);
 
     void moveAndResize (int y, int x, int height, int width);
+    
+    int anchorTop () const;
+    
+    void setAnchorTop (int anchor);
+    
+    int anchorBottom () const;
+    
+    void setAnchorBottom (int anchor);
+    
+    int anchorLeft () const;
+    
+    void setAnchorLeft (int anchor);
+    
+    int anchorRight () const;
+    
+    void setAnchorRight (int anchor);
+    
+    void setAnchorsAll (int anchor);
+    
+    void setAnchorsAll (int top, int bottom, int left, int right);
+    
+    void setAnchorsTopBottom (int top, int bottom);
+    
+    void setAnchorsLeftRight (int left, int right);
 
     bool hasBorder () const;
 
@@ -92,6 +116,10 @@ private:
     int mX;
     int mHeight;
     int mWidth;
+    int mAnchorTop;
+    int mAnchorBottom;
+    int mAnchorLeft;
+    int mAnchorRight;
     int mClientForeColor;
     int mClientBackColor;
     int mBorderForeColor;

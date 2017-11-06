@@ -16,7 +16,10 @@
 SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border)
 {
-    addControl(std::unique_ptr<Window>(new Button("okButton", "Ok", height - 1, width - 12, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED)));
+    auto okButton = std::unique_ptr<Window>(new Button("okButton", "Ok", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED));
+    okButton->setAnchorBottom(0);
+    okButton->setAnchorRight(0);
+    addControl(std::move(okButton));
 }
 
 void SplashWindow::onKeyPress (GameManager * gm, int key) const

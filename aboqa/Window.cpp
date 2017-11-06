@@ -16,7 +16,8 @@ using namespace std;
 
 Window::Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : mBorderWindowPtr(nullptr), mClientWindowPtr(nullptr), mName(name),
-  mY(y), mX(x), mHeight(height), mWidth(width), mClientForeColor(clientForeColor), mClientBackColor(clientBackColor),
+  mY(y), mX(x), mHeight(height), mWidth(width), mAnchorTop(-1), mAnchorBottom(-1), mAnchorLeft(-1), mAnchorRight(-1),
+  mClientForeColor(clientForeColor), mClientBackColor(clientBackColor),
   mBorderForeColor(borderForeColor), mBorderBackColor(borderBackColor), mBorder(border)
 {
     createWindows();
@@ -70,6 +71,7 @@ void Window::draw () const
     {
         ConsoleManager::fillRect(mClientWindowPtr, 0, 0, mHeight, mWidth, mClientForeColor, mClientBackColor);
     }
+
     onDrawClient();
     touchwin(mClientWindowPtr);
     wnoutrefresh(mClientWindowPtr);
@@ -189,6 +191,74 @@ void Window::moveAndResize (int y, int x, int height, int width)
     }
 }
 
+int Window::anchorTop () const
+{
+    return mAnchorTop;
+}
+
+void Window::setAnchorTop (int anchor)
+{
+    mAnchorTop = anchor;
+}
+
+int Window::anchorBottom () const
+{
+    return mAnchorBottom;
+}
+
+void Window::setAnchorBottom (int anchor)
+{
+    mAnchorBottom = anchor;
+}
+
+int Window::anchorLeft () const
+{
+    return mAnchorLeft;
+}
+
+void Window::setAnchorLeft (int anchor)
+{
+    mAnchorLeft = anchor;
+}
+
+int Window::anchorRight () const
+{
+    return mAnchorRight;
+}
+
+void Window::setAnchorRight (int anchor)
+{
+    mAnchorRight = anchor;
+}
+
+void Window::setAnchorsAll (int anchor)
+{
+    mAnchorTop = anchor;
+    mAnchorBottom = anchor;
+    mAnchorLeft = anchor;
+    mAnchorRight = anchor;
+}
+
+void Window::setAnchorsAll (int top, int bottom, int left, int right)
+{
+    mAnchorTop = top;
+    mAnchorBottom = bottom;
+    mAnchorLeft = left;
+    mAnchorRight = right;
+}
+
+void Window::setAnchorsTopBottom (int top, int bottom)
+{
+    mAnchorTop = top;
+    mAnchorBottom = bottom;
+}
+
+void Window::setAnchorsLeftRight (int left, int right)
+{
+    mAnchorLeft = left;
+    mAnchorRight = right;
+}
+
 bool Window::hasBorder () const
 {
     return mBorder;
@@ -290,10 +360,72 @@ void Window::createWindows ()
     
     nodelay(mClientWindowPtr, true);
     keypad(mClientWindowPtr, true);
+    
+    for (const auto & control: mControls)
+    {
+        if (control->anchorTop() != -1 && control->anchorBottom() != -1)
+        {
+            int newTop = control->anchorTop();
+            int newBottom = mHeight - control->anchorBottom(); // This is one past the bottom row.
+            if (newBottom <= newTop)
+            {
+                newBottom = newTop + 1;
+            }
+            control->moveAndResize(newTop, control->x(), newBottom - newTop, control->width());
+        }
+        else if (control->anchorTop() != -1)
+        {
+            int newTop = control->anchorTop();
+            control->setY(newTop);
+        }
+        else if (control->anchorBottom() != -1)
+        {
+            int newBottom = mHeight - control->anchorBottom(); // This is one past the bottom row.
+            int newTop = newBottom - control->height();
+            if (newTop < 0)
+            {
+                newTop = 0;
+            }
+            control->setY(newTop);
+        }
+        
+        if (control->anchorLeft() != -1 && control->anchorRight() != -1)
+        {
+            int newLeft = control->anchorLeft();
+            int newRight = mWidth - control->anchorRight(); // This is one past the right column.
+            if (newRight <= newLeft)
+            {
+                newRight = newLeft + 1;
+            }
+            control->moveAndResize(control->y(), newLeft, control->height(), newRight - newLeft);
+        }
+        else if (control->anchorLeft() != -1)
+        {
+            int newLeft = control->anchorLeft();
+            control->setX(newLeft);
+        }
+        else if (control->anchorRight() != -1)
+        {
+            int newRight = mWidth - control->anchorRight(); // This is one past the right column.
+            int newLeft = newRight - control->width();
+            if (newLeft < 0)
+            {
+                newLeft = 0;
+            }
+            control->setX(newLeft);
+        }
+        
+        control->createWindows();
+    }
 }
 
 void Window::destroyWindows ()
 {
+    for (const auto & control: mControls)
+    {
+        control->destroyWindows();
+    }
+
     if (mClientWindowPtr)
     {
         delwin(mClientWindowPtr);
