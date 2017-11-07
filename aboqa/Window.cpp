@@ -14,14 +14,18 @@
 
 using namespace std;
 
-Window::Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
+Window::Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border, int focusForeColor, int focusBackColor)
 : mClientCursesWindow(nullptr), mBorderWindow(nullptr), mName(name),
   mY(y), mX(x), mHeight(height), mWidth(width),
   mAnchorTop(-1), mAnchorBottom(-1), mAnchorLeft(-1), mAnchorRight(-1),
   mClientForeColor(clientForeColor), mClientBackColor(clientBackColor),
-  mBorderForeColor(borderForeColor), mBorderBackColor(borderBackColor), mBorder(border)
+  mBorderForeColor(borderForeColor), mBorderBackColor(borderBackColor),
+  mFocusForeColor(focusForeColor), mFocusBackColor(focusBackColor),
+  mParent(nullptr), mBorder(border), mHasFocus(false), mHasDirectFocus(false)
 {
     createWindows();
+    
+    setFocus(true);
 }
 
 Window::~Window ()
@@ -42,6 +46,15 @@ void Window::processInput (GameManager * gm)
     {
     case ERR:
         break;
+            
+    case 9: // Tab
+        if (!advanceFocus())
+        {
+            // If we couldn't advance the focus, start the cycle over again.
+            setFocus(true);
+        }
+        break;
+            
     case KEY_MOUSE:
         if (getmouse(&mouseEvent) == OK)
         {
@@ -49,12 +62,13 @@ void Window::processInput (GameManager * gm)
         }
         break;
     default:
-        onKeyPress(gm, c);
-    }
-    
-    for (auto & control: mControls)
-    {
-        control->processInput(gm);
+        {
+            const Window * control = findFocus();
+            if (control)
+            {
+                control->onKeyPress(gm, c);
+            }
+        }
     }
 }
 
@@ -79,11 +93,23 @@ void Window::draw () const
     }
 }
 
-void Window::onKeyPress (GameManager * gm, int key) const
-{ }
+bool Window::onKeyPress (GameManager * gm, int key) const
+{
+    return false;
+}
 
 void Window::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
-{ }
+{
+    for (auto & control: mControls)
+    {
+        if (y >= control->y() && y < (control->y() + control->height()) &&
+            x >= control->x() && x < (control->x() + control->width()))
+        {
+            control->onMouseEvent(gm, id, y, x, buttonState);
+            break;
+        }
+    }
+}
 
 void Window::onDrawClient () const
 { }
@@ -333,9 +359,155 @@ void Window::setBorderBackColor (int color)
 
 void Window::addControl(std::unique_ptr<Window> && control)
 {
+    control->setParent(this);
+    
     anchorWindow(control.get());
     
     mControls.push_back(std::move(control));
+    
+    setFocus(true);
+}
+
+const Window * Window::findFocus () const
+{
+    if (!mHasFocus)
+    {
+        // This window and none of its control windows have the focus.
+        return nullptr;
+    }
+    
+    if (mHasDirectFocus)
+    {
+        return this;
+    }
+    
+    for (auto & control: mControls)
+    {
+        const Window * result = control->findFocus();
+        if (result)
+        {
+            return result;
+        }
+    }
+    
+    throw std::logic_error("mHasFocus was set but no focus could be found.");
+}
+
+bool Window::canHaveDirectFocus () const
+{
+    return true;
+}
+
+bool Window::setFocus (bool focus)
+{
+    // If focus is false, then this method will clear the focus
+    // from this window and all control windows.
+    // If focus is true, then this method will try to set the
+    // focus to the first control window descendent. And if
+    // there are no control windows that can accept the focus,
+    // then this window will try to accept direct focus.
+    bool foundFirstFocusControl = false;
+    for (auto & control: mControls)
+    {
+        if (!foundFirstFocusControl)
+        {
+            // This works for both clearing as well as setting focus.
+            foundFirstFocusControl = control->setFocus(focus);
+        }
+        else
+        {
+            // We can't exit the loop early. Once we set the first
+            // focus, we clear any other focus that might exist.
+            control->setFocus(false);
+        }
+    }
+    
+    if (foundFirstFocusControl)
+    {
+        mHasFocus = true;
+        mHasDirectFocus = false;
+    }
+    else if (canHaveDirectFocus())
+    {
+        mHasFocus = focus;
+        mHasDirectFocus = focus;
+    }
+    else
+    {
+        mHasFocus = false;
+        mHasDirectFocus = false;
+    }
+    
+    return mHasFocus;
+}
+
+bool Window::advanceFocus ()
+{
+    if (mHasDirectFocus)
+    {
+        // The parent window gets focus last. So if we have the focus,
+        // then we can't advance any more.
+        mHasFocus = false;
+        mHasDirectFocus = false;
+        return false;
+    }
+    else if (mHasFocus)
+    {
+        // One of the child windows has focus. Find it and then advance.
+        bool foundFirstFocusControl = false;
+        for (auto & control: mControls)
+        {
+            if (!foundFirstFocusControl)
+            {
+                if (control->mHasFocus)
+                {
+                    // We found the first control with focus. Give it the first
+                    // chance to advance.
+                    foundFirstFocusControl = true;
+                    if (control->advanceFocus())
+                    {
+                        return true;
+                    }
+                }
+            }
+            else
+            {
+                // Now we try each control until one can accept the focus.
+                if (control->advanceFocus())
+                {
+                    return true;
+                }
+            }
+        }
+        
+        // We went through all the child controls with no further advancement.
+        if (canHaveDirectFocus())
+        {
+            mHasDirectFocus = true;
+            return true;
+        }
+        else
+        {
+            mHasFocus = false;
+            return false;
+        }
+    }
+    else
+    {
+        // Since we did not yet have focus, set the focus to the first
+        // available window or to this window if necessary and allowed.
+        return setFocus(true);
+    }
+}
+
+const Window * Window::parent () const
+{
+    return mParent;
+}
+
+void Window::setParent (const Window * parent)
+{
+    mParent = parent;
 }
 
 void Window::createWindows ()
@@ -352,7 +524,7 @@ void Window::createWindows ()
             throw std::out_of_range("height or width cannot be less than 3 when using a border.");
         }
         
-        mBorderWindow.reset(new Window("border", mY, mX, mHeight, mWidth, mBorderForeColor, mBorderBackColor, mBorderForeColor, mBorderBackColor, false));
+        mBorderWindow.reset(new Window("border", mY, mX, mHeight, mWidth, mBorderForeColor, mBorderBackColor, mBorderForeColor, mBorderBackColor, false, mBorderForeColor, mBorderBackColor));
     }
     else
     {

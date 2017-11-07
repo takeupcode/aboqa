@@ -16,7 +16,7 @@ class MainWindow : public Window
 public:
     MainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
     
-    void onKeyPress (GameManager * gm, int key) const override;
+    bool onKeyPress (GameManager * gm, int key) const override;
     
     void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const override;
     

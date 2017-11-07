@@ -19,7 +19,7 @@ class GameManager;
 class Window
 {
 public:
-    Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
+    Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border, int focusForeColor, int focusBackColor);
 
     virtual ~Window ();
 
@@ -29,7 +29,7 @@ public:
 
     void draw () const;
 
-    virtual void onKeyPress (GameManager * gm, int key) const;
+    virtual bool onKeyPress (GameManager * gm, int key) const;
     
     virtual void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const;
     
@@ -112,9 +112,22 @@ public:
     void setBorderBackColor (int color);
     
     void addControl(std::unique_ptr<Window> && control);
+    
+    const Window * findFocus () const;
+    
+    virtual bool canHaveDirectFocus () const;
+    
+    virtual bool setFocus (bool focus);
+    
+    virtual bool advanceFocus ();
+    
+    const Window * parent () const;
+    
+    void setParent (const Window * parent);
 
 private:
     void createWindows ();
+    
     void destroyWindows ();
     
     void anchorWindow (Window * win);
@@ -136,8 +149,13 @@ private:
     int mClientBackColor;
     int mBorderForeColor;
     int mBorderBackColor;
+    int mFocusForeColor;
+    int mFocusBackColor;
     std::vector<std::unique_ptr<Window>> mControls;
+    const Window * mParent;
     bool mBorder;
+    bool mHasFocus;
+    bool mHasDirectFocus;
 };
 
 #endif /* Window_h */

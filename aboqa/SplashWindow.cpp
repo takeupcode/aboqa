@@ -14,29 +14,37 @@
 #include "LogManager.h"
 
 SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
-: Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border)
+: Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border, clientForeColor, clientBackColor)
 {
-    auto okButton = std::unique_ptr<Window>(new Button("okButton", "Ok", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED));
+    auto okButton = std::unique_ptr<Window>(new Button("okButton", "Ok", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
     okButton->setAnchorBottom(0);
     okButton->setAnchorRight(0);
     addControl(std::move(okButton));
 }
 
-void SplashWindow::onKeyPress (GameManager * gm, int key) const
+bool SplashWindow::onKeyPress (GameManager * gm, int key) const
 {
-    switch(key)
+    switch (key)
     {
     case KEY_DOWN:
         ABOQALOG(Info, "Down key pressed from splash window.");
         break;
     case KEY_UP:
         break;
-    case 10: /* Enter */
+    case 10: // Enter
         break;
     case KEY_F(1):
         gm->selectNextWindow("main");
         break;
+    default:
+        if (parent())
+        {
+            return parent()->onKeyPress(gm, key);
+        }
+        return false;
     }
+    
+    return true;
 }
 
 void SplashWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const

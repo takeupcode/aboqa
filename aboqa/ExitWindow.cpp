@@ -12,24 +12,32 @@
 #include "LogManager.h"
 
 ExitWindow::ExitWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
-: Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border)
+: Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border, clientForeColor, clientBackColor)
 { }
 
-void ExitWindow::onKeyPress (GameManager * gm, int key) const
+bool ExitWindow::onKeyPress (GameManager * gm, int key) const
 {
-    switch(key)
+    switch (key)
     {
     case KEY_DOWN:
         ABOQALOG(Info, "Down key pressed from exit window.");
         break;
     case KEY_UP:
         break;
-    case 10: /* Enter */
+    case 10: // Enter
         break;
     case KEY_F(1):
         gm->exit();
         break;
+    default:
+        if (parent())
+        {
+            return parent()->onKeyPress(gm, key);
+        }
+        return false;
     }
+    
+    return true;
 }
 
 void ExitWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
