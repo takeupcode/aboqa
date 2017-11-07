@@ -57,8 +57,8 @@ private:
 
     int checkWidthBounds (int width) const;
 
-    int mScreenWidth;
-    int mScreenHeight;
+    int mScreenMaxX;
+    int mScreenMaxY;
     int mMinScreenWidth;
     int mMinScreenHeight;
     int mMaxScreenWidth;

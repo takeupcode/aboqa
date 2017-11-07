@@ -13,24 +13,43 @@
 #include <stdexcept>
 
 #include "Colors.h"
+#include "Window.h"
 
 using namespace std;
 
-bool ConsoleManager::promptYesOrNo (WINDOW * win, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
+bool ConsoleManager::checkBounds (const Window & win, int y, int x)
 {
-    if (!win)
+    int maxY;
+    int maxX;
+    getmaxyx(stdscr, maxY, maxX);
+    // For some reason, these values come back too big.
+    --maxY;
+    --maxX;
+    
+    // Check if the entire request falls outside the screen bounds.
+    if (y + win.clientY() > maxY || x + win.clientX() > maxX)
     {
-        win = stdscr;
+        return false;
     }
+    
+    // Check if the entire request falls outside the window bounds.
+    if (y >= win.clientHeight() || x >= win.clientWidth())
+    {
+        return false;
+    }
+    
+    return true;
+}
+
+bool ConsoleManager::promptYesOrNo (const Window & win, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
+{
+    WINDOW * cursesWin = win.cursesWindow();
     
     int currentY;
     int currentX;
-    getyx(win, currentY, currentX);
+    getyx(cursesWin, currentY, currentX);
     
-    int maxX;
-    maxX = getmaxx(win);
-    
-    int width = maxX - currentX;
+    int width = win.clientWidth() - currentX;
     
     int errorY = currentY + 1;
     int errorX = currentX;
@@ -38,35 +57,32 @@ bool ConsoleManager::promptYesOrNo (WINDOW * win, const std::string & prompt, in
     return promptYesOrNo(win, currentY, currentX, width, errorY, errorX, width, prompt, foreColor, backColor, errorForeColor, errorBackColor, center, errorCenter, fillSpace);
 }
 
-bool ConsoleManager::promptYesOrNo (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
+bool ConsoleManager::promptYesOrNo (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
 {
-    if (!win)
-    {
-        win = stdscr;
-    }
+    WINDOW * cursesWin = win.cursesWindow();
     
     echo();
-    nodelay(win, false);
+    nodelay(cursesWin, false);
     
     while (true)
     {
         printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
-        wrefresh(win);
+        wrefresh(cursesWin);
         
-        char input = static_cast<char>(wgetch(win));
+        char input = static_cast<char>(wgetch(cursesWin));
         clrtoeol();
         
         if (input == 'y' || input == 'Y')
         {
             noecho();
-            nodelay(win, true);
+            nodelay(cursesWin, true);
             
             return true;
         }
         else if (input == 'n' || input == 'N')
         {
             noecho();
-            nodelay(win, true);
+            nodelay(cursesWin, true);
             
             return false;
         }
@@ -79,21 +95,15 @@ bool ConsoleManager::promptYesOrNo (WINDOW * win, int y, int x, int width, int e
     }
 }
 
-int ConsoleManager::promptNumber (WINDOW * win, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
+int ConsoleManager::promptNumber (const Window & win, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
 {
-    if (!win)
-    {
-        win = stdscr;
-    }
+    WINDOW * cursesWin = win.cursesWindow();
     
     int currentY;
     int currentX;
-    getyx(win, currentY, currentX);
+    getyx(cursesWin, currentY, currentX);
     
-    int maxX;
-    maxX = getmaxx(win);
-    
-    int width = maxX - currentX;
+    int width = win.clientWidth() - currentX;
     
     int errorY = currentY + 1;
     int errorX = currentX;
@@ -101,31 +111,28 @@ int ConsoleManager::promptNumber (WINDOW * win, const std::string & prompt, int 
     return promptNumber(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, foreColor, backColor, errorForeColor, errorBackColor, center, errorCenter, fillSpace);
 }
 
-int ConsoleManager::promptNumber (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
+int ConsoleManager::promptNumber (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
 {
-    if (!win)
-    {
-        win = stdscr;
-    }
+    WINDOW * cursesWin = win.cursesWindow();
     
     echo();
-    nodelay(win, false);
+    nodelay(cursesWin, false);
     
     const int BUFFER_CHAR_COUNT = 10;
     while (true)
     {
         printMessage(win, y, x, width, prompt, foreColor, backColor, center);
-        wrefresh(win);
+        wrefresh(cursesWin);
         
         char buffer[BUFFER_CHAR_COUNT + 1];
-        if (wgetnstr(win, buffer, BUFFER_CHAR_COUNT) == OK)
+        if (wgetnstr(cursesWin, buffer, BUFFER_CHAR_COUNT) == OK)
         {
             int input = stoi(buffer);
             
             if (input >= minimum && input <= maximum)
             {
                 noecho();
-                nodelay(win, true);
+                nodelay(cursesWin, true);
                 
                 return input;
             }
@@ -137,21 +144,15 @@ int ConsoleManager::promptNumber (WINDOW * win, int y, int x, int width, int err
     }
 }
 
-char ConsoleManager::promptLetter (WINDOW * win, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
+char ConsoleManager::promptLetter (const Window & win, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
 {
-    if (!win)
-    {
-        win = stdscr;
-    }
+    WINDOW * cursesWin = win.cursesWindow();
     
     int currentY;
     int currentX;
-    getyx(win, currentY, currentX);
+    getyx(cursesWin, currentY, currentX);
     
-    int maxX;
-    maxX = getmaxx(win);
-    
-    int width = maxX - currentX;
+    int width = win.clientWidth() - currentX;
     
     int errorY = currentY + 1;
     int errorX = currentX;
@@ -159,12 +160,9 @@ char ConsoleManager::promptLetter (WINDOW * win, const std::string & prompt, cha
     return promptLetter(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, foreColor, backColor, errorForeColor, errorBackColor, center, errorCenter, fillSpace, enforceUpperCase);
 }
 
-char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
+char ConsoleManager::promptLetter (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
 {
-    if (!win)
-    {
-        win = stdscr;
-    }
+    WINDOW * cursesWin = win.cursesWindow();
     
     char minimumLower;
     char minimumUpper;
@@ -201,14 +199,14 @@ char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int er
     }
     
     echo();
-    nodelay(win, false);
+    nodelay(cursesWin, false);
     
     while (true)
     {
         printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
-        wrefresh(win);
+        wrefresh(cursesWin);
         
-        char input = static_cast<char>(wgetch(win));
+        char input = static_cast<char>(wgetch(cursesWin));
         clrtoeol();
         
         if ((input >= minimumLower && input <= maximumLower) || (input >= minimumUpper && input <= maximumUpper))
@@ -222,7 +220,7 @@ char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int er
             }
             
             noecho();
-            nodelay(win, true);
+            nodelay(cursesWin, true);
             
             return input;
         }
@@ -233,62 +231,50 @@ char ConsoleManager::promptLetter (WINDOW * win, int y, int x, int width, int er
     }
 }
 
-void ConsoleManager::promptPause (WINDOW * win, const std::string & prompt, int foreColor, int backColor, bool center, bool fillSpace)
+void ConsoleManager::promptPause (const Window & win, const std::string & prompt, int foreColor, int backColor, bool center, bool fillSpace)
 {
-    if (!win)
-    {
-        win = stdscr;
-    }
+    WINDOW * cursesWin = win.cursesWindow();
     
     int currentY;
     int currentX;
-    getyx(win, currentY, currentX);
+    getyx(cursesWin, currentY, currentX);
     
-    int maxX;
-    maxX = getmaxx(win);
-    
-    int width = maxX - currentX;
+    int width = win.clientWidth() - currentX;
     
     promptPause(win, currentY, currentX, width, prompt, foreColor, backColor, center, fillSpace);
 }
 
-void ConsoleManager::promptPause (WINDOW * win, int y, int x, int width, const std::string & prompt, int foreColor, int backColor, bool center, bool fillSpace)
+void ConsoleManager::promptPause (const Window & win, int y, int x, int width, const std::string & prompt, int foreColor, int backColor, bool center, bool fillSpace)
 {
-    if (!win)
-    {
-        win = stdscr;
-    }
+    WINDOW * cursesWin = win.cursesWindow();
     
     printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
-    wrefresh(win);
+    wrefresh(cursesWin);
     
-    wgetch(win);
+    wgetch(cursesWin);
 }
 
-void ConsoleManager::printMessage (WINDOW * win, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
+void ConsoleManager::printMessage (const Window & win, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
 {
-    if (!win)
-    {
-        win = stdscr;
-    }
+    WINDOW * cursesWin = win.cursesWindow();
     
     int currentY;
     int currentX;
-    getyx(win, currentY, currentX);
+    getyx(cursesWin, currentY, currentX);
     
-    int maxX = getmaxx(win);
-    
-    int width = maxX - currentX;
+    int width = win.clientWidth() - currentX;
     
     printMessage(win, currentY, currentX, width, msg, foreColor, backColor, center, fillSpace);
 }
 
-void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
+void ConsoleManager::printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
 {
-    if (!win)
+    if (!checkBounds(win, y, x))
     {
-        win = stdscr;
+        return;
     }
+    
+    WINDOW * cursesWin = win.cursesWindow();
     
     int messageX = x;
     if (center)
@@ -301,14 +287,14 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const 
     }
     
     int i = Colors::colorPairIndex(foreColor, backColor);
-    wattrset(win, COLOR_PAIR(i));
+    wattrset(cursesWin, COLOR_PAIR(i));
     
     if (fillSpace)
     {
-        wmove(win, y, x);
+        wmove(cursesWin, y, x);
         for (int i = x; i < messageX; ++i)
         {
-            waddch(win, ' ');
+            waddch(cursesWin, ' ');
         }
     }
     
@@ -316,22 +302,24 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, int width, const 
     
     if (fillSpace)
     {
-        int currentX = getcurx(win);
+        int currentX = getcurx(cursesWin);
         for (int i = currentX; i < x + width; ++i)
         {
-            waddch(win, ' ');
+            waddch(cursesWin, ' ');
         }
     }
 }
 
-void ConsoleManager::printMessage (WINDOW * win, int y, int x, const std::string & msg)
+void ConsoleManager::printMessage (const Window & win, int y, int x, const std::string & msg)
 {
-    if (!win)
+    if (!checkBounds(win, y, x))
     {
-        win = stdscr;
+        return;
     }
     
-    if (wmove(win, y, x) == ERR)
+    WINDOW * cursesWin = win.cursesWindow();
+    
+    if (wmove(cursesWin, y, x) == ERR)
     {
         return;
     }
@@ -352,7 +340,7 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, const std::string
             }
             else
             {
-                waddch(win, c);
+                waddch(cursesWin, c);
             }
             break;
             
@@ -364,8 +352,8 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, const std::string
             }
             else
             {
-                waddch(win, '&');
-                waddch(win, c);
+                waddch(cursesWin, '&');
+                waddch(cursesWin, c);
                 state = PrintState::normal;
             }
             break;
@@ -378,9 +366,9 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, const std::string
             }
             else
             {
-                waddch(win, '&');
-                waddch(win, firstChar);
-                waddch(win, c);
+                waddch(cursesWin, '&');
+                waddch(cursesWin, firstChar);
+                waddch(cursesWin, c);
                 state = PrintState::normal;
             }
             break;
@@ -389,14 +377,14 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, const std::string
             if (c == ';')
             {
                 int i = Colors::colorPairIndex(foreColor, backColor);
-                wattrset(win, COLOR_PAIR(i));
+                wattrset(cursesWin, COLOR_PAIR(i));
             }
             else
             {
-                waddch(win, '&');
-                waddch(win, firstChar);
-                waddch(win, secondChar);
-                waddch(win, c);
+                waddch(cursesWin, '&');
+                waddch(cursesWin, firstChar);
+                waddch(cursesWin, secondChar);
+                waddch(cursesWin, c);
             }
             state = PrintState::normal;
             break;
@@ -410,54 +398,58 @@ void ConsoleManager::printMessage (WINDOW * win, int y, int x, const std::string
         break;
         
     case PrintState::needForeColor:
-        waddch(win, '&');
+        waddch(cursesWin, '&');
         break;
     case PrintState::needBackColor:
-        waddch(win, '&');
-        waddch(win, firstChar);
+        waddch(cursesWin, '&');
+        waddch(cursesWin, firstChar);
         break;
         
     case PrintState::needEnd:
-        waddch(win, '&');
-        waddch(win, firstChar);
-        waddch(win, secondChar);
+        waddch(cursesWin, '&');
+        waddch(cursesWin, firstChar);
+        waddch(cursesWin, secondChar);
         break;
     }
 }
 
-void ConsoleManager::drawBox (WINDOW * win, int y, int x, int height, int width, int foreColor, int backColor)
+void ConsoleManager::drawBox (const Window & win, int y, int x, int height, int width, int foreColor, int backColor)
 {
-    if (!win)
+    if (!checkBounds(win, y, x))
     {
-        win = stdscr;
+        return;
     }
     
-    int i = Colors::colorPairIndex(foreColor, backColor);
-    wattrset(win, COLOR_PAIR(i));
+    WINDOW * cursesWin = win.cursesWindow();
     
-    mvwaddch(win, y, x, ACS_ULCORNER);
-    mvwaddch(win, y, x + width - 1, ACS_URCORNER);
-    mvwaddch(win, y + height - 1, x, ACS_LLCORNER);
-    mvwaddch(win, y + height - 1, x + width - 1, ACS_LRCORNER);
-    mvwhline(win, y, x + 1, ACS_HLINE, width - 2);
-    mvwhline(win, y + height - 1, x + 1, ACS_HLINE, width - 2);
-    mvwvline(win, y + 1, x, ACS_VLINE, height - 2);
-    mvwvline(win, y + 1, x + width - 1, ACS_VLINE, height - 2);
+    int i = Colors::colorPairIndex(foreColor, backColor);
+    wattrset(cursesWin, COLOR_PAIR(i));
+    
+    mvwaddch(cursesWin, y, x, ACS_ULCORNER);
+    mvwaddch(cursesWin, y, x + width - 1, ACS_URCORNER);
+    mvwaddch(cursesWin, y + height - 1, x, ACS_LLCORNER);
+    mvwaddch(cursesWin, y + height - 1, x + width - 1, ACS_LRCORNER);
+    mvwhline(cursesWin, y, x + 1, ACS_HLINE, width - 2);
+    mvwhline(cursesWin, y + height - 1, x + 1, ACS_HLINE, width - 2);
+    mvwvline(cursesWin, y + 1, x, ACS_VLINE, height - 2);
+    mvwvline(cursesWin, y + 1, x + width - 1, ACS_VLINE, height - 2);
 }
 
-void ConsoleManager::fillRect (WINDOW * win, int y, int x, int height, int width, int foreColor, int backColor)
+void ConsoleManager::fillRect (const Window & win, int y, int x, int height, int width, int foreColor, int backColor)
 {
-    if (!win)
+    if (!checkBounds(win, y, x))
     {
-        win = stdscr;
+        return;
     }
     
+    WINDOW * cursesWin = win.cursesWindow();
+    
     int i = Colors::colorPairIndex(foreColor, backColor);
-    wattrset(win, COLOR_PAIR(i));
+    wattrset(cursesWin, COLOR_PAIR(i));
     
     for (int i = 0; i < height; ++i)
     {
-        mvwhline(win, y + i, x, ' ', width);
+        mvwhline(cursesWin, y + i, x, ' ', width);
     }
 }
 

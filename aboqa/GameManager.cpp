@@ -18,7 +18,7 @@
 using namespace std;
 
 GameManager::GameManager ()
-: mScreenWidth(0), mScreenHeight(0),
+: mScreenMaxX(0), mScreenMaxY(0),
   mMinScreenWidth(0), mMinScreenHeight(0), mMaxScreenWidth(80), mMaxScreenHeight(40),
   mNextWindow(nullptr), mCurrentWindow(nullptr), mExit(false)
 { }
@@ -57,12 +57,12 @@ void GameManager::selectNextWindow(const std::string & name)
 
 int GameManager::screenWidth () const
 {
-    return mScreenWidth;
+    return mScreenMaxX + 1;
 }
 
 int GameManager::screenHeight () const
 {
-    return mScreenHeight;
+    return mScreenMaxY + 1;
 }
 
 int GameManager::minScreenWidth () const
@@ -112,8 +112,10 @@ void GameManager::initialize ()
     
     Colors::initializeColorPairs();
 
-    mScreenHeight = LINES;
-    mScreenWidth = COLS;
+    getmaxyx(stdscr, mScreenMaxY, mScreenMaxX);
+    // For some reason, these values come back too big.
+    --mScreenMaxY;
+    --mScreenMaxX;
 }
 
 void GameManager::deinitialize ()
@@ -138,11 +140,12 @@ void GameManager::loop ()
             break;
         }
         
-        int maxY;
-        int maxX;
-        getmaxyx(stdscr, maxY, maxX);
+        getmaxyx(stdscr, mScreenMaxY, mScreenMaxX);
+        // For some reason, these values come back too big.
+        --mScreenMaxY;
+        --mScreenMaxX;
         
-        mCurrentWindow->resize(checkHeightBounds(maxY), checkWidthBounds(maxX));
+        mCurrentWindow->resize(checkHeightBounds(screenHeight()), checkWidthBounds(screenWidth()));
         
         mCurrentWindow->processInput(this);
         

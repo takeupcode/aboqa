@@ -15,8 +15,9 @@
 using namespace std;
 
 Window::Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
-: mBorderWindowPtr(nullptr), mClientWindowPtr(nullptr), mName(name),
-  mY(y), mX(x), mHeight(height), mWidth(width), mAnchorTop(-1), mAnchorBottom(-1), mAnchorLeft(-1), mAnchorRight(-1),
+: mClientCursesWindow(nullptr), mBorderWindow(nullptr), mName(name),
+  mY(y), mX(x), mHeight(height), mWidth(width),
+  mAnchorTop(-1), mAnchorBottom(-1), mAnchorLeft(-1), mAnchorRight(-1),
   mClientForeColor(clientForeColor), mClientBackColor(clientBackColor),
   mBorderForeColor(borderForeColor), mBorderBackColor(borderBackColor), mBorder(border)
 {
@@ -30,7 +31,7 @@ Window::~Window ()
 
 WINDOW * Window::cursesWindow () const
 {
-    return mClientWindowPtr;
+    return mClientCursesWindow;
 }
 
 void Window::processInput (GameManager * gm)
@@ -61,20 +62,16 @@ void Window::draw () const
 {
     if (mBorder)
     {
-        ConsoleManager::drawBox(mBorderWindowPtr, 0, 0, mHeight, mWidth, mBorderForeColor, mBorderBackColor);
-        touchwin(mBorderWindowPtr);
-        wnoutrefresh(mBorderWindowPtr);
-        
-        ConsoleManager::fillRect(mClientWindowPtr, 0, 0, mHeight - 2, mWidth - 2, mClientForeColor, mClientBackColor);
+        mBorderWindow->drawBorder();
+        touchwin(mBorderWindow->cursesWindow());
+        wnoutrefresh(mBorderWindow->cursesWindow());
     }
-    else
-    {
-        ConsoleManager::fillRect(mClientWindowPtr, 0, 0, mHeight, mWidth, mClientForeColor, mClientBackColor);
-    }
+    
+    ConsoleManager::fillRect(*this, 0, 0, clientHeight(), clientWidth(), mClientForeColor, mClientBackColor);
 
     onDrawClient();
-    touchwin(mClientWindowPtr);
-    wnoutrefresh(mClientWindowPtr);
+    touchwin(mClientCursesWindow);
+    wnoutrefresh(mClientCursesWindow);
     
     for (const auto & control: mControls)
     {
@@ -101,6 +98,11 @@ int Window::y () const
     return mY;
 }
 
+int Window::clientY () const
+{
+    return mBorder ? mY + 1 : mY;
+}
+
 void Window::setY (int y)
 {
     if (mY != y)
@@ -114,6 +116,11 @@ void Window::setY (int y)
 int Window::x () const
 {
     return mX;
+}
+
+int Window::clientX () const
+{
+    return mBorder ? mX + 1 : mX;
 }
 
 void Window::setX (int x)
@@ -142,6 +149,11 @@ int Window::height () const
     return mHeight;
 }
 
+int Window::clientHeight () const
+{
+    return mBorder ? mHeight - 2 : mHeight;
+}
+
 void Window::setHeight (int height)
 {
     if (mHeight != height)
@@ -155,6 +167,11 @@ void Window::setHeight (int height)
 int Window::width () const
 {
     return mWidth;
+}
+
+int Window::clientWidth () const
+{
+    return mBorder ? mWidth - 2 : mWidth;
 }
 
 void Window::setWidth (int width)
@@ -316,6 +333,8 @@ void Window::setBorderBackColor (int color)
 
 void Window::addControl(std::unique_ptr<Window> && control)
 {
+    anchorWindow(control.get());
+    
     mControls.push_back(std::move(control));
 }
 
@@ -325,23 +344,15 @@ void Window::createWindows ()
     {
         throw std::out_of_range("y or x cannot be less than 0.");
     }
-
+    
     if (mBorder)
     {
         if (mHeight < 3 || mWidth < 3)
         {
             throw std::out_of_range("height or width cannot be less than 3 when using a border.");
         }
-        mBorderWindowPtr = newwin(mHeight, mWidth, mY, mX);
-        mClientWindowPtr = newwin(mHeight - 2, mWidth - 2, mY + 1, mX + 1);
-        if (!mBorderWindowPtr || !mClientWindowPtr)
-        {
-            string message = "Could not create window.";
-            throw runtime_error(message);
-        }
-
-        nodelay(mBorderWindowPtr, true);
-        keypad(mBorderWindowPtr, true);
+        
+        mBorderWindow.reset(new Window("border", mY, mX, mHeight, mWidth, mBorderForeColor, mBorderBackColor, mBorderForeColor, mBorderBackColor, false));
     }
     else
     {
@@ -349,71 +360,21 @@ void Window::createWindows ()
         {
             throw std::out_of_range("height or width cannot be less than 1.");
         }
-        
-        mClientWindowPtr = newwin(mHeight, mWidth, mY, mX);
-        if (!mClientWindowPtr)
-        {
-            string message = "Could not create window.";
-            throw runtime_error(message);
-        }
     }
     
-    nodelay(mClientWindowPtr, true);
-    keypad(mClientWindowPtr, true);
+    mClientCursesWindow = newwin(clientHeight(), clientWidth(), clientY(), clientX());
+    if (!mClientCursesWindow)
+    {
+        string message = "Could not create window.";
+        throw runtime_error(message);
+    }
+    
+    nodelay(mClientCursesWindow, true);
+    keypad(mClientCursesWindow, true);
     
     for (const auto & control: mControls)
     {
-        if (control->anchorTop() != -1 && control->anchorBottom() != -1)
-        {
-            int newTop = control->anchorTop();
-            int newBottom = mHeight - control->anchorBottom(); // This is one past the bottom row.
-            if (newBottom <= newTop)
-            {
-                newBottom = newTop + 1;
-            }
-            control->moveAndResize(newTop, control->x(), newBottom - newTop, control->width());
-        }
-        else if (control->anchorTop() != -1)
-        {
-            int newTop = control->anchorTop();
-            control->setY(newTop);
-        }
-        else if (control->anchorBottom() != -1)
-        {
-            int newBottom = mHeight - control->anchorBottom(); // This is one past the bottom row.
-            int newTop = newBottom - control->height();
-            if (newTop < 0)
-            {
-                newTop = 0;
-            }
-            control->setY(newTop);
-        }
-        
-        if (control->anchorLeft() != -1 && control->anchorRight() != -1)
-        {
-            int newLeft = control->anchorLeft();
-            int newRight = mWidth - control->anchorRight(); // This is one past the right column.
-            if (newRight <= newLeft)
-            {
-                newRight = newLeft + 1;
-            }
-            control->moveAndResize(control->y(), newLeft, control->height(), newRight - newLeft);
-        }
-        else if (control->anchorLeft() != -1)
-        {
-            int newLeft = control->anchorLeft();
-            control->setX(newLeft);
-        }
-        else if (control->anchorRight() != -1)
-        {
-            int newRight = mWidth - control->anchorRight(); // This is one past the right column.
-            int newLeft = newRight - control->width();
-            if (newLeft < 0)
-            {
-                newLeft = 0;
-            }
-            control->setX(newLeft);
-        }
+        anchorWindow(control.get());
         
         control->createWindows();
     }
@@ -426,15 +387,73 @@ void Window::destroyWindows ()
         control->destroyWindows();
     }
 
-    if (mClientWindowPtr)
+    if (mClientCursesWindow)
     {
-        delwin(mClientWindowPtr);
-        mClientWindowPtr = nullptr;
+        delwin(mClientCursesWindow);
+        mClientCursesWindow = nullptr;
     }
 
-    if (mBorderWindowPtr)
+    mBorderWindow.reset();
+}
+
+void Window::anchorWindow (Window * win)
+{
+    int newTop = clientY();
+    int newBottom = clientY() + clientHeight();
+    int newLeft = clientX();
+    int newRight = clientX() + clientWidth();
+    
+    if (win->anchorTop() != -1 && win->anchorBottom() != -1)
     {
-        delwin(mBorderWindowPtr);
-        mBorderWindowPtr = nullptr;
+        newTop = clientY() + win->anchorTop();
+        newBottom = clientY() + clientHeight() - win->anchorBottom(); // This is one past the bottom row.
+        if (newBottom <= newTop)
+        {
+            newBottom = newTop + 1;
+        }
     }
+    else if (win->anchorTop() != -1)
+    {
+        newTop = clientY() + win->anchorTop();
+    }
+    else if (win->anchorBottom() != -1)
+    {
+        newBottom = clientY() + clientHeight() - win->anchorBottom(); // This is one past the bottom row.
+        newTop = newBottom - win->height();
+        if (newTop < clientY())
+        {
+            newTop = clientY();
+        }
+    }
+    
+    if (win->anchorLeft() != -1 && win->anchorRight() != -1)
+    {
+        newLeft = clientX() + win->anchorLeft();
+        newRight = clientX() + clientWidth() - win->anchorRight(); // This is one past the right column.
+        if (newRight <= newLeft)
+        {
+            newRight = newLeft + 1;
+        }
+    }
+    else if (win->anchorLeft() != -1)
+    {
+        newLeft = clientX() + win->anchorLeft();
+    }
+    else if (win->anchorRight() != -1)
+    {
+        newRight = clientX() + clientWidth() - win->anchorRight(); // This is one past the right column.
+        newLeft = newRight - win->width();
+        if (newLeft < clientX())
+        {
+            newLeft = clientX();
+        }
+    }
+    
+    win->moveAndResize(newTop, newLeft, newBottom - newTop, newRight - newLeft);
+}
+
+void Window::drawBorder () const
+{
+    // Draw an inside border. This should normally only need to be called for a border window.
+    ConsoleManager::drawBox(*this, mY, mX, mHeight, mWidth, mBorderForeColor, mBorderBackColor);
 }

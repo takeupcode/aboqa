@@ -38,20 +38,28 @@ public:
     const std::string & name () const;
     
     int y () const;
+    
+    int clientY () const;
 
     void setY (int y);
 
     int x () const;
+    
+    int clientX () const;
 
     void setX (int x);
 
     void move (int y, int x);
 
     int height () const;
+    
+    int clientHeight () const;
 
     void setHeight (int height);
 
     int width () const;
+    
+    int clientWidth () const;
 
     void setWidth (int width);
 
@@ -108,9 +116,13 @@ public:
 private:
     void createWindows ();
     void destroyWindows ();
+    
+    void anchorWindow (Window * win);
+    
+    void drawBorder () const;
 
-    WINDOW * mClientWindowPtr;
-    WINDOW * mBorderWindowPtr;
+    WINDOW * mClientCursesWindow;
+    std::unique_ptr<Window> mBorderWindow;
     std::string mName;
     int mY;
     int mX;

@@ -38,7 +38,7 @@ void Button::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t but
 void Button::onDrawClient () const
 {
     int vertCenter = height() / 2;
-    ConsoleManager::printMessage(cursesWindow(), vertCenter, 0, width(), mText, clientForeColor(), clientBackColor(), true, false);
+    ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, clientForeColor(), clientBackColor(), true, false);
 }
 
 void Button::handleClick () const
