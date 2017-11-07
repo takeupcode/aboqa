@@ -14,7 +14,9 @@
 
 Button::Button (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor)
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, false, focusForeColor, focusBackColor), mText(text)
-{ }
+{
+    setFillClientArea(false);
+}
 
 bool Button::onKeyPress (GameManager * gm, int key) const
 {
@@ -46,10 +48,17 @@ void Button::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t but
 void Button::onDrawClient () const
 {
     int vertCenter = height() / 2;
-    ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, clientForeColor(), clientBackColor(), true, false);
+    if (hasDirectFocus())
+    {
+        ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, focusForeColor(), focusBackColor(), true, true);
+    }
+    else
+    {
+        ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, clientForeColor(), clientBackColor(), true, true);
+    }
 }
 
 void Button::handleClick () const
 {
-    ABOQALOG(Info, "Button " << name() << " clicked");
+    ABOQALOG(Info, name() << " clicked");
 }

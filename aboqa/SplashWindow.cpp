@@ -16,10 +16,15 @@
 SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border, clientForeColor, clientBackColor)
 {
-    auto okButton = std::unique_ptr<Window>(new Button("okButton", "Ok", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
-    okButton->setAnchorBottom(0);
-    okButton->setAnchorRight(0);
-    addControl(std::move(okButton));
+    auto playButton = std::unique_ptr<Window>(new Button("playButton", "Play", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
+    playButton->setAnchorBottom(0);
+    playButton->setAnchorRight(0);
+    addControl(std::move(playButton));
+
+    auto exitButton = std::unique_ptr<Window>(new Button("exitButton", "Exit", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
+    exitButton->setAnchorBottom(0);
+    exitButton->setAnchorRight(12);
+    addControl(std::move(exitButton));
 }
 
 bool SplashWindow::onKeyPress (GameManager * gm, int key) const
@@ -66,4 +71,9 @@ void SplashWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask
 void SplashWindow::onDrawClient () const
 {
     
+}
+
+bool SplashWindow::canHaveDirectFocus () const
+{
+    return false;
 }

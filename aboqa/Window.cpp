@@ -21,7 +21,8 @@ Window::Window (const std::string & name, int y, int x, int height, int width, i
   mClientForeColor(clientForeColor), mClientBackColor(clientBackColor),
   mBorderForeColor(borderForeColor), mBorderBackColor(borderBackColor),
   mFocusForeColor(focusForeColor), mFocusBackColor(focusBackColor),
-  mParent(nullptr), mBorder(border), mHasFocus(false), mHasDirectFocus(false)
+  mParent(nullptr), mBorder(border), mHasFocus(false), mHasDirectFocus(false),
+  mFillClientArea(true)
 {
     createWindows();
     
@@ -81,7 +82,10 @@ void Window::draw () const
         wnoutrefresh(mBorderWindow->cursesWindow());
     }
     
-    ConsoleManager::fillRect(*this, 0, 0, clientHeight(), clientWidth(), mClientForeColor, mClientBackColor);
+    if (mFillClientArea)
+    {
+        ConsoleManager::fillRect(*this, 0, 0, clientHeight(), clientWidth(), mClientForeColor, mClientBackColor);
+    }
 
     onDrawClient();
     touchwin(mClientCursesWindow);
@@ -357,6 +361,26 @@ void Window::setBorderBackColor (int color)
     mBorderBackColor = color;
 }
 
+int Window::focusForeColor () const
+{
+    return mFocusForeColor;
+}
+
+void Window::setFocusForeColor (int color)
+{
+    mFocusForeColor = color;
+}
+
+int Window::focusBackColor () const
+{
+    return mFocusBackColor;
+}
+
+void Window::setFocusBackColor (int color)
+{
+    mFocusBackColor = color;
+}
+
 void Window::addControl(std::unique_ptr<Window> && control)
 {
     control->setParent(this);
@@ -396,6 +420,11 @@ const Window * Window::findFocus () const
 bool Window::canHaveDirectFocus () const
 {
     return true;
+}
+
+bool Window::hasDirectFocus () const
+{
+    return mHasDirectFocus;
 }
 
 bool Window::setFocus (bool focus)
@@ -508,6 +537,11 @@ const Window * Window::parent () const
 void Window::setParent (const Window * parent)
 {
     mParent = parent;
+}
+
+void Window::setFillClientArea (bool value)
+{
+    mFillClientArea = value;
 }
 
 void Window::createWindows ()

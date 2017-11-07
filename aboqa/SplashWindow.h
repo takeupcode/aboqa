@@ -21,6 +21,8 @@ public:
     void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const override;
     
     void onDrawClient () const override;
+    
+    bool canHaveDirectFocus () const override;
 };
 
 #endif /* SplashWindow_h */

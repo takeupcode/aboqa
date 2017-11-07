@@ -111,11 +111,21 @@ public:
     
     void setBorderBackColor (int color);
     
+    int focusForeColor () const;
+    
+    void setFocusForeColor (int color);
+    
+    int focusBackColor () const;
+    
+    void setFocusBackColor (int color);
+    
     void addControl(std::unique_ptr<Window> && control);
     
     const Window * findFocus () const;
     
     virtual bool canHaveDirectFocus () const;
+    
+    bool hasDirectFocus () const;
     
     virtual bool setFocus (bool focus);
     
@@ -125,6 +135,9 @@ public:
     
     void setParent (const Window * parent);
 
+protected:
+    void setFillClientArea (bool value);
+    
 private:
     void createWindows ();
     
@@ -156,6 +169,7 @@ private:
     bool mBorder;
     bool mHasFocus;
     bool mHasDirectFocus;
+    bool mFillClientArea;
 };
 
 #endif /* Window_h */
