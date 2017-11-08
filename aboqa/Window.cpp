@@ -52,7 +52,11 @@ void Window::processInput (GameManager * gm)
         if (!advanceFocus())
         {
             // If we couldn't advance the focus, start the cycle over again.
-            setFocus(true);
+            if (!setFocus(true))
+            {
+                // If no window can accept direct focus, set regular focus to this window.
+                mHasFocus = true;
+            }
         }
         break;
             
@@ -430,7 +434,9 @@ const Window * Window::findFocus () const
         }
     }
     
-    throw std::logic_error("mHasFocus was set but no focus could be found.");
+    // Even though this window doesn't have direct focus, we can still route
+    // keys to it.
+    return this;
 }
 
 bool Window::canHaveDirectFocus () const
@@ -500,7 +506,6 @@ bool Window::setFocus (int y, int x)
             {
                 // Some child control was able to accept the direct focus.
                 foundDirectFocus = true;
-                
             }
         }
         
@@ -521,11 +526,10 @@ bool Window::setFocus (int y, int x)
             }
             else
             {
-                // This window would normally have at least had focus but since
-                // no child could be found to take direct focus and this window
-                // also cannot take direct focus, then this window cannot accept
-                // any focus.
-                mHasFocus = false;
+                // No child could be found to take direct focus and this window
+                // also cannot take direct focus, then give this window regular
+                // focus.
+                mHasFocus = true;
                 mHasDirectFocus = false;
             }
         }
