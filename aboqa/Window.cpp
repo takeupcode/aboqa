@@ -59,6 +59,7 @@ void Window::processInput (GameManager * gm)
     case KEY_MOUSE:
         if (getmouse(&mouseEvent) == OK)
         {
+            setFocus(mouseEvent.y, mouseEvent.x);
             const Window * control = findWindow(mouseEvent.y, mouseEvent.x);
             if (control)
             {
@@ -483,6 +484,62 @@ bool Window::setFocus (bool focus)
     }
     
     return mHasFocus;
+}
+
+bool Window::setFocus (int y, int x)
+{
+    bool foundDirectFocus = false;
+    
+    if (y >= mY && y < (mY + mHeight) &&
+        x >= mX && x < (mX + mWidth))
+    {
+        for (auto & control: mControls)
+        {
+            bool result = control->setFocus(y, x);
+            if (result)
+            {
+                // Some child control was able to accept the direct focus.
+                foundDirectFocus = true;
+                
+            }
+        }
+        
+        if (foundDirectFocus)
+        {
+            mHasFocus = true;
+            mHasDirectFocus = false;
+        }
+        else
+        {
+            if (canHaveDirectFocus())
+            {
+                // No child can have direct focus but this window can.
+                foundDirectFocus = true;
+                
+                mHasFocus = true;
+                mHasDirectFocus = true;
+            }
+            else
+            {
+                // This window would normally have at least had focus but since
+                // no child could be found to take direct focus and this window
+                // also cannot take direct focus, then this window cannot accept
+                // any focus.
+                mHasFocus = false;
+                mHasDirectFocus = false;
+            }
+        }
+    }
+    else
+    {
+        // The coordinates are outside this window so it and its children cannot have focus.
+        if (mHasFocus)
+        {
+            setFocus(false);
+        }
+    }
+    
+    return foundDirectFocus;
 }
 
 bool Window::advanceFocus ()

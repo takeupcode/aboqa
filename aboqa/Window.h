@@ -129,9 +129,11 @@ public:
     
     bool hasDirectFocus () const;
     
-    virtual bool setFocus (bool focus);
+    bool setFocus (bool focus);
     
-    virtual bool advanceFocus ();
+    bool setFocus (int y, int x);
+    
+    bool advanceFocus ();
     
     const Window * parent () const;
     
