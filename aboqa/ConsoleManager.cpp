@@ -13,6 +13,7 @@
 #include <stdexcept>
 
 #include "Colors.h"
+#include "CursesUtil.h"
 #include "Window.h"
 
 using namespace std;
@@ -21,10 +22,7 @@ bool ConsoleManager::checkBounds (const Window & win, int y, int x)
 {
     int maxY;
     int maxX;
-    getmaxyx(stdscr, maxY, maxX);
-    // For some reason, these values come back too big.
-    --maxY;
-    --maxX;
+    CursesUtil::getScreenMaxYX(maxY, maxX);
     
     // Check if the entire request falls outside the screen bounds.
     if (y + win.clientY() > maxY || x + win.clientX() > maxX)

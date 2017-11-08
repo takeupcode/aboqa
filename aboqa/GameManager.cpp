@@ -11,6 +11,7 @@
 #include <curses.h>
 
 #include "Colors.h"
+#include "CursesUtil.h"
 #include "LogManager.h"
 #include "ConsoleManager.h"
 #include "Window.h"
@@ -112,10 +113,7 @@ void GameManager::initialize ()
     
     Colors::initializeColorPairs();
 
-    getmaxyx(stdscr, mScreenMaxY, mScreenMaxX);
-    // For some reason, these values come back too big.
-    --mScreenMaxY;
-    --mScreenMaxX;
+    CursesUtil::getScreenMaxYX(mScreenMaxY, mScreenMaxX);
 }
 
 void GameManager::deinitialize ()
@@ -140,10 +138,7 @@ void GameManager::loop ()
             break;
         }
         
-        getmaxyx(stdscr, mScreenMaxY, mScreenMaxX);
-        // For some reason, these values come back too big.
-        --mScreenMaxY;
-        --mScreenMaxX;
+        CursesUtil::getScreenMaxYX(mScreenMaxY, mScreenMaxX);
         
         mCurrentWindow->resize(checkHeightBounds(screenHeight()), checkWidthBounds(screenWidth()));
         
