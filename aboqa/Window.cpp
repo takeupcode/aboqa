@@ -59,7 +59,11 @@ void Window::processInput (GameManager * gm)
     case KEY_MOUSE:
         if (getmouse(&mouseEvent) == OK)
         {
-            onMouseEvent(gm, mouseEvent.id, mouseEvent.y, mouseEvent.x, mouseEvent.bstate);
+            const Window * control = findWindow(mouseEvent.y, mouseEvent.x);
+            if (control)
+            {
+                control->onMouseEvent(gm, mouseEvent.id, mouseEvent.y, mouseEvent.x, mouseEvent.bstate);
+            }
         }
         break;
     default:
@@ -104,15 +108,6 @@ bool Window::onKeyPress (GameManager * gm, int key) const
 
 void Window::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
 {
-    for (auto & control: mControls)
-    {
-        if (y >= control->y() && y < (control->y() + control->height()) &&
-            x >= control->x() && x < (control->x() + control->width()))
-        {
-            control->onMouseEvent(gm, id, y, x, buttonState);
-            break;
-        }
-    }
 }
 
 void Window::onDrawClient () const
@@ -390,6 +385,26 @@ void Window::addControl(std::unique_ptr<Window> && control)
     mControls.push_back(std::move(control));
     
     setFocus(true);
+}
+
+const Window * Window::findWindow (int y, int x) const
+{
+    if (y >= mY && y < (mY + mHeight) &&
+        x >= mX && x < (mX + mWidth))
+    {
+        for (auto & control: mControls)
+        {
+            const Window * result = control->findWindow(y, x);
+            if (result)
+            {
+                return result;
+            }
+        }
+        
+        return this;
+    }
+    
+    return nullptr;
 }
 
 const Window * Window::findFocus () const

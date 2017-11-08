@@ -121,6 +121,8 @@ public:
     
     void addControl(std::unique_ptr<Window> && control);
     
+    const Window * findWindow (int y, int x) const;
+    
     const Window * findFocus () const;
     
     virtual bool canHaveDirectFocus () const;
