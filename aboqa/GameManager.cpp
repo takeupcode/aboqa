@@ -18,10 +18,13 @@
 
 using namespace std;
 
+const GameManager::TimeResolution GameManager::FixedFrameTime =
+    GameManager::TimeResolution(GameManager::TimeResolution::period::den / GameManager::FramesPerSecond);
+
 GameManager::GameManager ()
 : mScreenMaxX(0), mScreenMaxY(0),
   mMinScreenWidth(0), mMinScreenHeight(0), mMaxScreenWidth(80), mMaxScreenHeight(40),
-  mNextWindow(nullptr), mCurrentWindow(nullptr), mExit(false)
+  mNextWindow(nullptr), mCurrentWindow(nullptr), mElapsed(0), mFixedFrameTotal(0), mExit(false)
 { }
 
 GameManager::~GameManager ()
@@ -125,28 +128,36 @@ void GameManager::deinitialize ()
 
 void GameManager::loop ()
 {
+    mLastTime = TimeClock::now();
+    
     while (!mExit)
     {
-        if (mNextWindow)
+        if (isFixedFrameReady())
         {
-            // Switch current window at the beginning of the loop.
-            mCurrentWindow = mNextWindow;
-            mNextWindow = nullptr;
+            if (mNextWindow)
+            {
+                // Switch current window at the beginning of the loop.
+                mCurrentWindow = mNextWindow;
+                mNextWindow = nullptr;
+            }
+            if (!mCurrentWindow)
+            {
+                break;
+            }
+            
+            CursesUtil::getScreenMaxYX(mScreenMaxY, mScreenMaxX);
+            
+            mCurrentWindow->resize(checkHeightBounds(screenHeight()), checkWidthBounds(screenWidth()));
+            
+            mCurrentWindow->processInput(this);
+            
+            mCurrentWindow->draw();
+            
+            doupdate();
+            
+            completeFixedFrame();
         }
-        if (!mCurrentWindow)
-        {
-            break;
-        }
-        
-        CursesUtil::getScreenMaxYX(mScreenMaxY, mScreenMaxX);
-        
-        mCurrentWindow->resize(checkHeightBounds(screenHeight()), checkWidthBounds(screenWidth()));
-        
-        mCurrentWindow->processInput(this);
-        
-        mCurrentWindow->draw();
-        
-        doupdate();
+        restartClock();
     }
 }
 
@@ -178,4 +189,27 @@ int GameManager::checkWidthBounds (int width) const
     }
 
     return width;
+}
+
+GameManager::TimeResolution GameManager::elapsed () const
+{
+    return mElapsed;
+}
+
+void GameManager::restartClock ()
+{
+    auto currentTime = TimeClock::now();
+    mElapsed = std::chrono::duration_cast<TimeResolution>(currentTime - mLastTime);
+    mFixedFrameTotal += mElapsed;
+    mLastTime = currentTime;
+}
+
+bool GameManager::isFixedFrameReady () const
+{
+    return mFixedFrameTotal > FixedFrameTime;
+}
+
+void GameManager::completeFixedFrame ()
+{
+    mFixedFrameTotal -= FixedFrameTime;
 }

@@ -9,6 +9,7 @@
 #ifndef GameManager_h
 #define GameManager_h
 
+#include <chrono>
 #include <memory>
 #include <string>
 #include <vector>
@@ -49,6 +50,13 @@ public:
     void setMaxScreenDimensions (int height, int width);
     
 private:
+    using TimeClock = std::chrono::steady_clock;
+    using TimePoint = TimeClock::time_point;
+    using TimeResolution = std::chrono::duration<double, std::micro>;
+    
+    static constexpr int FramesPerSecond = 60;
+    static const TimeResolution FixedFrameTime;
+    
     void deinitialize ();
     
     void loop ();
@@ -56,6 +64,11 @@ private:
     int checkHeightBounds (int height) const;
 
     int checkWidthBounds (int width) const;
+    
+    TimeResolution elapsed () const;
+    void restartClock ();
+    bool isFixedFrameReady () const;
+    void completeFixedFrame ();
 
     int mScreenMaxX;
     int mScreenMaxY;
@@ -66,6 +79,9 @@ private:
     Window * mNextWindow;
     Window * mCurrentWindow;
     std::vector<std::unique_ptr<Window>> mWindows;
+    TimePoint mLastTime;
+    TimeResolution mElapsed;
+    TimeResolution mFixedFrameTotal;
     bool mExit;
 };
 
