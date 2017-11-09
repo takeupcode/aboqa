@@ -22,7 +22,7 @@ Window::Window (const std::string & name, int y, int x, int height, int width, i
   mBorderForeColor(borderForeColor), mBorderBackColor(borderBackColor),
   mFocusForeColor(focusForeColor), mFocusBackColor(focusBackColor),
   mParent(nullptr), mBorder(border), mHasFocus(false), mHasDirectFocus(false),
-  mFillClientArea(true)
+  mFillClientArea(true), mWantEnter(false)
 {
     createWindows();
     
@@ -449,7 +449,7 @@ bool Window::hasDirectFocus () const
     return mHasDirectFocus;
 }
 
-bool Window::setFocus (bool focus)
+bool Window::setFocus (bool focus) const
 {
     // If focus is false, then this method will clear the focus
     // from this window and all control windows.
@@ -492,7 +492,7 @@ bool Window::setFocus (bool focus)
     return mHasFocus;
 }
 
-bool Window::setFocus (int y, int x)
+bool Window::setFocus (int y, int x) const
 {
     bool foundDirectFocus = false;
     
@@ -546,7 +546,7 @@ bool Window::setFocus (int y, int x)
     return foundDirectFocus;
 }
 
-bool Window::advanceFocus ()
+bool Window::advanceFocus () const
 {
     if (mHasDirectFocus)
     {
@@ -613,6 +613,16 @@ const Window * Window::parent () const
 void Window::setParent (const Window * parent)
 {
     mParent = parent;
+}
+
+bool Window::wantEnter () const
+{
+    return mWantEnter;
+}
+
+void Window::setWantEnter (bool value)
+{
+    mWantEnter = value;
 }
 
 void Window::setFillClientArea (bool value)

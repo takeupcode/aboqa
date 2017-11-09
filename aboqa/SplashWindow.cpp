@@ -16,12 +16,13 @@
 SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border, clientForeColor, clientBackColor)
 {
-    auto playButton = std::unique_ptr<Window>(new Button("playButton", "Play", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
+    auto playButton = std::unique_ptr<Button>(new Button("playButton", "Play", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
     playButton->setAnchorBottom(0);
     playButton->setAnchorRight(0);
+    playButton->setWantEnter(true);
     addControl(std::move(playButton));
 
-    auto exitButton = std::unique_ptr<Window>(new Button("exitButton", "Exit", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
+    auto exitButton = std::unique_ptr<Button>(new Button("exitButton", "Exit", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
     exitButton->setAnchorBottom(0);
     exitButton->setAnchorRight(12);
     addControl(std::move(exitButton));
@@ -37,6 +38,14 @@ bool SplashWindow::onKeyPress (GameManager * gm, int key) const
     case KEY_UP:
         break;
     case 10: // Enter
+        for (auto & control: mControls)
+        {
+            if (control->wantEnter())
+            {
+                setFocus(control->y(), control->x());
+                return control->onKeyPress(gm, key);
+            }
+        }
         break;
     case KEY_F(1):
         gm->selectNextWindow("main");

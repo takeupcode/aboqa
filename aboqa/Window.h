@@ -129,20 +129,23 @@ public:
     
     bool hasDirectFocus () const;
     
-    bool setFocus (bool focus);
+    bool setFocus (bool focus) const;
     
-    bool setFocus (int y, int x);
+    bool setFocus (int y, int x) const;
     
-    bool advanceFocus ();
+    bool advanceFocus () const;
     
     const Window * parent () const;
     
     void setParent (const Window * parent);
+    
+    bool wantEnter () const;
+    
+    void setWantEnter (bool value);
 
 protected:
     void setFillClientArea (bool value);
     
-private:
     void createWindows ();
     
     void destroyWindows ();
@@ -171,9 +174,10 @@ private:
     std::vector<std::unique_ptr<Window>> mControls;
     const Window * mParent;
     bool mBorder;
-    bool mHasFocus;
-    bool mHasDirectFocus;
+    mutable bool mHasFocus;
+    mutable bool mHasDirectFocus;
     bool mFillClientArea;
+    bool mWantEnter;
 };
 
 #endif /* Window_h */
