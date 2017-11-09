@@ -51,6 +51,8 @@ void Button::onDrawClient () const
     if (hasDirectFocus())
     {
         ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, focusForeColor(), focusBackColor(), true, true);
+        mvwaddch(cursesWindow(), vertCenter, 0, '|');
+        mvwaddch(cursesWindow(), vertCenter, width() - 1, '|');
     }
     else
     {
