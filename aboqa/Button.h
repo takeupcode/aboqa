@@ -15,8 +15,6 @@
 #include "EventPublisher.h"
 #include "Window.h"
 
-class GameManager;
-
 class Button : public Window
 {
 public:

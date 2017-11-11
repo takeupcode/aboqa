@@ -13,20 +13,24 @@
 #include "GameManager.h"
 #include "LogManager.h"
 
+const std::string SplashWindow::windowName = "SplashWindow";
+const std::string SplashWindow::playButtonName = "playButton";
+const std::string SplashWindow::exitButtonName = "exitButton";
+
 SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border, clientForeColor, clientBackColor)
 {
-    auto playButton = std::unique_ptr<Button>(new Button("playButton", "Play", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
+    auto playButton = std::unique_ptr<Button>(new Button(playButtonName, "Play", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
     playButton->setAnchorBottom(0);
     playButton->setAnchorRight(0);
     playButton->setWantEnter(true);
-    playButton->clicked()->connect("SplashWindow", this);
+    playButton->clicked()->connect(windowName, this);
     addControl(std::move(playButton));
 
-    auto exitButton = std::unique_ptr<Button>(new Button("exitButton", "Exit", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
+    auto exitButton = std::unique_ptr<Button>(new Button(exitButtonName, "Exit", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
     exitButton->setAnchorBottom(0);
     exitButton->setAnchorRight(12);
-    exitButton->clicked()->connect("SplashWindow", this);
+    exitButton->clicked()->connect(windowName, this);
     addControl(std::move(exitButton));
 }
 
@@ -83,11 +87,11 @@ bool SplashWindow::canHaveDirectFocus () const
 
 void SplashWindow::notify (GameManager * gm, const Button * button)
 {
-    if (button->name() == "playButton")
+    if (button->name() == playButtonName)
     {
         gm->selectNextWindow("main");
     }
-    else if (button->name() == "exitButton")
+    else if (button->name() == exitButtonName)
     {
         gm->selectNextWindow("exit");
     }

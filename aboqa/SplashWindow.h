@@ -26,8 +26,13 @@ public:
     void onDrawClient () const override;
     
     bool canHaveDirectFocus () const override;
-    
+
+private:
     void notify (GameManager * gm, const Button * button) override;
+    
+    static const std::string windowName;
+    static const std::string playButtonName;
+    static const std::string exitButtonName;
 };
 
 #endif /* SplashWindow_h */
