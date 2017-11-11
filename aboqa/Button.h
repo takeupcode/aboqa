@@ -10,7 +10,6 @@
 #define Button_h
 
 #include <memory>
-#include <string>
 
 #include "EventPublisher.h"
 #include "Window.h"

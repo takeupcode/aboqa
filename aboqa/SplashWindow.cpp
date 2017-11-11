@@ -11,11 +11,13 @@
 #include "Colors.h"
 #include "Button.h"
 #include "GameManager.h"
+#include "Label.h"
 #include "LogManager.h"
 
 const std::string SplashWindow::windowName = "SplashWindow";
 const std::string SplashWindow::playButtonName = "playButton";
 const std::string SplashWindow::exitButtonName = "exitButton";
+const std::string SplashWindow::introLabelName = "introLabel";
 
 SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border, clientForeColor, clientBackColor)
@@ -32,6 +34,10 @@ SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, 
     exitButton->setAnchorRight(12);
     exitButton->clicked()->connect(windowName, this);
     addControl(std::move(exitButton));
+    
+    auto introLabel = std::unique_ptr<Label>(new Label(introLabelName, "Play game?", 0, 0, 1, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE));
+    introLabel->setAnchorLeft(2);
+    addControl(std::move(introLabel));
 }
 
 bool SplashWindow::onKeyPress (GameManager * gm, int key) const

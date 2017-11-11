@@ -33,6 +33,7 @@ private:
     static const std::string windowName;
     static const std::string playButtonName;
     static const std::string exitButtonName;
+    static const std::string introLabelName;
 };
 
 #endif /* SplashWindow_h */
