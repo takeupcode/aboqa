@@ -35,6 +35,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3E6A28171FB69F23009458A7 /* EventPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventPublisher.h; sourceTree = "<group>"; };
+		3E6A28181FB69F23009458A7 /* EventSubscriber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSubscriber.h; sourceTree = "<group>"; };
 		3EB347BD1FAAC28F0031025E /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		3EB347BE1FAAC28F0031025E /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		3EB347C31FAAE19B0031025E /* Colors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colors.cpp; sourceTree = "<group>"; };
@@ -94,6 +96,8 @@
 		3ED7858C1FA58EDF002D9B78 /* aboqa */ = {
 			isa = PBXGroup;
 			children = (
+				3E6A28171FB69F23009458A7 /* EventPublisher.h */,
+				3E6A28181FB69F23009458A7 /* EventSubscriber.h */,
 				3EB347C31FAAE19B0031025E /* Colors.cpp */,
 				3EB347C41FAAE19B0031025E /* Colors.h */,
 				3ED785941FA591A3002D9B78 /* ConsoleManager.cpp */,

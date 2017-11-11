@@ -9,11 +9,19 @@
 #ifndef Button_h
 #define Button_h
 
+#include <memory>
+#include <string>
+
+#include "EventPublisher.h"
 #include "Window.h"
+
+class GameManager;
 
 class Button : public Window
 {
 public:
+    using ClickedEvent = EventPublisher<GameManager *, const Button *>;
+
     Button (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor);
     
     bool onKeyPress (GameManager * gm, int key) const override;
@@ -22,10 +30,13 @@ public:
     
     void onDrawClient () const override;
     
-    void handleClick () const;
-    
+    ClickedEvent * clicked ();
+
 private:
+    void handleClick (GameManager * gm) const;
+    
     std::string mText;
+    std::unique_ptr<ClickedEvent> mClicked;
 };
 
 #endif /* Button_h */

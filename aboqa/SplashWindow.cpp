@@ -20,11 +20,13 @@ SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, 
     playButton->setAnchorBottom(0);
     playButton->setAnchorRight(0);
     playButton->setWantEnter(true);
+    playButton->clicked()->connect("SplashWindow", this);
     addControl(std::move(playButton));
 
     auto exitButton = std::unique_ptr<Button>(new Button("exitButton", "Exit", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
     exitButton->setAnchorBottom(0);
     exitButton->setAnchorRight(12);
+    exitButton->clicked()->connect("SplashWindow", this);
     addControl(std::move(exitButton));
 }
 
@@ -32,11 +34,6 @@ bool SplashWindow::onKeyPress (GameManager * gm, int key) const
 {
     switch (key)
     {
-    case KEY_DOWN:
-        ABOQALOG(Info, "Down key pressed from splash window.");
-        break;
-    case KEY_UP:
-        break;
     case 10: // Enter
         for (auto & control: mControls)
         {
@@ -46,9 +43,6 @@ bool SplashWindow::onKeyPress (GameManager * gm, int key) const
                 return control->onKeyPress(gm, key);
             }
         }
-        break;
-    case KEY_F(1):
-        gm->selectNextWindow("main");
         break;
     default:
         if (parent())
@@ -85,4 +79,16 @@ void SplashWindow::onDrawClient () const
 bool SplashWindow::canHaveDirectFocus () const
 {
     return false;
+}
+
+void SplashWindow::notify (GameManager * gm, const Button * button)
+{
+    if (button->name() == "playButton")
+    {
+        gm->selectNextWindow("main");
+    }
+    else if (button->name() == "exitButton")
+    {
+        gm->selectNextWindow("exit");
+    }
 }

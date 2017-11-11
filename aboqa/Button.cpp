@@ -13,7 +13,8 @@
 #include "LogManager.h"
 
 Button::Button (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor)
-: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, false, focusForeColor, focusBackColor), mText(text)
+: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, false, focusForeColor, focusBackColor),
+  mText(text), mClicked(new ClickedEvent())
 {
     setFillClientArea(false);
 }
@@ -24,7 +25,7 @@ bool Button::onKeyPress (GameManager * gm, int key) const
     {
     case 32: // Space
     case 10: // Enter
-        handleClick();
+        handleClick(gm);
         break;
     default:
         if (parent())
@@ -41,7 +42,7 @@ void Button::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t but
 {
     if (buttonState & BUTTON1_CLICKED)
     {
-        handleClick();
+        handleClick(gm);
     }
 }
 
@@ -64,7 +65,14 @@ void Button::onDrawClient () const
     }
 }
 
-void Button::handleClick () const
+void Button::handleClick (GameManager * gm) const
 {
     ABOQALOG(Info, name() << " clicked");
+    
+    mClicked->signal(gm, this);
+}
+
+Button::ClickedEvent * Button::clicked ()
+{
+    return mClicked.get();
 }

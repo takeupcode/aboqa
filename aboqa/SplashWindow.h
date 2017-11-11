@@ -9,9 +9,12 @@
 #ifndef SplashWindow_h
 #define SplashWindow_h
 
+#include "EventSubscriber.h"
 #include "Window.h"
 
-class SplashWindow : public Window
+class Button;
+
+class SplashWindow : public Window, public EventSubscriber<GameManager *, const Button *>
 {
 public:
     SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
@@ -23,6 +26,8 @@ public:
     void onDrawClient () const override;
     
     bool canHaveDirectFocus () const override;
+    
+    void notify (GameManager * gm, const Button * button) override;
 };
 
 #endif /* SplashWindow_h */
