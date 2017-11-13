@@ -8,7 +8,9 @@
 
 #include "GameManager.h"
 
+#include <chrono>
 #include <curses.h>
+#include <thread>
 
 #include "Colors.h"
 #include "CursesUtil.h"
@@ -157,6 +159,10 @@ void GameManager::loop ()
             
             completeFixedFrame();
         }
+        else
+        {
+            waitForNextFixedFrame();
+        }
         restartClock();
     }
 }
@@ -212,4 +218,13 @@ bool GameManager::isFixedFrameReady () const
 void GameManager::completeFixedFrame ()
 {
     mFixedFrameTotal -= FixedFrameTime;
+}
+
+void GameManager::waitForNextFixedFrame ()
+{
+    auto waitDuration = FixedFrameTime - mFixedFrameTotal;
+    if (waitDuration > waitDuration.zero())
+    {
+        std::this_thread::sleep_for(std::chrono::duration_cast<std::chrono::milliseconds>(waitDuration));
+    }
 }

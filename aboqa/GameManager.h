@@ -54,7 +54,7 @@ private:
     using TimePoint = TimeClock::time_point;
     using TimeResolution = std::chrono::duration<double, std::micro>;
     
-    static constexpr int FramesPerSecond = 60;
+    static constexpr int FramesPerSecond = 20; // This is a text game and doesn't need a high frame rate.
     static const TimeResolution FixedFrameTime;
     
     void deinitialize ();
@@ -69,6 +69,7 @@ private:
     void restartClock ();
     bool isFixedFrameReady () const;
     void completeFixedFrame ();
+    void waitForNextFixedFrame ();
 
     int mScreenMaxX;
     int mScreenMaxY;
