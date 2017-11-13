@@ -292,6 +292,10 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
         wmove(cursesWin, y, x);
         for (int i = x; i < messageX; ++i)
         {
+            if (!checkBounds(win, y, i))
+            {
+                return;
+            }
             waddch(cursesWin, ' ');
         }
     }
@@ -300,9 +304,18 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
     
     if (fillSpace)
     {
+        int currentY = getcury(cursesWin);
+        if (currentY != y)
+        {
+            return;
+        }
         int currentX = getcurx(cursesWin);
         for (int i = currentX; i < x + width; ++i)
         {
+            if (!checkBounds(win, y, i))
+            {
+                return;
+            }
             waddch(cursesWin, ' ');
         }
     }
@@ -338,7 +351,12 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
             }
             else
             {
-                waddch(cursesWin, c);
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
+                mvwaddch(cursesWin, y, x, c);
+                ++x;
             }
             break;
             
@@ -346,12 +364,25 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
             if (charToColor(c, foreColor))
             {
                 firstChar = c;
+                
                 state = PrintState::needBackColor;
             }
             else
             {
-                waddch(cursesWin, '&');
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
+                mvwaddch(cursesWin, y, x, '&');
+                ++x;
+
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
                 waddch(cursesWin, c);
+                ++x;
+                
                 state = PrintState::normal;
             }
             break;
@@ -360,13 +391,32 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
             if (charToColor(c, backColor))
             {
                 secondChar = c;
+                
                 state = PrintState::needEnd;
             }
             else
             {
-                waddch(cursesWin, '&');
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
+                mvwaddch(cursesWin, y, x, '&');
+                ++x;
+
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
                 waddch(cursesWin, firstChar);
+                ++x;
+
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
                 waddch(cursesWin, c);
+                ++x;
+                
                 state = PrintState::normal;
             }
             break;
@@ -379,10 +429,33 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
             }
             else
             {
-                waddch(cursesWin, '&');
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
+                mvwaddch(cursesWin, y, x, '&');
+                ++x;
+
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
                 waddch(cursesWin, firstChar);
+                ++x;
+
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
                 waddch(cursesWin, secondChar);
+                ++x;
+
+                if (!checkBounds(win, y, x))
+                {
+                    return;
+                }
                 waddch(cursesWin, c);
+                ++x;
             }
             state = PrintState::normal;
             break;
@@ -396,17 +469,51 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
         break;
         
     case PrintState::needForeColor:
-        waddch(cursesWin, '&');
+        if (!checkBounds(win, y, x))
+        {
+            return;
+        }
+        mvwaddch(cursesWin, y, x, '&');
+        ++x;
         break;
+            
     case PrintState::needBackColor:
-        waddch(cursesWin, '&');
+        if (!checkBounds(win, y, x))
+        {
+            return;
+        }
+        mvwaddch(cursesWin, y, x, '&');
+        ++x;
+
+        if (!checkBounds(win, y, x))
+        {
+            return;
+        }
         waddch(cursesWin, firstChar);
+        ++x;
         break;
         
     case PrintState::needEnd:
-        waddch(cursesWin, '&');
+        if (!checkBounds(win, y, x))
+        {
+            return;
+        }
+        mvwaddch(cursesWin, y, x, '&');
+        ++x;
+
+        if (!checkBounds(win, y, x))
+        {
+            return;
+        }
         waddch(cursesWin, firstChar);
+        ++x;
+
+        if (!checkBounds(win, y, x))
+        {
+            return;
+        }
         waddch(cursesWin, secondChar);
+        ++x;
         break;
     }
 }
@@ -447,6 +554,10 @@ void ConsoleManager::fillRect (const Window & win, int y, int x, int height, int
     
     for (int i = 0; i < height; ++i)
     {
+        if (!checkBounds(win, y + i, x))
+        {
+            return;
+        }
         mvwhline(cursesWin, y + i, x, ' ', width);
     }
 }

@@ -690,10 +690,10 @@ void Window::destroyWindows ()
 
 void Window::anchorWindow (Window * win)
 {
-    int newTop = clientY();
-    int newBottom = clientY() + clientHeight();
-    int newLeft = clientX();
-    int newRight = clientX() + clientWidth();
+    int newTop = win->y();
+    int newBottom = win->y() + win->height();
+    int newLeft = win->x();
+    int newRight = win->x() + win->width();
     
     if (win->anchorTop() != -1 && win->anchorBottom() != -1)
     {
@@ -707,14 +707,16 @@ void Window::anchorWindow (Window * win)
     else if (win->anchorTop() != -1)
     {
         newTop = clientY() + win->anchorTop();
+        newBottom = newTop + win->height();
     }
     else if (win->anchorBottom() != -1)
     {
         newBottom = clientY() + clientHeight() - win->anchorBottom(); // This is one past the bottom row.
         newTop = newBottom - win->height();
-        if (newTop < clientY())
+        if (newTop < 0)
         {
-            newTop = clientY();
+            newTop = 0;
+            newBottom = win->height();
         }
     }
     
@@ -730,14 +732,16 @@ void Window::anchorWindow (Window * win)
     else if (win->anchorLeft() != -1)
     {
         newLeft = clientX() + win->anchorLeft();
+        newRight = newLeft + win->width();
     }
     else if (win->anchorRight() != -1)
     {
         newRight = clientX() + clientWidth() - win->anchorRight(); // This is one past the right column.
         newLeft = newRight - win->width();
-        if (newLeft < clientX())
+        if (newLeft < 0)
         {
-            newLeft = clientX();
+            newLeft = 0;
+            newRight = win->width();
         }
     }
     

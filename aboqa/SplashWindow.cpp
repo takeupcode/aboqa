@@ -36,7 +36,7 @@ SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, 
     addControl(std::move(exitButton));
     
     auto introLabel = std::unique_ptr<Label>(new Label(introLabelName, "Play game?", 0, 0, 1, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE));
-    introLabel->setAnchorLeft(2);
+    //introLabel->setAnchorLeft(2);
     addControl(std::move(introLabel));
 }
 
