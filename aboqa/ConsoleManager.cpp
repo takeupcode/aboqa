@@ -18,23 +18,29 @@
 
 using namespace std;
 
-bool ConsoleManager::checkBounds (const Window & win, int y, int x)
+bool ConsoleManager::getMaxWinBounds (const Window & win, int & y, int & x)
 {
-    int maxY;
-    int maxX;
-    CursesUtil::getScreenMaxYX(maxY, maxX);
+    // Figure out if the screen or the window has the smallest max y and x.
+    // Whichever is smallest is the max y and x that will be visible.
+    // Translate the max y and x back into window client coordinates.
+    // And return false if the window is off the screen.
+    int maxScreenY;
+    int maxScreenX;
+    CursesUtil::getScreenMaxYX(maxScreenY, maxScreenX);
     
-    // Check if the entire request falls outside the screen bounds.
-    if (y + win.clientY() > maxY || x + win.clientX() > maxX)
+    if (win.clientY() > maxScreenY || win.clientX() > maxScreenX)
     {
         return false;
     }
     
-    // Check if the entire request falls outside the window bounds.
-    if (y >= win.clientHeight() || x >= win.clientWidth())
-    {
-        return false;
-    }
+    int maxWinY = win.clientY() + win.clientHeight() - 1;
+    int maxWinX = win.clientX() + win.clientWidth() - 1;
+    
+    int resultY = (maxWinY <= maxScreenY) ? maxWinY : maxScreenY;
+    int resultX = (maxWinX <= maxScreenX) ? maxWinX : maxScreenX;
+    
+    y = resultY - win.clientY();
+    x = resultX - win.clientX();
     
     return true;
 }
@@ -267,7 +273,13 @@ void ConsoleManager::printMessage (const Window & win, const std::string & msg, 
 
 void ConsoleManager::printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
 {
-    if (!checkBounds(win, y, x))
+    int maxWinY;
+    int maxWinX;
+    if (!getMaxWinBounds(win, maxWinY, maxWinX))
+    {
+        return;
+    }
+    if (y > maxWinY || x > maxWinX)
     {
         return;
     }
@@ -277,10 +289,10 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
     int messageX = x;
     if (center)
     {
-        int delta = static_cast<int>(width - msg.length()) / 2;
-        if (delta > 0)
+        int margin = static_cast<int>(width - msg.length()) / 2;
+        if (margin > 0)
         {
-            messageX += delta;
+            messageX += margin;
         }
     }
     
@@ -292,7 +304,7 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
         wmove(cursesWin, y, x);
         for (int i = x; i < messageX; ++i)
         {
-            if (!checkBounds(win, y, i))
+            if (i > maxWinX)
             {
                 return;
             }
@@ -312,7 +324,7 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
         int currentX = getcurx(cursesWin);
         for (int i = currentX; i < x + width; ++i)
         {
-            if (!checkBounds(win, y, i))
+            if (i > maxWinX)
             {
                 return;
             }
@@ -323,7 +335,13 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
 
 void ConsoleManager::printMessage (const Window & win, int y, int x, const std::string & msg)
 {
-    if (!checkBounds(win, y, x))
+    int maxWinY;
+    int maxWinX;
+    if (!getMaxWinBounds(win, maxWinY, maxWinX))
+    {
+        return;
+    }
+    if (y > maxWinY || x > maxWinX)
     {
         return;
     }
@@ -351,7 +369,7 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
             }
             else
             {
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
@@ -369,14 +387,14 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
             }
             else
             {
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
                 mvwaddch(cursesWin, y, x, '&');
                 ++x;
 
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
@@ -396,21 +414,21 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
             }
             else
             {
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
                 mvwaddch(cursesWin, y, x, '&');
                 ++x;
 
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
                 waddch(cursesWin, firstChar);
                 ++x;
 
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
@@ -429,28 +447,28 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
             }
             else
             {
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
                 mvwaddch(cursesWin, y, x, '&');
                 ++x;
 
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
                 waddch(cursesWin, firstChar);
                 ++x;
 
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
                 waddch(cursesWin, secondChar);
                 ++x;
 
-                if (!checkBounds(win, y, x))
+                if (x > maxWinX)
                 {
                     return;
                 }
@@ -469,7 +487,7 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
         break;
         
     case PrintState::needForeColor:
-        if (!checkBounds(win, y, x))
+        if (x > maxWinX)
         {
             return;
         }
@@ -478,14 +496,14 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
         break;
             
     case PrintState::needBackColor:
-        if (!checkBounds(win, y, x))
+        if (x > maxWinX)
         {
             return;
         }
         mvwaddch(cursesWin, y, x, '&');
         ++x;
 
-        if (!checkBounds(win, y, x))
+        if (x > maxWinX)
         {
             return;
         }
@@ -494,21 +512,21 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
         break;
         
     case PrintState::needEnd:
-        if (!checkBounds(win, y, x))
+        if (x > maxWinX)
         {
             return;
         }
         mvwaddch(cursesWin, y, x, '&');
         ++x;
 
-        if (!checkBounds(win, y, x))
+        if (x > maxWinX)
         {
             return;
         }
         waddch(cursesWin, firstChar);
         ++x;
 
-        if (!checkBounds(win, y, x))
+        if (x > maxWinX)
         {
             return;
         }
@@ -520,7 +538,13 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
 
 void ConsoleManager::drawBox (const Window & win, int y, int x, int height, int width, int foreColor, int backColor)
 {
-    if (!checkBounds(win, y, x))
+    int maxWinY;
+    int maxWinX;
+    if (!getMaxWinBounds(win, maxWinY, maxWinX))
+    {
+        return;
+    }
+    if (y > maxWinY || x > maxWinX)
     {
         return;
     }
@@ -542,7 +566,13 @@ void ConsoleManager::drawBox (const Window & win, int y, int x, int height, int 
 
 void ConsoleManager::fillRect (const Window & win, int y, int x, int height, int width, int foreColor, int backColor)
 {
-    if (!checkBounds(win, y, x))
+    int maxWinY;
+    int maxWinX;
+    if (!getMaxWinBounds(win, maxWinY, maxWinX))
+    {
+        return;
+    }
+    if (y > maxWinY || x > maxWinX)
     {
         return;
     }
@@ -554,7 +584,7 @@ void ConsoleManager::fillRect (const Window & win, int y, int x, int height, int
     
     for (int i = 0; i < height; ++i)
     {
-        if (!checkBounds(win, y + i, x))
+        if (y + i > maxWinY)
         {
             return;
         }

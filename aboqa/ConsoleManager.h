@@ -54,7 +54,7 @@ public:
 private:
     static bool charToColor (char c, int & color);
     
-    static bool checkBounds (const Window & win, int y, int x);
+    static bool getMaxWinBounds (const Window & win, int & y, int & x);
 };
 
 #endif /* ConsoleManager_h */
