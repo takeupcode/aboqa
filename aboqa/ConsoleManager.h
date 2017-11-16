@@ -25,6 +25,7 @@ class ConsoleManager
         needEndOfColor
     };
     
+public:
     struct LineBreakpoint
     {
         int beginIndex;
@@ -40,7 +41,6 @@ class ConsoleManager
         right
     };
     
-public:
     static bool promptYesOrNo (const Window & win, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center = false, bool errorCenter = false, bool fillSpace = false);
     
     static bool promptYesOrNo (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center = false, bool errorCenter = false, bool fillSpace = false);

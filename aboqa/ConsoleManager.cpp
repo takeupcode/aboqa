@@ -550,6 +550,7 @@ std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpo
                 {
                     lastSpaceIndex = index;
                 }
+                
                 if (x > maxX)
                 {
                     lineBreakpoint.endIndex = index - 1;
@@ -567,6 +568,10 @@ std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpo
                     }
                     setLineBreakpoint(index);
                     x = 0;
+                }
+                else if (index == lastIndex)
+                {
+                    setLineBreakpoint(index);
                 }
                 else
                 {
