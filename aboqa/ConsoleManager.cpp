@@ -354,16 +354,30 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
     }
     
     PrintState state = PrintState::normal;
+    
+    bool skipColorCheck = false;
     int foreColor = 0;
     int backColor = 0;
-    char firstChar = ' ';
-    char secondChar = ' ';
-    for (const char c : msg)
+    
+    int lastIndex = static_cast<int>(msg.length()) - 1;
+    for (int index = 0; index <= lastIndex; ++index)
     {
+        char c = msg[index];
+        
+        if (c == '\t')
+        {
+            c = ' ';
+        }
+        else if (c == '\n')
+        {
+            // This method prints at most a single line.
+            break;
+        }
+        
         switch (state)
         {
         case PrintState::normal:
-            if (c == '&')
+            if (index != lastIndex && !skipColorCheck && c == '&')
             {
                 state = PrintState::needForeColor;
             }
@@ -376,70 +390,36 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
                 mvwaddch(cursesWin, y, x, c);
                 ++x;
             }
+            skipColorCheck = false;
             break;
             
         case PrintState::needForeColor:
-            if (charToColor(c, foreColor))
+            if (index != lastIndex && charToColor(c, foreColor))
             {
-                firstChar = c;
-                
                 state = PrintState::needBackColor;
             }
             else
             {
-                if (x > maxWinX)
-                {
-                    return;
-                }
-                mvwaddch(cursesWin, y, x, '&');
-                ++x;
-
-                if (x > maxWinX)
-                {
-                    return;
-                }
-                waddch(cursesWin, c);
-                ++x;
-                
+                index -= 2;
+                skipColorCheck = true;
                 state = PrintState::normal;
             }
             break;
             
         case PrintState::needBackColor:
-            if (charToColor(c, backColor))
+            if (index != lastIndex && charToColor(c, backColor))
             {
-                secondChar = c;
-                
-                state = PrintState::needEnd;
+                state = PrintState::needEndOfColor;
             }
             else
             {
-                if (x > maxWinX)
-                {
-                    return;
-                }
-                mvwaddch(cursesWin, y, x, '&');
-                ++x;
-
-                if (x > maxWinX)
-                {
-                    return;
-                }
-                waddch(cursesWin, firstChar);
-                ++x;
-
-                if (x > maxWinX)
-                {
-                    return;
-                }
-                waddch(cursesWin, c);
-                ++x;
-                
+                index -= 3;
+                skipColorCheck = true;
                 state = PrintState::normal;
             }
             break;
             
-        case PrintState::needEnd:
+        case PrintState::needEndOfColor:
             if (c == ';')
             {
                 int i = Colors::colorPairIndex(foreColor, backColor);
@@ -447,92 +427,13 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
             }
             else
             {
-                if (x > maxWinX)
-                {
-                    return;
-                }
-                mvwaddch(cursesWin, y, x, '&');
-                ++x;
-
-                if (x > maxWinX)
-                {
-                    return;
-                }
-                waddch(cursesWin, firstChar);
-                ++x;
-
-                if (x > maxWinX)
-                {
-                    return;
-                }
-                waddch(cursesWin, secondChar);
-                ++x;
-
-                if (x > maxWinX)
-                {
-                    return;
-                }
-                waddch(cursesWin, c);
-                ++x;
+                index -= 4;
+                skipColorCheck = true;
+                state = PrintState::normal;
             }
             state = PrintState::normal;
             break;
         }
-    }
-
-    // Look at the state one more time to see if there was an incomplete color.
-    switch (state)
-    {
-    case PrintState::normal:
-        break;
-        
-    case PrintState::needForeColor:
-        if (x > maxWinX)
-        {
-            return;
-        }
-        mvwaddch(cursesWin, y, x, '&');
-        ++x;
-        break;
-            
-    case PrintState::needBackColor:
-        if (x > maxWinX)
-        {
-            return;
-        }
-        mvwaddch(cursesWin, y, x, '&');
-        ++x;
-
-        if (x > maxWinX)
-        {
-            return;
-        }
-        waddch(cursesWin, firstChar);
-        ++x;
-        break;
-        
-    case PrintState::needEnd:
-        if (x > maxWinX)
-        {
-            return;
-        }
-        mvwaddch(cursesWin, y, x, '&');
-        ++x;
-
-        if (x > maxWinX)
-        {
-            return;
-        }
-        waddch(cursesWin, firstChar);
-        ++x;
-
-        if (x > maxWinX)
-        {
-            return;
-        }
-        waddch(cursesWin, secondChar);
-        ++x;
-        break;
     }
 }
 
@@ -590,6 +491,129 @@ void ConsoleManager::fillRect (const Window & win, int y, int x, int height, int
         }
         mvwhline(cursesWin, y + i, x, ' ', width);
     }
+}
+
+void ConsoleManager::LineBreakpoint::setDefaultValues ()
+{
+    beginIndex = 0;
+    endIndex = 0;
+}
+
+std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpoints (const std::string & text, int width)
+{
+    std::vector<ConsoleManager::LineBreakpoint> result;
+
+    PrintState state = PrintState::normal;
+    
+    int x = 0;
+    const int maxX = width - 1;
+    
+    int lastSpaceIndex = 0;
+    
+    LineBreakpoint lineBreakpoint;
+    lineBreakpoint.setDefaultValues();
+    
+    bool skipColorCheck = false;
+    int foreColor = 0;
+    int backColor = 0;
+    
+    auto setLineBreakpoint = [&lineBreakpoint, &result] (int index)
+    {
+        lineBreakpoint.endIndex = index;
+        
+        result.push_back(lineBreakpoint);
+        
+        lineBreakpoint.setDefaultValues();
+        
+        lineBreakpoint.beginIndex = index + 1;
+    };
+    
+    int lastIndex = static_cast<int>(text.length()) - 1;
+    for (int index = 0; index <= lastIndex; ++index)
+    {
+        char c = text[index];
+        switch (state)
+        {
+        case PrintState::normal:
+            if (index != lastIndex && !skipColorCheck && c == '&')
+            {
+                state = PrintState::needForeColor;
+            }
+            else if (c == '\n')
+            {
+                setLineBreakpoint(index);
+                x = 0;
+            }
+            else
+            {
+                if (c == ' ' || c == '\t')
+                {
+                    lastSpaceIndex = index;
+                }
+                if (x > maxX)
+                {
+                    lineBreakpoint.endIndex = index - 1;
+                    
+                    if (lastSpaceIndex > lineBreakpoint.beginIndex)
+                    {
+                        // If we found a space since beginning this
+                        // line, then go back to that space.
+                        index = lastSpaceIndex;
+                    }
+                    else
+                    {
+                        // Go back one position.
+                        --index;
+                    }
+                    setLineBreakpoint(index);
+                    x = 0;
+                }
+                else
+                {
+                    ++x;
+                }
+            }
+            skipColorCheck = false;
+            break;
+            
+        case PrintState::needForeColor:
+            if (index != lastIndex && charToColor(c, foreColor))
+            {
+                state = PrintState::needBackColor;
+            }
+            else
+            {
+                index -= 2;
+                skipColorCheck = true;
+                state = PrintState::normal;
+            }
+            break;
+            
+        case PrintState::needBackColor:
+            if (index != lastIndex && charToColor(c, backColor))
+            {
+                state = PrintState::needEndOfColor;
+            }
+            else
+            {
+                index -= 3;
+                skipColorCheck = true;
+                state = PrintState::normal;
+            }
+            break;
+            
+        case PrintState::needEndOfColor:
+            if (c != ';')
+            {
+                index -= 4;
+                skipColorCheck = true;
+            }
+            state = PrintState::normal;
+            break;
+        }
+    }
+    
+    return result;
 }
 
 bool ConsoleManager::charToColor (char c, int & color)

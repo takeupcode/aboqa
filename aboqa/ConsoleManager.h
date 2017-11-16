@@ -11,6 +11,7 @@
 
 #include <string>
 #include <curses.h>
+#include <vector>
 
 class Window;
 
@@ -21,7 +22,22 @@ class ConsoleManager
         normal,
         needForeColor,
         needBackColor,
-        needEnd
+        needEndOfColor
+    };
+    
+    struct LineBreakpoint
+    {
+        int beginIndex;
+        int endIndex;
+        
+        void setDefaultValues ();
+    };
+    
+    enum class LineJustification
+    {
+        left,
+        center,
+        right
     };
     
 public:
@@ -50,6 +66,8 @@ public:
     static void drawBox (const Window & win, int y, int x, int height, int width, int foreColor, int backColor);
     
     static void fillRect (const Window & win, int y, int x, int height, int width, int foreColor, int backColor);
+    
+    static std::vector<LineBreakpoint> calculateLineBreakpoints (const std::string & text, int width);
     
 private:
     static bool charToColor (char c, int & color);

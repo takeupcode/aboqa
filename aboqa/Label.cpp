@@ -10,9 +10,9 @@
 
 #include "ConsoleManager.h"
 
-Label::Label (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor)
+Label::Label (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, bool multiline)
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, false, foreColor, backColor),
-  mText(text)
+  mText(text), mMultiline(multiline)
 {
     setFillClientArea(false);
 }
@@ -26,4 +26,14 @@ void Label::onDrawClient () const
 bool Label::canHaveDirectFocus () const
 {
     return false;
+}
+
+bool Label::isMultiline () const
+{
+    return mMultiline;
+}
+
+void Label::setMultiline (bool multiline)
+{
+    mMultiline = multiline;
 }
