@@ -40,6 +40,7 @@
 		3E6A28181FB69F23009458A7 /* EventSubscriber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSubscriber.h; sourceTree = "<group>"; };
 		3E6A28191FB6C25C009458A7 /* Label.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Label.cpp; sourceTree = "<group>"; };
 		3E6A281A1FB6C25C009458A7 /* Label.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Label.h; sourceTree = "<group>"; };
+		3E6A281C1FBE9508009458A7 /* Justification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Justification.h; sourceTree = "<group>"; };
 		3EB347BD1FAAC28F0031025E /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		3EB347BE1FAAC28F0031025E /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		3EB347C31FAAE19B0031025E /* Colors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colors.cpp; sourceTree = "<group>"; };
@@ -126,6 +127,7 @@
 				3EB347D31FB2A6350031025E /* CursesUtil.h */,
 				3E6A28191FB6C25C009458A7 /* Label.cpp */,
 				3E6A281A1FB6C25C009458A7 /* Label.h */,
+				3E6A281C1FBE9508009458A7 /* Justification.h */,
 			);
 			path = aboqa;
 			sourceTree = "<group>";

@@ -10,6 +10,7 @@
 
 #include "ConsoleManager.h"
 #include "GameManager.h"
+#include "Justification.h"
 #include "LogManager.h"
 
 Button::Button (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor)
@@ -51,7 +52,7 @@ void Button::onDrawClient () const
     int vertCenter = height() / 2;
     if (hasDirectFocus())
     {
-        ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, focusForeColor(), focusBackColor(), true, true);
+        ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, focusForeColor(), focusBackColor(), Justification::Horizontal::center, true);
         mvwaddch(cursesWindow(), vertCenter, 0, '|');
         if (wantEnter())
         {
@@ -61,7 +62,7 @@ void Button::onDrawClient () const
     }
     else
     {
-        ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, clientForeColor(), clientBackColor(), true, true);
+        ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, clientForeColor(), clientBackColor(), Justification::Horizontal::center, true);
     }
 }
 

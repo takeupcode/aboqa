@@ -45,7 +45,7 @@ bool ConsoleManager::getMaxWinBounds (const Window & win, int & y, int & x)
     return true;
 }
 
-bool ConsoleManager::promptYesOrNo (const Window & win, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
+bool ConsoleManager::promptYesOrNo (const Window & win, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification, Justification::Horizontal errorJustification, bool fillSpace)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
@@ -58,10 +58,10 @@ bool ConsoleManager::promptYesOrNo (const Window & win, const std::string & prom
     int errorY = currentY + 1;
     int errorX = currentX;
     
-    return promptYesOrNo(win, currentY, currentX, width, errorY, errorX, width, prompt, foreColor, backColor, errorForeColor, errorBackColor, center, errorCenter, fillSpace);
+    return promptYesOrNo(win, currentY, currentX, width, errorY, errorX, width, prompt, foreColor, backColor, errorForeColor, errorBackColor, justification, errorJustification, fillSpace);
 }
 
-bool ConsoleManager::promptYesOrNo (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
+bool ConsoleManager::promptYesOrNo (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification, Justification::Horizontal errorJustification, bool fillSpace)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
@@ -70,7 +70,7 @@ bool ConsoleManager::promptYesOrNo (const Window & win, int y, int x, int width,
     
     while (true)
     {
-        printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
+        printMessage(win, y, x, width, prompt, foreColor, backColor, justification, fillSpace);
         wrefresh(cursesWin);
         
         char input = static_cast<char>(wgetch(cursesWin));
@@ -94,12 +94,12 @@ bool ConsoleManager::promptYesOrNo (const Window & win, int y, int x, int width,
         {
             stringstream ss;
             ss << "Please enter y or n.";
-            printMessage(win, errorY, errorX, errorWidth, ss.str(), errorForeColor, errorBackColor, errorCenter, fillSpace);
+            printMessage(win, errorY, errorX, errorWidth, ss.str(), errorForeColor, errorBackColor, errorJustification, fillSpace);
         }
     }
 }
 
-int ConsoleManager::promptNumber (const Window & win, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
+int ConsoleManager::promptNumber (const Window & win, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification, Justification::Horizontal errorJustification, bool fillSpace)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
@@ -112,10 +112,10 @@ int ConsoleManager::promptNumber (const Window & win, const std::string & prompt
     int errorY = currentY + 1;
     int errorX = currentX;
     
-    return promptNumber(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, foreColor, backColor, errorForeColor, errorBackColor, center, errorCenter, fillSpace);
+    return promptNumber(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, foreColor, backColor, errorForeColor, errorBackColor, justification, errorJustification, fillSpace);
 }
 
-int ConsoleManager::promptNumber (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace)
+int ConsoleManager::promptNumber (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification, Justification::Horizontal errorJustification, bool fillSpace)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
@@ -125,7 +125,7 @@ int ConsoleManager::promptNumber (const Window & win, int y, int x, int width, i
     const int BUFFER_CHAR_COUNT = 10;
     while (true)
     {
-        printMessage(win, y, x, width, prompt, foreColor, backColor, center);
+        printMessage(win, y, x, width, prompt, foreColor, backColor, justification);
         wrefresh(cursesWin);
         
         char buffer[BUFFER_CHAR_COUNT + 1];
@@ -144,11 +144,11 @@ int ConsoleManager::promptNumber (const Window & win, int y, int x, int width, i
 
         stringstream ss;
         ss << "Please enter a number between " << minimum << " and " << maximum << ".";
-        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorForeColor, errorBackColor, errorCenter, fillSpace);
+        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorForeColor, errorBackColor, errorJustification, fillSpace);
     }
 }
 
-char ConsoleManager::promptLetter (const Window & win, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
+char ConsoleManager::promptLetter (const Window & win, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification, Justification::Horizontal errorJustification, bool fillSpace, bool enforceUpperCase)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
@@ -161,10 +161,10 @@ char ConsoleManager::promptLetter (const Window & win, const std::string & promp
     int errorY = currentY + 1;
     int errorX = currentX;
     
-    return promptLetter(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, foreColor, backColor, errorForeColor, errorBackColor, center, errorCenter, fillSpace, enforceUpperCase);
+    return promptLetter(win, currentY, currentX, width, errorY, errorX, width, prompt, minimum, maximum, foreColor, backColor, errorForeColor, errorBackColor, justification, errorJustification, fillSpace, enforceUpperCase);
 }
 
-char ConsoleManager::promptLetter (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center, bool errorCenter, bool fillSpace, bool enforceUpperCase)
+char ConsoleManager::promptLetter (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification, Justification::Horizontal errorJustification, bool fillSpace, bool enforceUpperCase)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
@@ -207,7 +207,7 @@ char ConsoleManager::promptLetter (const Window & win, int y, int x, int width, 
     
     while (true)
     {
-        printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
+        printMessage(win, y, x, width, prompt, foreColor, backColor, justification, fillSpace);
         wrefresh(cursesWin);
         
         char input = static_cast<char>(wgetch(cursesWin));
@@ -231,11 +231,11 @@ char ConsoleManager::promptLetter (const Window & win, int y, int x, int width, 
         
         stringstream ss;
         ss << "Please enter a letter between " << minimumLower << " and " << maximumLower << ".";
-        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorForeColor, errorBackColor, errorCenter, fillSpace);
+        printMessage(win, errorY, errorX, errorWidth, ss.str(), errorForeColor, errorBackColor, errorJustification, fillSpace);
     }
 }
 
-void ConsoleManager::promptPause (const Window & win, const std::string & prompt, int foreColor, int backColor, bool center, bool fillSpace)
+void ConsoleManager::promptPause (const Window & win, const std::string & prompt, int foreColor, int backColor, Justification::Horizontal justification, bool fillSpace)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
@@ -245,20 +245,20 @@ void ConsoleManager::promptPause (const Window & win, const std::string & prompt
     
     int width = win.clientWidth() - currentX;
     
-    promptPause(win, currentY, currentX, width, prompt, foreColor, backColor, center, fillSpace);
+    promptPause(win, currentY, currentX, width, prompt, foreColor, backColor, justification, fillSpace);
 }
 
-void ConsoleManager::promptPause (const Window & win, int y, int x, int width, const std::string & prompt, int foreColor, int backColor, bool center, bool fillSpace)
+void ConsoleManager::promptPause (const Window & win, int y, int x, int width, const std::string & prompt, int foreColor, int backColor, Justification::Horizontal justification, bool fillSpace)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
-    printMessage(win, y, x, width, prompt, foreColor, backColor, center, fillSpace);
+    printMessage(win, y, x, width, prompt, foreColor, backColor, justification, fillSpace);
     wrefresh(cursesWin);
     
     wgetch(cursesWin);
 }
 
-void ConsoleManager::printMessage (const Window & win, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
+void ConsoleManager::printMessage (const Window & win, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification, bool fillSpace)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
@@ -268,10 +268,10 @@ void ConsoleManager::printMessage (const Window & win, const std::string & msg, 
     
     int width = win.clientWidth() - currentX;
     
-    printMessage(win, currentY, currentX, width, msg, foreColor, backColor, center, fillSpace);
+    printMessage(win, currentY, currentX, width, msg, foreColor, backColor, justification, fillSpace);
 }
 
-void ConsoleManager::printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, bool center, bool fillSpace)
+void ConsoleManager::printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification, bool fillSpace)
 {
     int maxWinY;
     int maxWinX;
@@ -286,15 +286,26 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
     
     WINDOW * cursesWin = win.cursesWindow();
     
-    int messageX = x;
-    if (center)
+    int margin = 0;
+    switch (justification)
     {
-        int margin = static_cast<int>(width - msg.length()) / 2;
-        if (margin > 0)
-        {
-            messageX += margin;
-        }
+    case Justification::Horizontal::left:
+        margin = 0;
+        break;
+        
+    case Justification::Horizontal::center:
+        margin = static_cast<int>(width - msg.length()) / 2;
+        break;
+        
+    case Justification::Horizontal::right:
+        margin = static_cast<int>(width - msg.length());
+        break;
     }
+    if (margin < 0)
+    {
+        margin = 0;
+    }
+    int messageX = x + margin;
     
     int i = Colors::colorPairIndex(foreColor, backColor);
     wattrset(cursesWin, COLOR_PAIR(i));
@@ -319,6 +330,7 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
         int currentY = getcury(cursesWin);
         if (currentY != y)
         {
+            // This method only prints a single line of text.
             return;
         }
         int currentX = getcurx(cursesWin);

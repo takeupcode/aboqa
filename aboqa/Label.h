@@ -9,12 +9,13 @@
 #ifndef Label_h
 #define Label_h
 
+#include "Justification.h"
 #include "Window.h"
 
 class Label : public Window
 {
 public:
-    Label (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, bool multiline);
+    Label (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, Justification::Horizontal horizontalJustification = Justification::Horizontal::left, Justification::Vertical verticalJustification = Justification::Vertical::center, bool multiline = false);
     
     void onDrawClient () const override;
     
@@ -26,6 +27,8 @@ public:
     
 private:
     std::string mText;
+    Justification::Horizontal mHorizontalJustification;
+    Justification::Vertical mVerticalJustification;
     bool mMultiline;
 };
 

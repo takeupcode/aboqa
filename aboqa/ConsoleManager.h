@@ -13,6 +13,8 @@
 #include <curses.h>
 #include <vector>
 
+#include "Justification.h"
+
 class Window;
 
 class ConsoleManager
@@ -34,32 +36,25 @@ public:
         void setDefaultValues ();
     };
     
-    enum class LineJustification
-    {
-        left,
-        center,
-        right
-    };
+    static bool promptYesOrNo (const Window & win, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification = Justification::Horizontal::left, Justification::Horizontal errorJustification = Justification::Horizontal::left, bool fillSpace = false);
     
-    static bool promptYesOrNo (const Window & win, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center = false, bool errorCenter = false, bool fillSpace = false);
+    static bool promptYesOrNo (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification = Justification::Horizontal::left, Justification::Horizontal errorJustification = Justification::Horizontal::left, bool fillSpace = false);
     
-    static bool promptYesOrNo (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center = false, bool errorCenter = false, bool fillSpace = false);
+    static int promptNumber (const Window & win, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification = Justification::Horizontal::left, Justification::Horizontal errorJustification = Justification::Horizontal::left, bool fillSpace = false);
     
-    static int promptNumber (const Window & win, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center = false, bool errorCenter = false, bool fillSpace = false);
+    static int promptNumber (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification = Justification::Horizontal::left, Justification::Horizontal errorJustification = Justification::Horizontal::left, bool fillSpace = false);
     
-    static int promptNumber (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, int minimum, int maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center = false, bool errorCenter = false, bool fillSpace = false);
+    static char promptLetter (const Window & win, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification = Justification::Horizontal::left, Justification::Horizontal errorJustification = Justification::Horizontal::left, bool fillSpace = false, bool enforceUpperCase = false);
     
-    static char promptLetter (const Window & win, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center = false, bool errorCenter = false, bool fillSpace = false, bool enforceUpperCase = false);
+    static char promptLetter (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, Justification::Horizontal justification = Justification::Horizontal::left, Justification::Horizontal errorJustification = Justification::Horizontal::left, bool fillSpace = false, bool enforceUpperCase = false);
     
-    static char promptLetter (const Window & win, int y, int x, int width, int errorY, int errorX, int errorWidth, const std::string & prompt, char minimum, char maximum, int foreColor, int backColor, int errorForeColor, int errorBackColor, bool center = false, bool errorCenter = false, bool fillSpace = false, bool enforceUpperCase = false);
+    static void promptPause (const Window & win, const std::string & prompt, int foreColor, int backColor, Justification::Horizontal justification = Justification::Horizontal::left, bool fillSpace = false);
     
-    static void promptPause (const Window & win, const std::string & prompt, int foreColor, int backColor, bool center = false, bool fillSpace = false);
+    static void promptPause (const Window & win, int y, int x, int width, const std::string & prompt, int foreColor, int backColor, Justification::Horizontal justification = Justification::Horizontal::left, bool fillSpace = false);
     
-    static void promptPause (const Window & win, int y, int x, int width, const std::string & prompt, int foreColor, int backColor, bool center = false, bool fillSpace = false);
+    static void printMessage (const Window & win, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification = Justification::Horizontal::left, bool fillSpace = false);
     
-    static void printMessage (const Window & win, const std::string & msg, int foreColor, int backColor, bool center = false, bool fillSpace = false);
-    
-    static void printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, bool center = false, bool fillSpace = false);
+    static void printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification = Justification::Horizontal::left, bool fillSpace = false);
     
     static void printMessage (const Window & win, int y, int x, const std::string & msg);
     

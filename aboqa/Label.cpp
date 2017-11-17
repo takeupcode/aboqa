@@ -10,9 +10,10 @@
 
 #include "ConsoleManager.h"
 
-Label::Label (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, bool multiline)
+Label::Label (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, Justification::Horizontal horizontalJustification, Justification::Vertical verticalJustification, bool multiline)
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, false, foreColor, backColor),
-  mText(text), mMultiline(multiline)
+  mText(text), mHorizontalJustification(horizontalJustification), mVerticalJustification(verticalJustification),
+  mMultiline(multiline)
 {
     setFillClientArea(false);
 }
@@ -22,7 +23,21 @@ void Label::onDrawClient () const
     if (isMultiline())
     {
         std::vector<ConsoleManager::LineBreakpoint> lineBreakPoints = ConsoleManager::calculateLineBreakpoints (mText, clientWidth());
-        int margin = (clientHeight() - static_cast<int>(lineBreakPoints.size())) / 2;
+        int margin = 0;
+        switch (mVerticalJustification)
+        {
+            case Justification::Vertical::top:
+                margin = 0;
+                break;
+                
+            case Justification::Vertical::center:
+                margin = (clientHeight() - static_cast<int>(lineBreakPoints.size())) / 2;
+                break;
+                
+            case Justification::Vertical::bottom:
+                margin = clientHeight() - static_cast<int>(lineBreakPoints.size());
+                break;
+        }
         if (margin < 0)
         {
             margin = 0;
@@ -31,23 +46,23 @@ void Label::onDrawClient () const
         int i = 0;
         for (; i < margin; ++i)
         {
-            ConsoleManager::printMessage(*this, i, 0, clientWidth(), " ", clientForeColor(), clientBackColor(), false, true);
+            ConsoleManager::printMessage(*this, i, 0, clientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
         }
         for (auto & breakpoint: lineBreakPoints)
         {
             std::string lineText = mText.substr(breakpoint.beginIndex, breakpoint.endIndex - breakpoint.beginIndex + 1);
-            ConsoleManager::printMessage(*this, i, 0, clientWidth(), lineText, clientForeColor(), clientBackColor(), false, true);
+            ConsoleManager::printMessage(*this, i, 0, clientWidth(), lineText, clientForeColor(), clientBackColor(), mHorizontalJustification, true);
             ++i;
         }
         for (; i < clientHeight(); ++i)
         {
-            ConsoleManager::printMessage(*this, i, 0, clientWidth(), " ", clientForeColor(), clientBackColor(), false, true);
+            ConsoleManager::printMessage(*this, i, 0, clientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
         }
     }
     else
     {
         int vertCenter = clientHeight() / 2;
-        ConsoleManager::printMessage(*this, vertCenter, 0, clientWidth(), mText, clientForeColor(), clientBackColor(), true, true);
+        ConsoleManager::printMessage(*this, vertCenter, 0, clientWidth(), mText, clientForeColor(), clientBackColor(), mHorizontalJustification, true);
     }
 }
 
