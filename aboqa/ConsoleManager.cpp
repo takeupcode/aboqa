@@ -520,7 +520,8 @@ std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpo
     int x = 0;
     const int maxX = width - 1;
     
-    int lastSpaceIndex = 0;
+    int lastNonSpaceIndex = 0;
+    bool foundNonSpaceChar = false;
     
     LineBreakpoint lineBreakpoint;
     lineBreakpoint.setDefaultValues();
@@ -529,7 +530,7 @@ std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpo
     int foreColor = 0;
     int backColor = 0;
     
-    auto setLineBreakpoint = [&lineBreakpoint, &result] (int index)
+    auto setLineBreakpoint = [&lineBreakpoint, &result, &lastNonSpaceIndex, &foundNonSpaceChar, &x] (int index)
     {
         lineBreakpoint.endIndex = index;
         
@@ -537,13 +538,19 @@ std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpo
         
         lineBreakpoint.setDefaultValues();
         
-        lineBreakpoint.beginIndex = index + 1;
+        lastNonSpaceIndex = 0;
+        
+        foundNonSpaceChar = false;
+        
+        x = 0;
     };
     
     int lastIndex = static_cast<int>(text.length()) - 1;
     for (int index = 0; index <= lastIndex; ++index)
     {
         char c = text[index];
+        bool thisCharIsSpace = (c == ' ' || c == '\t' || c == '\n');
+        
         switch (state)
         {
         case PrintState::normal:
@@ -553,41 +560,49 @@ std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpo
             }
             else if (c == '\n')
             {
-                setLineBreakpoint(index);
-                x = 0;
+                setLineBreakpoint(lastNonSpaceIndex);
             }
             else
             {
-                if (c == ' ' || c == '\t')
+                if (foundNonSpaceChar || !thisCharIsSpace)
                 {
-                    lastSpaceIndex = index;
-                }
-                
-                if (x > maxX)
-                {
-                    lineBreakpoint.endIndex = index - 1;
-                    
-                    if (lastSpaceIndex > lineBreakpoint.beginIndex)
+                    if (x > maxX)
                     {
-                        // If we found a space since beginning this
-                        // line, then go back to that space.
-                        index = lastSpaceIndex;
+                        lineBreakpoint.endIndex = index - 1;
+                        
+                        if (lastNonSpaceIndex > lineBreakpoint.beginIndex)
+                        {
+                            // If we found a space after a non space since beginning this
+                            // line, then go back to the previous non space.
+                            index = lastNonSpaceIndex;
+                        }
+                        else
+                        {
+                            // Go back one position.
+                            --index;
+                        }
+                        setLineBreakpoint(index);
+                    }
+                    else if (index == lastIndex)
+                    {
+                        setLineBreakpoint(index);
                     }
                     else
                     {
-                        // Go back one position.
-                        --index;
+                        bool nextCharIsSpace = (text[index + 1] == ' ' || text[index + 1] == '\t' || text[index + 1] == '\n');
+
+                        if (!thisCharIsSpace && nextCharIsSpace)
+                        {
+                            lastNonSpaceIndex = index;
+                        }
+                        if (!foundNonSpaceChar)
+                        {
+                            lineBreakpoint.beginIndex = index;
+                            
+                            foundNonSpaceChar = true;
+                        }
+                        ++x;
                     }
-                    setLineBreakpoint(index);
-                    x = 0;
-                }
-                else if (index == lastIndex)
-                {
-                    setLineBreakpoint(index);
-                }
-                else
-                {
-                    ++x;
                 }
             }
             skipColorCheck = false;
