@@ -8,12 +8,22 @@
 
 #include "MainWindow.h"
 
+#include "Colors.h"
 #include "GameManager.h"
 #include "LogManager.h"
+#include "TextBox.h"
+
+const std::string MainWindow::windowName = "MainWindow";
+const std::string MainWindow::textBoxName = "textBox";
 
 MainWindow::MainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
-: Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border, clientForeColor, clientBackColor)
-{ }
+: Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
+{
+    auto textBox = std::unique_ptr<TextBox>(new TextBox(textBoxName, "line 1\nline 2\nline 3", 0, 0, 7, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_CYAN, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_BLUE, true));
+    textBox->setAnchorLeft(20);
+    textBox->setAnchorRight(15);
+    addControl(std::move(textBox));
+}
 
 bool MainWindow::onKeyPress (GameManager * gm, int key) const
 {
@@ -59,4 +69,9 @@ void MainWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t
 void MainWindow::onDrawClient () const
 {
     
+}
+
+bool MainWindow::canHaveDirectFocus () const
+{
+    return false;
 }

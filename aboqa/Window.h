@@ -19,7 +19,7 @@ class GameManager;
 class Window
 {
 public:
-    Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border, int focusForeColor, int focusBackColor);
+    Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, int focusForeColor, int focusBackColor, bool border);
 
     virtual ~Window ();
 

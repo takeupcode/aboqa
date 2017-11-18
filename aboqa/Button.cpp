@@ -14,7 +14,7 @@
 #include "LogManager.h"
 
 Button::Button (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor)
-: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, false, focusForeColor, focusBackColor),
+: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, focusForeColor, focusBackColor, false),
   mText(text), mClicked(new ClickedEvent())
 {
     setFillClientArea(false);

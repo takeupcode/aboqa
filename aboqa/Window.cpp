@@ -14,7 +14,7 @@
 
 using namespace std;
 
-Window::Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border, int focusForeColor, int focusBackColor)
+Window::Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, int focusForeColor, int focusBackColor, bool border)
 : mClientCursesWindow(nullptr), mBorderWindow(nullptr), mName(name),
   mY(y), mX(x), mHeight(height), mWidth(width),
   mAnchorTop(-1), mAnchorBottom(-1), mAnchorLeft(-1), mAnchorRight(-1),
@@ -644,7 +644,7 @@ void Window::createWindows ()
             throw std::out_of_range("height or width cannot be less than 3 when using a border.");
         }
         
-        mBorderWindow.reset(new Window("border", mY, mX, mHeight, mWidth, mBorderForeColor, mBorderBackColor, mBorderForeColor, mBorderBackColor, false, mBorderForeColor, mBorderBackColor));
+        mBorderWindow.reset(new Window("border", mY, mX, mHeight, mWidth, mBorderForeColor, mBorderBackColor, mBorderForeColor, mBorderBackColor, mBorderForeColor, mBorderBackColor, false));
     }
     else
     {

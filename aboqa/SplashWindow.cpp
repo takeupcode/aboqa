@@ -20,7 +20,7 @@ const std::string SplashWindow::exitButtonName = "exitButton";
 const std::string SplashWindow::introLabelName = "introLabel";
 
 SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
-: Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border, clientForeColor, clientBackColor)
+: Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
 {
     auto playButton = std::unique_ptr<Button>(new Button(playButtonName, "Play", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
     playButton->setAnchorBottom(0);

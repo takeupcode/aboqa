@@ -11,7 +11,7 @@
 #include "ConsoleManager.h"
 
 Label::Label (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, Justification::Horizontal horizontalJustification, Justification::Vertical verticalJustification, bool multiline)
-: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, false, foreColor, backColor),
+: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
   mText(text), mHorizontalJustification(horizontalJustification), mVerticalJustification(verticalJustification),
   mMultiline(multiline)
 {
