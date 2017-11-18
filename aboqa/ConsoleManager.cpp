@@ -14,6 +14,7 @@
 
 #include "Colors.h"
 #include "CursesUtil.h"
+#include "TextUtil.h"
 #include "Window.h"
 
 using namespace std;
@@ -294,11 +295,11 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
         break;
         
     case Justification::Horizontal::center:
-        margin = static_cast<int>(width - msg.length()) / 2;
+        margin = (width - static_cast<int>(msg.length())) / 2;
         break;
         
     case Justification::Horizontal::right:
-        margin = static_cast<int>(width - msg.length());
+        margin = width - static_cast<int>(msg.length());
         break;
     }
     if (margin < 0)
@@ -327,13 +328,19 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
     
     if (fillSpace)
     {
+        if (y == maxWinY)
+        {
+            y = maxWinY;
+        }
         int currentY = getcury(cursesWin);
         if (currentY != y)
         {
             // This method only prints a single line of text.
             return;
         }
-        int currentX = getcurx(cursesWin);
+        // We can't rely on the cursor moving automatically when it's already
+        // in the bottom right corner.
+        int currentX = messageX + static_cast<int>(msg.length());
         for (int i = currentX; i < x + width; ++i)
         {
             if (i > maxWinX)
@@ -549,7 +556,7 @@ std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpo
     for (int index = 0; index <= lastIndex; ++index)
     {
         char c = text[index];
-        bool thisCharIsSpace = (c == ' ' || c == '\t' || c == '\n');
+        bool thisCharIsWhitespace = TextUtil::isWhitespace(c);
         
         switch (state)
         {
@@ -564,7 +571,7 @@ std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpo
             }
             else
             {
-                if (foundNonSpaceChar || !thisCharIsSpace)
+                if (foundNonSpaceChar || !thisCharIsWhitespace)
                 {
                     if (x > maxX)
                     {
@@ -585,13 +592,19 @@ std::vector<ConsoleManager::LineBreakpoint> ConsoleManager::calculateLineBreakpo
                     }
                     else if (index == lastIndex)
                     {
+                        // See below why we need to check for the last char at this point.
                         setLineBreakpoint(index);
                     }
                     else
                     {
-                        bool nextCharIsSpace = (text[index + 1] == ' ' || text[index + 1] == '\t' || text[index + 1] == '\n');
+                        // We already know that this is not the last char.
+                        bool nextCharIsWhitespace = TextUtil::isWhitespace(text[index + 1]);
+                        
+                        // For breaking purposes, the first char is treated as if it was preceded by whitespace.
+                        bool prevCharIsWhitespace = (index == 0) ? true : TextUtil::isWhitespace(text[index - 1]);
 
-                        if (!thisCharIsSpace && nextCharIsSpace)
+                        if ((!thisCharIsWhitespace && nextCharIsWhitespace) ||
+                            (c == '-' && !nextCharIsWhitespace && !prevCharIsWhitespace))
                         {
                             lastNonSpaceIndex = index;
                         }

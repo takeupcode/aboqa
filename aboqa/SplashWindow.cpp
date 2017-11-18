@@ -35,8 +35,9 @@ SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, 
     exitButton->clicked()->connect(windowName, this);
     addControl(std::move(exitButton));
     
-    auto introLabel = std::unique_ptr<Label>(new Label(introLabelName, "Play game?\nThis is a long string that goes beyond 20 characters.", 0, 0, 7, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_CYAN, Justification::Horizontal::right, Justification::Vertical::bottom, true));
+    auto introLabel = std::unique_ptr<Label>(new Label(introLabelName, "Play game?\nThis is a long multi-string that goes beyond 20 characters.", 0, 0, 7, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_CYAN, Justification::Horizontal::right, Justification::Vertical::center, true));
     introLabel->setAnchorLeft(20);
+    introLabel->setAnchorRight(15);
     addControl(std::move(introLabel));
 }
 

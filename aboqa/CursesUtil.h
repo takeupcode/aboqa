@@ -9,9 +9,8 @@
 #ifndef CursesUtil_h
 #define CursesUtil_h
 
-class CursesUtil
+struct CursesUtil
 {
-public:
     static void getScreenMaxYX (int & y, int & x);
 };
 
