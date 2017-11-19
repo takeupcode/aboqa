@@ -38,6 +38,9 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
         {
             throw std::out_of_range("width cannot be less than 2 when using multi-line.");
         }
+        
+        mMinHeight = 4;
+        mMinWidth = 2;
     }
     else
     {
@@ -49,6 +52,9 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
         {
             throw std::out_of_range("width cannot be less than 3 when using single-line.");
         }
+        
+        mMinHeight = 1;
+        mMinWidth = 3;
     }
     
     setFillClientArea(false);
@@ -180,11 +186,55 @@ void TextBox::onDrawNonClient () const
 
 int TextBox::textClientWidth () const
 {
+    // This method accounts for the area used by the scrolling buttons.
     if (mMultiline)
     {
+        // If multi-line, then all the scrolling buttons are in the rightmost column.
         return clientWidth() - 1;
     }
+    
+    // For single-line, the left and right scrolling buttons occupy the last two columns.
     return clientWidth() - 2;
+}
+
+void TextBox::setMinHeight (int height)
+{
+    if (mMultiline)
+    {
+        if (height < 4)
+        {
+            throw std::out_of_range("height cannot be less than 4 when using multi-line.");
+        }
+    }
+    else
+    {
+        if (height != 1)
+        {
+            throw std::out_of_range("height must be 1 when using single-line.");
+        }
+    }
+    
+    mMinHeight = height;
+}
+
+void TextBox::setMinWidth (int width)
+{
+    if (mMultiline)
+    {
+        if (width < 2)
+        {
+            throw std::out_of_range("width cannot be less than 2 when using multi-line.");
+        }
+    }
+    else
+    {
+        if (width < 3)
+        {
+            throw std::out_of_range("width cannot be less than 3 when using single-line.");
+        }
+    }
+    
+    mMinWidth = width;
 }
 
 int TextBox::selectedForeColor () const

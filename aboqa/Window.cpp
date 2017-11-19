@@ -25,6 +25,9 @@ Window::Window (const std::string & name, int y, int x, int height, int width, i
   mFillClientArea(true), mWantEnter(false),
   mVisibleState(VisibleState::shown), mEnableState(EnableState::enabled)
 {
+    mMinHeight = mBorder ? 3 : 1;
+    mMinWidth = mBorder ? 3 : 1;
+    
     createWindows();
     
     setFocus(true);
@@ -189,6 +192,11 @@ int Window::clientHeight () const
     return mBorder ? mHeight - 2 : mHeight;
 }
 
+int Window::minHeight () const
+{
+    return mMinHeight;
+}
+
 void Window::setHeight (int height)
 {
     if (mHeight != height)
@@ -197,6 +205,26 @@ void Window::setHeight (int height)
         mHeight = height;
         createWindows();
     }
+}
+
+void Window::setMinHeight (int height)
+{
+    if (mBorder)
+    {
+        if (height < 3)
+        {
+            throw std::out_of_range("height cannot be less than 3 when using a border.");
+        }
+    }
+    else
+    {
+        if (height < 1)
+        {
+            throw std::out_of_range("height cannot be less than 1.");
+        }
+    }
+    
+    mMinHeight = height;
 }
 
 int Window::width () const
@@ -209,6 +237,11 @@ int Window::clientWidth () const
     return mBorder ? mWidth - 2 : mWidth;
 }
 
+int Window::minWidth () const
+{
+    return mMinWidth;
+}
+
 void Window::setWidth (int width)
 {
     if (mWidth != width)
@@ -217,6 +250,26 @@ void Window::setWidth (int width)
         mWidth = width;
         createWindows();
     }
+}
+
+void Window::setMinWidth (int width)
+{
+    if (mBorder)
+    {
+        if (width < 3)
+        {
+            throw std::out_of_range("width cannot be less than 3 when using a border.");
+        }
+    }
+    else
+    {
+        if (width < 1)
+        {
+            throw std::out_of_range("width cannot be less than 1.");
+        }
+    }
+    
+    mMinWidth = width;
 }
 
 void Window::resize (int height, int width)
@@ -724,9 +777,9 @@ void Window::anchorWindow (Window * win)
     {
         newTop = clientY() + win->anchorTop();
         newBottom = clientY() + clientHeight() - win->anchorBottom(); // This is one past the bottom row.
-        if (newBottom <= newTop)
+        if (newBottom <= newTop + win->minHeight())
         {
-            newBottom = newTop + 1;
+            newBottom = newTop+ win->minHeight();
         }
     }
     else if (win->anchorTop() != -1)
@@ -749,9 +802,9 @@ void Window::anchorWindow (Window * win)
     {
         newLeft = clientX() + win->anchorLeft();
         newRight = clientX() + clientWidth() - win->anchorRight(); // This is one past the right column.
-        if (newRight <= newLeft)
+        if (newRight <= newLeft + win->minWidth())
         {
-            newRight = newLeft + 1;
+            newRight = newLeft + win->minWidth();
         }
     }
     else if (win->anchorLeft() != -1)

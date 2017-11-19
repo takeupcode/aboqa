@@ -36,6 +36,10 @@ public:
     
     int textClientWidth () const;
     
+    void setMinHeight (int height) override;
+    
+    void setMinWidth (int width) override;
+    
     int selectedForeColor () const;
     
     void setSelectedForeColor (int color);

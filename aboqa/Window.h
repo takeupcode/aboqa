@@ -69,15 +69,23 @@ public:
 
     virtual int height () const;
     
+    virtual int minHeight () const;
+    
     virtual int clientHeight () const;
 
     virtual void setHeight (int height);
+    
+    virtual void setMinHeight (int height);
 
     virtual int width () const;
+    
+    virtual int minWidth () const;
     
     virtual int clientWidth () const;
 
     virtual void setWidth (int width);
+    
+    virtual void setMinWidth (int width);
 
     virtual void resize (int height, int width);
 
@@ -185,6 +193,8 @@ protected:
     int mX;
     int mHeight;
     int mWidth;
+    int mMinHeight;
+    int mMinWidth;
     int mAnchorTop;
     int mAnchorBottom;
     int mAnchorLeft;

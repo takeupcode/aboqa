@@ -20,6 +20,8 @@ MainWindow::MainWindow (const std::string & name, int y, int x, int height, int 
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
 {
     auto textBox = std::unique_ptr<TextBox>(new TextBox(textBoxName, "line 1\nline 2\nline 3", 0, 0, 7, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_CYAN, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_BLUE, true));
+    textBox->setAnchorTop(2);
+    textBox->setAnchorBottom(2);
     textBox->setAnchorLeft(20);
     textBox->setAnchorRight(15);
     addControl(std::move(textBox));
