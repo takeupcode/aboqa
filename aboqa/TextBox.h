@@ -10,6 +10,7 @@
 #define TextBox_h
 
 #include <string>
+#include <list>
 
 #include "EventPublisher.h"
 #include "Window.h"
@@ -55,7 +56,7 @@ public:
     SelectionChangedEvent * selectionChanged ();
     
 private:
-    std::string mText;
+    std::list<std::string> mText;
     std::unique_ptr<TextChangedEvent> mTextChanged;
     std::unique_ptr<SelectionChangedEvent> mSelectionChanged;
     int mSelectedForeColor;

@@ -8,15 +8,24 @@
 
 #include "TextBox.h"
 
+#include <sstream>
+
 #include "ConsoleManager.h"
 #include "Justification.h"
 
 TextBox::TextBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int selectedForeColor, int selectedBackColor, bool multiline)
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
-  mText(text), mTextChanged(new TextChangedEvent()), mSelectionChanged(new SelectionChangedEvent()),
+  mTextChanged(new TextChangedEvent()), mSelectionChanged(new SelectionChangedEvent()),
   mSelectedForeColor(selectedForeColor), mSelectedBackColor(selectedBackColor), mMultiline(multiline)
 {
     setFillClientArea(false);
+    
+    std::istringstream ss(text);
+    std::string line;
+    while (std::getline(ss, line))
+    {
+        mText.push_back(std::move(line));
+    }
 }
 
 bool TextBox::onKeyPress (GameManager * gm, int key) const
@@ -58,12 +67,10 @@ void TextBox::onDrawClient () const
     
     if (isMultiline())
     {
-        std::vector<ConsoleManager::LineBreakpoint> lineBreakPoints = ConsoleManager::calculateLineBreakpoints (mText, clientWidth());
-        
         int i = 0;
-        for (auto & breakpoint: lineBreakPoints)
+        for (auto & line: mText)
         {
-            std::string lineText = mText.substr(breakpoint.beginIndex, breakpoint.endIndex - breakpoint.beginIndex + 1);
+            std::string lineText = line.substr(0, clientWidth());
             ConsoleManager::printMessage(*this, i, 0, clientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
             
             ++i;
@@ -80,7 +87,8 @@ void TextBox::onDrawClient () const
     else
     {
         int vertCenter = clientHeight() / 2;
-        ConsoleManager::printMessage(*this, vertCenter, 0, clientWidth(), mText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+        std::string lineText = mText.front().substr(0, clientWidth());
+        ConsoleManager::printMessage(*this, vertCenter, 0, clientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
     }
 }
 
