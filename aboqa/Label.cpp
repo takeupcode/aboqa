@@ -20,6 +20,11 @@ Label::Label (const std::string & name, const std::string & text, int y, int x, 
 
 void Label::onDrawClient () const
 {
+    if (visibleState() != Window::VisibleState::shown)
+    {
+        return;
+    }
+    
     if (isMultiline())
     {
         std::vector<ConsoleManager::LineBreakpoint> lineBreakPoints = ConsoleManager::calculateLineBreakpoints (mText, clientWidth());

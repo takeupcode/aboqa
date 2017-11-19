@@ -19,6 +19,20 @@ class GameManager;
 class Window
 {
 public:
+    enum class VisibleState
+    {
+        collapsed,
+        hidden,
+        shown
+    };
+
+    enum class EnableState
+    {
+        disabled,
+        readonly,
+        enabled
+    };
+
     Window (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, int focusForeColor, int focusBackColor, bool border);
 
     virtual ~Window ();
@@ -142,6 +156,14 @@ public:
     bool wantEnter () const;
     
     void setWantEnter (bool value);
+    
+    VisibleState visibleState () const;
+    
+    void setVisibleState (VisibleState value);
+    
+    EnableState enableState () const;
+    
+    void setEnableState (EnableState value);
 
 protected:
     void setFillClientArea (bool value);
@@ -178,6 +200,8 @@ protected:
     mutable bool mHasDirectFocus;
     bool mFillClientArea;
     bool mWantEnter;
+    VisibleState mVisibleState;
+    EnableState mEnableState;
 };
 
 #endif /* Window_h */

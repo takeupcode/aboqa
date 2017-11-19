@@ -22,7 +22,8 @@ Window::Window (const std::string & name, int y, int x, int height, int width, i
   mBorderForeColor(borderForeColor), mBorderBackColor(borderBackColor),
   mFocusForeColor(focusForeColor), mFocusBackColor(focusBackColor),
   mParent(nullptr), mBorder(border), mHasFocus(false), mHasDirectFocus(false),
-  mFillClientArea(true), mWantEnter(false)
+  mFillClientArea(true), mWantEnter(false),
+  mVisibleState(VisibleState::shown), mEnableState(EnableState::enabled)
 {
     createWindows();
     
@@ -441,7 +442,7 @@ const Window * Window::findFocus () const
 
 bool Window::canHaveDirectFocus () const
 {
-    return true;
+    return mVisibleState == VisibleState::shown && mEnableState != EnableState::disabled;
 }
 
 bool Window::hasDirectFocus () const
@@ -623,6 +624,26 @@ bool Window::wantEnter () const
 void Window::setWantEnter (bool value)
 {
     mWantEnter = value;
+}
+
+Window::VisibleState Window::visibleState () const
+{
+    return mVisibleState;
+}
+
+void Window::setVisibleState (VisibleState value)
+{
+    mVisibleState = value;
+}
+
+Window::EnableState Window::enableState () const
+{
+    return mEnableState;
+}
+
+void Window::setEnableState (EnableState value)
+{
+    mEnableState = value;
 }
 
 void Window::setFillClientArea (bool value)

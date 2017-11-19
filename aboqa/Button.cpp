@@ -22,6 +22,11 @@ Button::Button (const std::string & name, const std::string & text, int y, int x
 
 bool Button::onKeyPress (GameManager * gm, int key) const
 {
+    if (enableState() != Window::EnableState::enabled)
+    {
+        return false;
+    }
+    
     switch (key)
     {
     case 32: // Space
@@ -41,6 +46,11 @@ bool Button::onKeyPress (GameManager * gm, int key) const
 
 void Button::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
 {
+    if (enableState() != Window::EnableState::enabled)
+    {
+        return;
+    }
+    
     if (buttonState & BUTTON1_CLICKED)
     {
         handleClick(gm);
@@ -49,16 +59,26 @@ void Button::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t but
 
 void Button::onDrawClient () const
 {
+    if (visibleState() != Window::VisibleState::shown)
+    {
+        return;
+    }
+    
     int vertCenter = height() / 2;
     if (hasDirectFocus())
     {
         ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, focusForeColor(), focusBackColor(), Justification::Horizontal::center, true);
-        mvwaddch(cursesWindow(), vertCenter, 0, '|');
-        if (wantEnter())
+        if (clientWidth() > 5)
         {
-            waddch(cursesWindow(), '>');
+            // If we have room for at least 2 special chars on either side plus one more for the content,
+            // then show focus bars and default button marker.
+            mvwaddch(cursesWindow(), vertCenter, 0, '|');
+            if (wantEnter())
+            {
+                waddch(cursesWindow(), '>');
+            }
+            mvwaddch(cursesWindow(), vertCenter, width() - 1, '|');
         }
-        mvwaddch(cursesWindow(), vertCenter, width() - 1, '|');
     }
     else
     {
