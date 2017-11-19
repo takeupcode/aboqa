@@ -98,6 +98,7 @@ void Window::draw () const
     }
 
     onDrawClient();
+    onDrawNonClient();
     touchwin(mClientCursesWindow);
     wnoutrefresh(mClientCursesWindow);
     
@@ -117,6 +118,9 @@ void Window::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t but
 }
 
 void Window::onDrawClient () const
+{ }
+
+void Window::onDrawNonClient () const
 { }
 
 const std::string & Window::name () const

@@ -13,9 +13,12 @@
 #include <list>
 
 #include "EventPublisher.h"
+#include "EventSubscriber.h"
 #include "Window.h"
 
-class TextBox : public Window
+class Button;
+
+class TextBox : public Window, public EventSubscriber<GameManager *, const Button *>
 {
 public:
     using TextChangedEvent = EventPublisher<GameManager *, const TextBox *>;
@@ -28,6 +31,10 @@ public:
     void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const override;
     
     void onDrawClient () const override;
+    
+    void onDrawNonClient () const override;
+    
+    int textClientWidth () const;
     
     int selectedForeColor () const;
     
@@ -56,11 +63,25 @@ public:
     SelectionChangedEvent * selectionChanged ();
     
 private:
+    void notify (GameManager * gm, const Button * button) override;
+    
+    static const std::string windowName;
+    static const std::string scrollUpButtonName;
+    static const std::string scrollDownButtonName;
+    static const std::string scrollLeftButtonName;
+    static const std::string scrollRightButtonName;
+    
     std::list<std::string> mText;
     std::unique_ptr<TextChangedEvent> mTextChanged;
     std::unique_ptr<SelectionChangedEvent> mSelectionChanged;
+    Button * mScrollUpButton;
+    Button * mScrollDownButton;
+    Button * mScrollLeftButton;
+    Button * mScrollRightButton;
     int mSelectedForeColor;
     int mSelectedBackColor;
+    int mScrollY;
+    int mScrollX;
     bool mMultiline;
 };
 

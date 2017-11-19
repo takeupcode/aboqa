@@ -48,38 +48,40 @@ public:
     virtual void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const;
     
     virtual void onDrawClient () const;
+    
+    virtual void onDrawNonClient () const;
 
     const std::string & name () const;
     
-    int y () const;
+    virtual int y () const;
     
-    int clientY () const;
+    virtual int clientY () const;
 
-    void setY (int y);
+    virtual void setY (int y);
 
-    int x () const;
+    virtual int x () const;
     
-    int clientX () const;
+    virtual int clientX () const;
 
-    void setX (int x);
+    virtual void setX (int x);
 
-    void move (int y, int x);
+    virtual void move (int y, int x);
 
-    int height () const;
+    virtual int height () const;
     
-    int clientHeight () const;
+    virtual int clientHeight () const;
 
-    void setHeight (int height);
+    virtual void setHeight (int height);
 
-    int width () const;
+    virtual int width () const;
     
-    int clientWidth () const;
+    virtual int clientWidth () const;
 
-    void setWidth (int width);
+    virtual void setWidth (int width);
 
-    void resize (int height, int width);
+    virtual void resize (int height, int width);
 
-    void moveAndResize (int y, int x, int height, int width);
+    virtual void moveAndResize (int y, int x, int height, int width);
     
     int anchorTop () const;
     
@@ -105,9 +107,9 @@ public:
     
     void setAnchorsLeftRight (int left, int right);
 
-    bool hasBorder () const;
+    virtual bool hasBorder () const;
 
-    void setBorder (bool border);
+    virtual void setBorder (bool border);
     
     int clientForeColor () const;
     
@@ -141,29 +143,29 @@ public:
     
     virtual bool canHaveDirectFocus () const;
     
-    bool hasDirectFocus () const;
+    virtual bool hasDirectFocus () const;
     
-    bool setFocus (bool focus) const;
+    virtual bool setFocus (bool focus) const;
     
-    bool setFocus (int y, int x) const;
+    virtual bool setFocus (int y, int x) const;
     
-    bool advanceFocus () const;
+    virtual bool advanceFocus () const;
     
     const Window * parent () const;
     
     void setParent (const Window * parent);
     
-    bool wantEnter () const;
+    virtual bool wantEnter () const;
     
-    void setWantEnter (bool value);
+    virtual void setWantEnter (bool value);
     
-    VisibleState visibleState () const;
+    virtual VisibleState visibleState () const;
     
-    void setVisibleState (VisibleState value);
+    virtual void setVisibleState (VisibleState value);
     
-    EnableState enableState () const;
+    virtual EnableState enableState () const;
     
-    void setEnableState (EnableState value);
+    virtual void setEnableState (EnableState value);
 
 protected:
     void setFillClientArea (bool value);

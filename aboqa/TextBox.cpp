@@ -9,15 +9,48 @@
 #include "TextBox.h"
 
 #include <sstream>
+#include <stdexcept>
 
+#include "Button.h"
+#include "Colors.h"
 #include "ConsoleManager.h"
 #include "Justification.h"
+
+const std::string TextBox::windowName = "parent";
+const std::string TextBox::scrollUpButtonName = "scrollUpButton";
+const std::string TextBox::scrollDownButtonName = "scrollDownButton";
+const std::string TextBox::scrollLeftButtonName = "scrollLeftButton";
+const std::string TextBox::scrollRightButtonName = "scrollRightButton";
 
 TextBox::TextBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int selectedForeColor, int selectedBackColor, bool multiline)
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
   mTextChanged(new TextChangedEvent()), mSelectionChanged(new SelectionChangedEvent()),
-  mSelectedForeColor(selectedForeColor), mSelectedBackColor(selectedBackColor), mMultiline(multiline)
+  mSelectedForeColor(selectedForeColor), mSelectedBackColor(selectedBackColor),
+  mScrollY(0), mScrollX(0), mMultiline(multiline)
 {
+    if (multiline)
+    {
+        if (height < 4)
+        {
+            throw std::out_of_range("height cannot be less than 4 when using multi-line.");
+        }
+        if (width < 2)
+        {
+            throw std::out_of_range("width cannot be less than 2 when using multi-line.");
+        }
+    }
+    else
+    {
+        if (height != 1)
+        {
+            throw std::out_of_range("height must be 1 when using single-line.");
+        }
+        if (width < 3)
+        {
+            throw std::out_of_range("width cannot be less than 3 when using single-line.");
+        }
+    }
+    
     setFillClientArea(false);
     
     std::istringstream ss(text);
@@ -26,6 +59,46 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
     {
         mText.push_back(std::move(line));
     }
+    
+    mScrollLeftButton = new Button(scrollLeftButtonName, "<", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+    mScrollLeftButton->clicked()->connect(windowName, this);
+    
+    mScrollRightButton = new Button(scrollRightButtonName, ">", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+    mScrollRightButton->clicked()->connect(windowName, this);
+    
+    if (multiline)
+    {
+        mScrollUpButton = new Button(scrollUpButtonName, "+", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+        mScrollUpButton->clicked()->connect(windowName, this);
+        addControl(std::unique_ptr<Button>(mScrollUpButton));
+        
+        mScrollDownButton = new Button(scrollDownButtonName, "-", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+        mScrollDownButton->clicked()->connect(windowName, this);
+        addControl(std::unique_ptr<Button>(mScrollDownButton));
+        
+        mScrollUpButton->setAnchorTop(0);
+        mScrollUpButton->setAnchorRight(0);
+        
+        mScrollDownButton->setAnchorTop(1);
+        mScrollDownButton->setAnchorRight(0);
+
+        mScrollLeftButton->setAnchorTop(2);
+        mScrollLeftButton->setAnchorRight(0);
+        
+        mScrollRightButton->setAnchorTop(3);
+        mScrollRightButton->setAnchorRight(0);
+}
+    else
+    {
+        mScrollLeftButton->setAnchorTop(0);
+        mScrollLeftButton->setAnchorRight(1);
+        
+        mScrollRightButton->setAnchorTop(0);
+        mScrollRightButton->setAnchorRight(0);
+    }
+    
+    addControl(std::unique_ptr<Button>(mScrollLeftButton));
+    addControl(std::unique_ptr<Button>(mScrollRightButton));
 }
 
 bool TextBox::onKeyPress (GameManager * gm, int key) const
@@ -70,8 +143,8 @@ void TextBox::onDrawClient () const
         int i = 0;
         for (auto & line: mText)
         {
-            std::string lineText = line.substr(0, clientWidth());
-            ConsoleManager::printMessage(*this, i, 0, clientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+            std::string lineText = line.substr(0, textClientWidth());
+            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
             
             ++i;
             if (i >= clientHeight())
@@ -81,15 +154,37 @@ void TextBox::onDrawClient () const
         }
         for (; i < clientHeight(); ++i)
         {
-            ConsoleManager::printMessage(*this, i, 0, clientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
         }
     }
     else
     {
         int vertCenter = clientHeight() / 2;
-        std::string lineText = mText.front().substr(0, clientWidth());
-        ConsoleManager::printMessage(*this, vertCenter, 0, clientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+        std::string lineText = mText.front().substr(0, textClientWidth());
+        ConsoleManager::printMessage(*this, vertCenter, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
     }
+}
+
+void TextBox::onDrawNonClient () const
+{
+    if (visibleState() != Window::VisibleState::shown)
+    {
+        return;
+    }
+    
+    for (int i = 0; i < clientHeight(); ++i)
+    {
+        ConsoleManager::printMessage(*this, i, clientWidth() - 1, 1, " ", Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Justification::Horizontal::left, false);
+    }
+}
+
+int TextBox::textClientWidth () const
+{
+    if (mMultiline)
+    {
+        return clientWidth() - 1;
+    }
+    return clientWidth() - 2;
 }
 
 int TextBox::selectedForeColor () const
@@ -130,4 +225,20 @@ TextBox::TextChangedEvent * TextBox::textChanged ()
 TextBox::SelectionChangedEvent * TextBox::selectionChanged ()
 {
     return mSelectionChanged.get();
+}
+
+void TextBox::notify (GameManager * gm, const Button * button)
+{
+    if (button->name() == scrollUpButtonName)
+    {
+    }
+    else if (button->name() == scrollDownButtonName)
+    {
+    }
+    else if (button->name() == scrollLeftButtonName)
+    {
+    }
+    else if (button->name() == scrollRightButtonName)
+    {
+    }
 }
