@@ -17,10 +17,10 @@
 #include "Justification.h"
 
 const std::string TextBox::windowName = "parent";
-const std::string TextBox::scrollUpButtonName = "scrollUpButton";
-const std::string TextBox::scrollDownButtonName = "scrollDownButton";
-const std::string TextBox::scrollLeftButtonName = "scrollLeftButton";
-const std::string TextBox::scrollRightButtonName = "scrollRightButton";
+const std::string TextBox::moveCursorUpButtonName = "moveUpButton";
+const std::string TextBox::moveCursorDownButtonName = "moveDownButton";
+const std::string TextBox::moveCursorLeftButtonName = "moveLeftButton";
+const std::string TextBox::moveCursorRightButtonName = "moveRightButton";
 
 TextBox::TextBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int selectedForeColor, int selectedBackColor, bool multiline)
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
@@ -66,45 +66,45 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
         mText.push_back(std::move(line));
     }
     
-    mScrollLeftButton = new Button(scrollLeftButtonName, "<", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
-    mScrollLeftButton->clicked()->connect(windowName, this);
+    mMoveCursorLeftButton = new Button(moveCursorLeftButtonName, "<", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+    mMoveCursorLeftButton->clicked()->connect(windowName, this);
     
-    mScrollRightButton = new Button(scrollRightButtonName, ">", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
-    mScrollRightButton->clicked()->connect(windowName, this);
+    mMoveCursorRightButton = new Button(moveCursorRightButtonName, ">", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+    mMoveCursorRightButton->clicked()->connect(windowName, this);
     
     if (multiline)
     {
-        mScrollUpButton = new Button(scrollUpButtonName, "+", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
-        mScrollUpButton->clicked()->connect(windowName, this);
-        addControl(std::unique_ptr<Button>(mScrollUpButton));
+        mMoveCursorUpButton = new Button(moveCursorUpButtonName, "+", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+        mMoveCursorUpButton->clicked()->connect(windowName, this);
+        addControl(std::unique_ptr<Button>(mMoveCursorUpButton));
         
-        mScrollDownButton = new Button(scrollDownButtonName, "-", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
-        mScrollDownButton->clicked()->connect(windowName, this);
-        addControl(std::unique_ptr<Button>(mScrollDownButton));
+        mMoveCursorDownButton = new Button(moveCursorDownButtonName, "-", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+        mMoveCursorDownButton->clicked()->connect(windowName, this);
+        addControl(std::unique_ptr<Button>(mMoveCursorDownButton));
         
-        mScrollUpButton->setAnchorTop(0);
-        mScrollUpButton->setAnchorRight(0);
+        mMoveCursorUpButton->setAnchorTop(0);
+        mMoveCursorUpButton->setAnchorRight(0);
         
-        mScrollDownButton->setAnchorTop(1);
-        mScrollDownButton->setAnchorRight(0);
+        mMoveCursorDownButton->setAnchorTop(1);
+        mMoveCursorDownButton->setAnchorRight(0);
 
-        mScrollLeftButton->setAnchorTop(2);
-        mScrollLeftButton->setAnchorRight(0);
+        mMoveCursorLeftButton->setAnchorTop(2);
+        mMoveCursorLeftButton->setAnchorRight(0);
         
-        mScrollRightButton->setAnchorTop(3);
-        mScrollRightButton->setAnchorRight(0);
-}
+        mMoveCursorRightButton->setAnchorTop(3);
+        mMoveCursorRightButton->setAnchorRight(0);
+    }
     else
     {
-        mScrollLeftButton->setAnchorTop(0);
-        mScrollLeftButton->setAnchorRight(1);
+        mMoveCursorLeftButton->setAnchorTop(0);
+        mMoveCursorLeftButton->setAnchorRight(1);
         
-        mScrollRightButton->setAnchorTop(0);
-        mScrollRightButton->setAnchorRight(0);
+        mMoveCursorRightButton->setAnchorTop(0);
+        mMoveCursorRightButton->setAnchorRight(0);
     }
     
-    addControl(std::unique_ptr<Button>(mScrollLeftButton));
-    addControl(std::unique_ptr<Button>(mScrollRightButton));
+    addControl(std::unique_ptr<Button>(mMoveCursorLeftButton));
+    addControl(std::unique_ptr<Button>(mMoveCursorRightButton));
 }
 
 bool TextBox::onKeyPress (GameManager * gm, int key) const
@@ -279,16 +279,32 @@ TextBox::SelectionChangedEvent * TextBox::selectionChanged ()
 
 void TextBox::notify (GameManager * gm, const Button * button)
 {
-    if (button->name() == scrollUpButtonName)
+    if (button->name() == moveCursorUpButtonName)
     {
+        if (mCursorY > 0)
+        {
+            --mCursorY;
+        }
     }
-    else if (button->name() == scrollDownButtonName)
+    else if (button->name() == moveCursorDownButtonName)
     {
+        if (mCursorY < clientHeight() - 1)
+        {
+            ++mCursorY;
+        }
     }
-    else if (button->name() == scrollLeftButtonName)
+    else if (button->name() == moveCursorLeftButtonName)
     {
+        if (mCursorX > 0)
+        {
+            --mCursorX;
+        }
     }
-    else if (button->name() == scrollRightButtonName)
+    else if (button->name() == moveCursorRightButtonName)
     {
+        if (mCursorX < textClientWidth() - 1)
+        {
+            ++mCursorX;
+        }
     }
 }

@@ -70,18 +70,18 @@ private:
     void notify (GameManager * gm, const Button * button) override;
     
     static const std::string windowName;
-    static const std::string scrollUpButtonName;
-    static const std::string scrollDownButtonName;
-    static const std::string scrollLeftButtonName;
-    static const std::string scrollRightButtonName;
+    static const std::string moveCursorUpButtonName;
+    static const std::string moveCursorDownButtonName;
+    static const std::string moveCursorLeftButtonName;
+    static const std::string moveCursorRightButtonName;
     
     std::list<std::string> mText;
     std::unique_ptr<TextChangedEvent> mTextChanged;
     std::unique_ptr<SelectionChangedEvent> mSelectionChanged;
-    Button * mScrollUpButton;
-    Button * mScrollDownButton;
-    Button * mScrollLeftButton;
-    Button * mScrollRightButton;
+    Button * mMoveCursorUpButton;
+    Button * mMoveCursorDownButton;
+    Button * mMoveCursorLeftButton;
+    Button * mMoveCursorRightButton;
     int mSelectedForeColor;
     int mSelectedBackColor;
     int mScrollY;
