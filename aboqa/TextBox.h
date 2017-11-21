@@ -26,9 +26,9 @@ public:
     
     TextBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int selectedForeColor, int selectedBackColor, bool multiline = false);
     
-    bool onKeyPress (GameManager * gm, int key) const override;
+    bool onKeyPress (GameManager * gm, int key) override;
     
-    void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const override;
+    void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
     
     void onDrawClient () const override;
     
@@ -68,6 +68,11 @@ public:
     
 private:
     void notify (GameManager * gm, const Button * button) override;
+    
+    void moveCursorUp ();
+    void moveCursorDown ();
+    void moveCursorLeft ();
+    void moveCursorRight ();
     
     static const std::string windowName;
     static const std::string moveCursorUpButtonName;

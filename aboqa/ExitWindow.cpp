@@ -15,7 +15,7 @@ ExitWindow::ExitWindow (const std::string & name, int y, int x, int height, int 
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
 { }
 
-bool ExitWindow::onKeyPress (GameManager * gm, int key) const
+bool ExitWindow::onKeyPress (GameManager * gm, int key)
 {
     switch (key)
     {
@@ -40,7 +40,7 @@ bool ExitWindow::onKeyPress (GameManager * gm, int key) const
     return true;
 }
 
-void ExitWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
+void ExitWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState)
 {
     if (buttonState & BUTTON1_CLICKED)
     {

@@ -43,9 +43,9 @@ public:
 
     void draw () const;
 
-    virtual bool onKeyPress (GameManager * gm, int key) const;
+    virtual bool onKeyPress (GameManager * gm, int key);
     
-    virtual void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const;
+    virtual void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState);
     
     virtual void onDrawClient () const;
     
@@ -145,23 +145,23 @@ public:
     
     void addControl(std::unique_ptr<Window> && control);
     
-    const Window * findWindow (int y, int x) const;
+    Window * findWindow (int y, int x);
     
-    const Window * findFocus () const;
+    Window * findFocus ();
     
     virtual bool canHaveDirectFocus () const;
     
     virtual bool hasDirectFocus () const;
     
-    virtual bool setFocus (bool focus) const;
+    virtual bool setFocus (bool focus);
     
-    virtual bool setFocus (int y, int x) const;
+    virtual bool setFocus (int y, int x);
     
-    virtual bool advanceFocus () const;
+    virtual bool advanceFocus ();
     
-    const Window * parent () const;
+    Window * parent () const;
     
-    void setParent (const Window * parent);
+    void setParent (Window * parent);
     
     virtual bool wantEnter () const;
     
@@ -206,10 +206,10 @@ protected:
     int mFocusForeColor;
     int mFocusBackColor;
     std::vector<std::unique_ptr<Window>> mControls;
-    const Window * mParent;
+    Window * mParent;
     bool mBorder;
-    mutable bool mHasFocus;
-    mutable bool mHasDirectFocus;
+    bool mHasFocus;
+    bool mHasDirectFocus;
     bool mFillClientArea;
     bool mWantEnter;
     VisibleState mVisibleState;

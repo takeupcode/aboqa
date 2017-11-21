@@ -68,7 +68,7 @@ void Window::processInput (GameManager * gm)
         if (getmouse(&mouseEvent) == OK)
         {
             setFocus(mouseEvent.y, mouseEvent.x);
-            const Window * control = findWindow(mouseEvent.y, mouseEvent.x);
+            Window * control = findWindow(mouseEvent.y, mouseEvent.x);
             if (control)
             {
                 control->onMouseEvent(gm, mouseEvent.id, mouseEvent.y, mouseEvent.x, mouseEvent.bstate);
@@ -77,7 +77,7 @@ void Window::processInput (GameManager * gm)
         break;
     default:
         {
-            const Window * control = findFocus();
+            Window * control = findFocus();
             if (control)
             {
                 control->onKeyPress(gm, c);
@@ -111,12 +111,12 @@ void Window::draw () const
     }
 }
 
-bool Window::onKeyPress (GameManager * gm, int key) const
+bool Window::onKeyPress (GameManager * gm, int key)
 {
     return false;
 }
 
-void Window::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
+void Window::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState)
 {
 }
 
@@ -450,14 +450,14 @@ void Window::addControl(std::unique_ptr<Window> && control)
     setFocus(true);
 }
 
-const Window * Window::findWindow (int y, int x) const
+Window * Window::findWindow (int y, int x)
 {
     if (y >= mY && y < (mY + mHeight) &&
         x >= mX && x < (mX + mWidth))
     {
         for (auto & control: mControls)
         {
-            const Window * result = control->findWindow(y, x);
+            Window * result = control->findWindow(y, x);
             if (result)
             {
                 return result;
@@ -470,7 +470,7 @@ const Window * Window::findWindow (int y, int x) const
     return nullptr;
 }
 
-const Window * Window::findFocus () const
+Window * Window::findFocus ()
 {
     if (!mHasFocus)
     {
@@ -485,7 +485,7 @@ const Window * Window::findFocus () const
     
     for (auto & control: mControls)
     {
-        const Window * result = control->findFocus();
+        Window * result = control->findFocus();
         if (result)
         {
             return result;
@@ -507,7 +507,7 @@ bool Window::hasDirectFocus () const
     return mHasDirectFocus;
 }
 
-bool Window::setFocus (bool focus) const
+bool Window::setFocus (bool focus)
 {
     // If focus is false, then this method will clear the focus
     // from this window and all control windows.
@@ -550,7 +550,7 @@ bool Window::setFocus (bool focus) const
     return mHasFocus;
 }
 
-bool Window::setFocus (int y, int x) const
+bool Window::setFocus (int y, int x)
 {
     bool foundDirectFocus = false;
     
@@ -604,7 +604,7 @@ bool Window::setFocus (int y, int x) const
     return foundDirectFocus;
 }
 
-bool Window::advanceFocus () const
+bool Window::advanceFocus ()
 {
     if (mHasDirectFocus)
     {
@@ -663,12 +663,12 @@ bool Window::advanceFocus () const
     }
 }
 
-const Window * Window::parent () const
+Window * Window::parent () const
 {
     return mParent;
 }
 
-void Window::setParent (const Window * parent)
+void Window::setParent (Window * parent)
 {
     mParent = parent;
 }

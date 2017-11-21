@@ -19,9 +19,9 @@ class SplashWindow : public Window, public EventSubscriber<GameManager *, const 
 public:
     SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
     
-    bool onKeyPress (GameManager * gm, int key) const override;
+    bool onKeyPress (GameManager * gm, int key) override;
     
-    void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const override;
+    void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
     
     void onDrawClient () const override;
     

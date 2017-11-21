@@ -20,7 +20,7 @@ Button::Button (const std::string & name, const std::string & text, int y, int x
     setFillClientArea(false);
 }
 
-bool Button::onKeyPress (GameManager * gm, int key) const
+bool Button::onKeyPress (GameManager * gm, int key)
 {
     if (enableState() != Window::EnableState::enabled)
     {
@@ -44,7 +44,7 @@ bool Button::onKeyPress (GameManager * gm, int key) const
     return true;
 }
 
-void Button::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
+void Button::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState)
 {
     if (enableState() != Window::EnableState::enabled)
     {

@@ -27,7 +27,7 @@ MainWindow::MainWindow (const std::string & name, int y, int x, int height, int 
     addControl(std::move(textBox));
 }
 
-bool MainWindow::onKeyPress (GameManager * gm, int key) const
+bool MainWindow::onKeyPress (GameManager * gm, int key)
 {
     switch (key)
     {
@@ -52,7 +52,7 @@ bool MainWindow::onKeyPress (GameManager * gm, int key) const
     return true;
 }
 
-void MainWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
+void MainWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState)
 {
     if (buttonState & BUTTON1_CLICKED)
     {

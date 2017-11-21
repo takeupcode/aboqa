@@ -107,7 +107,7 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
     addControl(std::unique_ptr<Button>(mMoveCursorRightButton));
 }
 
-bool TextBox::onKeyPress (GameManager * gm, int key) const
+bool TextBox::onKeyPress (GameManager * gm, int key)
 {
     if (enableState() != Window::EnableState::enabled)
     {
@@ -116,16 +116,33 @@ bool TextBox::onKeyPress (GameManager * gm, int key) const
     
     switch (key)
     {
-        case 10: // Enter
-            break;
-        default:
-            return true;
+    case 10: // Enter
+        break;
+        
+    case KEY_UP:
+        moveCursorUp();
+        break;
+        
+    case KEY_DOWN:
+        moveCursorDown();
+        break;
+        
+    case KEY_LEFT:
+        moveCursorLeft();
+        break;
+        
+    case KEY_RIGHT:
+        moveCursorRight();
+        break;
+        
+    default:
+        return true;
     }
     
     return true;
 }
 
-void TextBox::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
+void TextBox::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState)
 {
     if (enableState() != Window::EnableState::enabled)
     {
@@ -134,6 +151,12 @@ void TextBox::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t bu
     
     if (buttonState & BUTTON1_CLICKED)
     {
+        if (x - clientX() < textClientWidth())
+        {
+            // Don't move the cursor if the click is in the non-client area.
+            mCursorY = y - clientY();
+            mCursorX = x - clientX();
+        }
     }
 }
 
@@ -281,30 +304,50 @@ void TextBox::notify (GameManager * gm, const Button * button)
 {
     if (button->name() == moveCursorUpButtonName)
     {
-        if (mCursorY > 0)
-        {
-            --mCursorY;
-        }
+        moveCursorUp();
     }
     else if (button->name() == moveCursorDownButtonName)
     {
-        if (mCursorY < clientHeight() - 1)
-        {
-            ++mCursorY;
-        }
+        moveCursorDown();
     }
     else if (button->name() == moveCursorLeftButtonName)
     {
-        if (mCursorX > 0)
-        {
-            --mCursorX;
-        }
+        moveCursorLeft();
     }
     else if (button->name() == moveCursorRightButtonName)
     {
-        if (mCursorX < textClientWidth() - 1)
-        {
-            ++mCursorX;
-        }
+        moveCursorRight();
+    }
+}
+
+void TextBox::moveCursorUp ()
+{
+    if (mCursorY > 0)
+    {
+        --mCursorY;
+    }
+}
+
+void TextBox::moveCursorDown ()
+{
+    if (mCursorY < clientHeight() - 1)
+    {
+        ++mCursorY;
+    }
+}
+
+void TextBox::moveCursorLeft ()
+{
+    if (mCursorX > 0)
+    {
+        --mCursorX;
+    }
+}
+
+void TextBox::moveCursorRight ()
+{
+    if (mCursorX < textClientWidth() - 1)
+    {
+        ++mCursorX;
     }
 }

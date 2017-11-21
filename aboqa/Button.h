@@ -21,9 +21,9 @@ public:
 
     Button (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor);
     
-    bool onKeyPress (GameManager * gm, int key) const override;
+    bool onKeyPress (GameManager * gm, int key) override;
     
-    void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const override;
+    void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
     
     void onDrawClient () const override;
     

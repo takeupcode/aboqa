@@ -41,7 +41,7 @@ SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, 
     addControl(std::move(introLabel));
 }
 
-bool SplashWindow::onKeyPress (GameManager * gm, int key) const
+bool SplashWindow::onKeyPress (GameManager * gm, int key)
 {
     switch (key)
     {
@@ -66,7 +66,7 @@ bool SplashWindow::onKeyPress (GameManager * gm, int key) const
     return true;
 }
 
-void SplashWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) const
+void SplashWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState)
 {
     if (buttonState & BUTTON1_CLICKED)
     {
