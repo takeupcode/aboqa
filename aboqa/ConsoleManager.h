@@ -52,11 +52,11 @@ public:
     
     static void promptPause (const Window & win, int y, int x, int width, const std::string & prompt, int foreColor, int backColor, Justification::Horizontal justification = Justification::Horizontal::left, bool fillSpace = false);
     
-    static void printMessage (const Window & win, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification = Justification::Horizontal::left, bool fillSpace = false);
+    static void printMessage (const Window & win, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification = Justification::Horizontal::left, bool fillSpace = false, int cursorY = -1, int cursorX = -1);
     
-    static void printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification = Justification::Horizontal::left, bool fillSpace = false);
+    static void printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification = Justification::Horizontal::left, bool fillSpace = false, int cursorY = -1, int cursorX = -1);
     
-    static void printMessage (const Window & win, int y, int x, const std::string & msg);
+    static void printMessage (const Window & win, int y, int x, const std::string & msg, int cursorY = -1, int cursorX = -1);
     
     static void drawBox (const Window & win, int y, int x, int height, int width, int foreColor, int backColor);
     

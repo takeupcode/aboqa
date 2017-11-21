@@ -26,7 +26,7 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
   mTextChanged(new TextChangedEvent()), mSelectionChanged(new SelectionChangedEvent()),
   mSelectedForeColor(selectedForeColor), mSelectedBackColor(selectedBackColor),
-  mScrollY(0), mScrollX(0), mMultiline(multiline)
+  mScrollY(0), mScrollX(0), mCursorY(0), mCursorX(0), mMultiline(multiline)
 {
     if (multiline)
     {
@@ -150,7 +150,7 @@ void TextBox::onDrawClient () const
         for (auto & line: mText)
         {
             std::string lineText = line.substr(0, textClientWidth());
-            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorY, mCursorX);
             
             ++i;
             if (i >= clientHeight())
@@ -160,14 +160,14 @@ void TextBox::onDrawClient () const
         }
         for (; i < clientHeight(); ++i)
         {
-            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorY, mCursorX);
         }
     }
     else
     {
         int vertCenter = clientHeight() / 2;
         std::string lineText = mText.front().substr(0, textClientWidth());
-        ConsoleManager::printMessage(*this, vertCenter, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+        ConsoleManager::printMessage(*this, vertCenter, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorY, mCursorX);
     }
 }
 

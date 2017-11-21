@@ -86,6 +86,8 @@ private:
     int mSelectedBackColor;
     int mScrollY;
     int mScrollX;
+    int mCursorY;
+    int mCursorX;
     bool mMultiline;
 };
 

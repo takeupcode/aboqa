@@ -259,7 +259,7 @@ void ConsoleManager::promptPause (const Window & win, int y, int x, int width, c
     wgetch(cursesWin);
 }
 
-void ConsoleManager::printMessage (const Window & win, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification, bool fillSpace)
+void ConsoleManager::printMessage (const Window & win, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification, bool fillSpace, int cursorY, int cursorX)
 {
     WINDOW * cursesWin = win.cursesWindow();
     
@@ -269,10 +269,10 @@ void ConsoleManager::printMessage (const Window & win, const std::string & msg, 
     
     int width = win.clientWidth() - currentX;
     
-    printMessage(win, currentY, currentX, width, msg, foreColor, backColor, justification, fillSpace);
+    printMessage(win, currentY, currentX, width, msg, foreColor, backColor, justification, fillSpace, cursorY, cursorX);
 }
 
-void ConsoleManager::printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification, bool fillSpace)
+void ConsoleManager::printMessage (const Window & win, int y, int x, int width, const std::string & msg, int foreColor, int backColor, Justification::Horizontal justification, bool fillSpace, int cursorY, int cursorX)
 {
     int maxWinY;
     int maxWinX;
@@ -320,11 +320,19 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
             {
                 return;
             }
-            waddch(cursesWin, ' ');
+            if (cursorY == y && cursorX == i)
+            {
+                
+                waddch(cursesWin, ' ' | A_REVERSE);
+            }
+            else
+            {
+                waddch(cursesWin, ' ' | A_NORMAL);
+            }
         }
     }
     
-    printMessage(win, y, messageX, msg);
+    printMessage(win, y, messageX, msg, cursorY, cursorX);
     
     if (fillSpace)
     {
@@ -347,12 +355,20 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
             {
                 return;
             }
-            waddch(cursesWin, ' ');
+            if (cursorY == y && cursorX == i)
+            {
+                
+                waddch(cursesWin, ' ' | A_REVERSE);
+            }
+            else
+            {
+                waddch(cursesWin, ' ' | A_NORMAL);
+            }
         }
     }
 }
 
-void ConsoleManager::printMessage (const Window & win, int y, int x, const std::string & msg)
+void ConsoleManager::printMessage (const Window & win, int y, int x, const std::string & msg, int cursorY, int cursorX)
 {
     int maxWinY;
     int maxWinX;
@@ -406,7 +422,15 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, const std::
                 {
                     return;
                 }
-                mvwaddch(cursesWin, y, x, c);
+                if (cursorY == y && cursorX == x)
+                {
+                    
+                    mvwaddch(cursesWin, y, x, c | A_REVERSE);
+                }
+                else
+                {
+                    mvwaddch(cursesWin, y, x, c | A_NORMAL);
+                }
                 ++x;
             }
             skipColorCheck = false;
