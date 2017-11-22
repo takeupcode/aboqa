@@ -65,6 +65,10 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
     {
         mText.push_back(std::move(line));
     }
+    if (mText.empty())
+    {
+        mText.push_back("");
+    }
     
     mMoveCursorLeftButton = new Button(moveCursorLeftButtonName, "<", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
     mMoveCursorLeftButton->clicked()->connect(windowName, this);
@@ -154,8 +158,24 @@ void TextBox::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t bu
         if (x - clientX() < textClientWidth())
         {
             // Don't move the cursor if the click is in the non-client area.
-            mCursorY = y - clientY();
-            mCursorX = x - clientX();
+            int cursorY = y - clientY();
+            int cursorX = x - clientX();
+            
+            bool goToMaxX = false;
+            if (cursorY > (static_cast<int>(mText.size()) - mScrollY - 1))
+            {
+                cursorY = static_cast<int>(mText.size()) - mScrollY - 1;
+                goToMaxX = true;
+            }
+            
+            if (goToMaxX ||
+                cursorX > (static_cast<int>(mText[cursorY + mScrollY].size()) - mScrollX))
+            {
+                cursorX = static_cast<int>(mText[cursorY + mScrollY].size() - mScrollX);
+            }
+            
+            mCursorY = cursorY;
+            mCursorX = cursorX;
         }
     }
 }
@@ -330,7 +350,8 @@ void TextBox::moveCursorUp ()
 
 void TextBox::moveCursorDown ()
 {
-    if (mCursorY < clientHeight() - 1)
+    if (mCursorY < (clientHeight() - 1) &&
+        mCursorY < (static_cast<int>(mText.size()) - mScrollY - 1))
     {
         ++mCursorY;
     }
@@ -346,7 +367,9 @@ void TextBox::moveCursorLeft ()
 
 void TextBox::moveCursorRight ()
 {
-    if (mCursorX < textClientWidth() - 1)
+    if (mCursorX < (textClientWidth() - 1) &&
+        mCursorY < (static_cast<int>(mText.size()) - mScrollY) &&
+        mCursorX < (static_cast<int>(mText[mCursorY + mScrollY].size())))
     {
         ++mCursorX;
     }

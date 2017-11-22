@@ -10,7 +10,7 @@
 #define TextBox_h
 
 #include <string>
-#include <list>
+#include <vector>
 
 #include "EventPublisher.h"
 #include "EventSubscriber.h"
@@ -80,7 +80,7 @@ private:
     static const std::string moveCursorLeftButtonName;
     static const std::string moveCursorRightButtonName;
     
-    std::list<std::string> mText;
+    std::vector<std::string> mText;
     std::unique_ptr<TextChangedEvent> mTextChanged;
     std::unique_ptr<SelectionChangedEvent> mSelectionChanged;
     Button * mMoveCursorUpButton;
