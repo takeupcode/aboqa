@@ -75,6 +75,7 @@ private:
     void moveCursorDown ();
     void moveCursorLeft ();
     void moveCursorRight ();
+    void breakLineAtCursor ();
     
     void placeCursorClosestToDesiredColumn ();
     void ensureCursorIsVisible ();

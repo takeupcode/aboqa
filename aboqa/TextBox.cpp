@@ -58,6 +58,7 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
     }
     
     setFillClientArea(false);
+    setWantEnter(true);
     
     std::istringstream ss(text);
     std::string line;
@@ -121,6 +122,7 @@ bool TextBox::onKeyPress (GameManager * gm, int key)
     switch (key)
     {
     case 10: // Enter
+        breakLineAtCursor();
         break;
         
     case KEY_UP:
@@ -414,6 +416,19 @@ void TextBox::moveCursorRight ()
         mDesiredColumn = mCursorColumn;
         ensureCursorIsVisible();
     }
+}
+
+void TextBox::breakLineAtCursor ()
+{
+    std::string currentText = mText[mCursorLine].substr(0, mCursorColumn);
+    std::string nextText = mText[mCursorLine].substr(mCursorColumn, mText[mCursorLine].size());
+    
+    mText[mCursorLine] = currentText;
+    mText.insert(mText.begin() + mCursorLine + 1, nextText);
+    
+    ++mCursorLine;
+    mDesiredColumn = mCursorColumn = 0;
+    ensureCursorIsVisible();
 }
 
 void TextBox::placeCursorClosestToDesiredColumn ()
