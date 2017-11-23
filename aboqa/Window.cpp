@@ -126,6 +126,9 @@ void Window::onDrawClient () const
 void Window::onDrawNonClient () const
 { }
 
+void Window::onResize ()
+{ }
+
 const std::string & Window::name () const
 {
     return mName;
@@ -204,6 +207,7 @@ void Window::setHeight (int height)
         destroyWindows();
         mHeight = height;
         createWindows();
+        onResize();
     }
 }
 
@@ -249,6 +253,7 @@ void Window::setWidth (int width)
         destroyWindows();
         mWidth = width;
         createWindows();
+        onResize();
     }
 }
 
@@ -280,6 +285,7 @@ void Window::resize (int height, int width)
         mHeight = height;
         mWidth = width;
         createWindows();
+        onResize();
     }
 }
 
@@ -293,6 +299,7 @@ void Window::moveAndResize (int y, int x, int height, int width)
         mHeight = height;
         mWidth = width;
         createWindows();
+        onResize();
     }
 }
 

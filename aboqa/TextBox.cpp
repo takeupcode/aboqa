@@ -235,6 +235,23 @@ void TextBox::onDrawNonClient () const
     }
 }
 
+void TextBox::onResize ()
+{
+    int cursorLineNumber = mScrollY + mCursorY;
+    if (mCursorY > clientHeight() - 1)
+    {
+        mScrollY = cursorLineNumber - clientHeight() + 1;
+        mCursorY = clientHeight() - 1;
+    }
+    
+    int cursorColumnNumber = mScrollX + mCursorX;
+    if (mCursorX > textClientWidth() - 1)
+    {
+        mScrollX = cursorColumnNumber - textClientWidth() + 1;
+        mCursorX = textClientWidth() - 1;
+    }
+}
+
 int TextBox::textClientWidth () const
 {
     // This method accounts for the area used by the scrolling buttons.

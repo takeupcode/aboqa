@@ -50,6 +50,8 @@ public:
     virtual void onDrawClient () const;
     
     virtual void onDrawNonClient () const;
+    
+    virtual void onResize ();
 
     const std::string & name () const;
     

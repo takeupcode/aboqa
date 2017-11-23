@@ -34,6 +34,8 @@ public:
     
     void onDrawNonClient () const override;
     
+    void onResize () override;
+    
     int textClientWidth () const;
     
     void setMinHeight (int height) override;
