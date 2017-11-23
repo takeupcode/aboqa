@@ -76,7 +76,8 @@ private:
     void moveCursorLeft ();
     void moveCursorRight ();
     
-    void placeCursorClosestToDesiredX ();
+    void placeCursorClosestToDesiredColumn ();
+    void ensureCursorIsVisible ();
     
     static const std::string windowName;
     static const std::string moveCursorUpButtonName;
@@ -97,7 +98,7 @@ private:
     int mScrollX;
     int mCursorY;
     int mCursorX;
-    int mDesiredCursorX;
+    int mDesiredColumn;
     bool mMultiline;
 };
 
