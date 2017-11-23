@@ -191,16 +191,19 @@ void TextBox::onDrawClient () const
     if (isMultiline())
     {
         int i = 0;
-        for (auto & line: mText)
+        for (; i < clientHeight(); ++i)
         {
-            std::string lineText = line.substr(0, textClientWidth());
-            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorY, mCursorX);
-            
-            ++i;
-            if (i >= clientHeight())
+            if (i + mScrollY >= static_cast<int>(mText.size()))
             {
-                return;
+                break;
             }
+            
+            std::string lineText = "";
+            if (mScrollX < static_cast<int>(mText[i + mScrollY].size()))
+            {
+                lineText = mText[i + mScrollY].substr(mScrollX, textClientWidth());
+            }
+            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorY, mCursorX);
         }
         for (; i < clientHeight(); ++i)
         {
@@ -210,7 +213,11 @@ void TextBox::onDrawClient () const
     else
     {
         int vertCenter = clientHeight() / 2;
-        std::string lineText = mText.front().substr(0, textClientWidth());
+        std::string lineText = "";
+        if (mScrollX < static_cast<int>(mText[0].size()))
+        {
+            lineText = mText[0].substr(mScrollX, textClientWidth());
+        }
         ConsoleManager::printMessage(*this, vertCenter, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorY, mCursorX);
     }
 }
@@ -347,6 +354,13 @@ void TextBox::moveCursorUp ()
     {
         --mCursorY;
     }
+    else
+    {
+        if (mScrollY > 0)
+        {
+            --mScrollY;
+        }
+    }
     
     placeCursorClosestToDesiredX();
 }
@@ -358,6 +372,11 @@ void TextBox::moveCursorDown ()
     {
         ++mCursorY;
     }
+    else if (mCursorY == (clientHeight() - 1) &&
+             mScrollY < (static_cast<int>(mText.size()) - clientHeight()))
+    {
+        ++mScrollY;
+    }
     
     placeCursorClosestToDesiredX();
 }
@@ -368,15 +387,28 @@ void TextBox::moveCursorLeft ()
     {
         mDesiredCursorX = --mCursorX;
     }
+    else
+    {
+        if (mScrollX > 0)
+        {
+            --mScrollX;
+        }
+    }
 }
 
 void TextBox::moveCursorRight ()
 {
     if (mCursorX < (textClientWidth() - 1) &&
         mCursorY < (static_cast<int>(mText.size()) - mScrollY) &&
-        mCursorX < (static_cast<int>(mText[mCursorY + mScrollY].size())))
+        mCursorX < (static_cast<int>(mText[mCursorY + mScrollY].size()) - mScrollX))
     {
         mDesiredCursorX = ++mCursorX;
+    }
+    else if (mCursorX == (textClientWidth() - 1) &&
+             mCursorY < (static_cast<int>(mText.size()) - mScrollY) &&
+             mScrollX <= (static_cast<int>(mText[mCursorY + mScrollY].size()) - textClientWidth()))
+    {
+        ++mScrollX;
     }
 }
 
