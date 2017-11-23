@@ -26,7 +26,7 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
   mTextChanged(new TextChangedEvent()), mSelectionChanged(new SelectionChangedEvent()),
   mSelectedForeColor(selectedForeColor), mSelectedBackColor(selectedBackColor),
-  mScrollY(0), mScrollX(0), mCursorY(0), mCursorX(0), mDesiredColumn(0), mMultiline(multiline)
+  mScrollLine(0), mScrollColumn(0), mCursorLine(0), mCursorColumn(0), mDesiredColumn(0), mMultiline(multiline)
 {
     if (multiline)
     {
@@ -155,28 +155,30 @@ void TextBox::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t bu
     
     if (buttonState & BUTTON1_CLICKED)
     {
+        // Don't move the cursor if the click is in the non-client area.
         if (x - clientX() < textClientWidth())
         {
-            // Don't move the cursor if the click is in the non-client area.
-            int cursorY = y - clientY();
-            int cursorX = x - clientX();
+            int winY = y - clientY();
+            int line = winY + mScrollLine;
+            int winX = x - clientX();
+            int column = winX + mScrollColumn;
             
-            bool goToMaxX = false;
-            if (cursorY > (static_cast<int>(mText.size()) - mScrollY - 1))
+            bool goToMaxColumn = false;
+            if (line >= (static_cast<int>(mText.size())))
             {
-                cursorY = static_cast<int>(mText.size()) - mScrollY - 1;
-                goToMaxX = true;
+                line = static_cast<int>(mText.size()) - 1;
+                goToMaxColumn = true;
             }
             
-            if (goToMaxX ||
-                cursorX > (static_cast<int>(mText[cursorY + mScrollY].size()) - mScrollX))
+            if (goToMaxColumn ||
+                column > (static_cast<int>(mText[line].size())))
             {
-                cursorX = static_cast<int>(mText[cursorY + mScrollY].size() - mScrollX);
+                column = static_cast<int>(mText[line].size());
             }
             
-            mCursorY = cursorY;
-            mCursorX = cursorX;
-            mDesiredColumn = mScrollX + cursorX;
+            mCursorLine = line;
+            mCursorColumn = column;
+            mDesiredColumn = column;
             ensureCursorIsVisible();
         }
     }
@@ -194,32 +196,32 @@ void TextBox::onDrawClient () const
         int i = 0;
         for (; i < clientHeight(); ++i)
         {
-            if (i + mScrollY >= static_cast<int>(mText.size()))
+            if (i + mScrollLine >= static_cast<int>(mText.size()))
             {
                 break;
             }
             
             std::string lineText = "";
-            if (mScrollX < static_cast<int>(mText[i + mScrollY].size()))
+            if (mScrollColumn < static_cast<int>(mText[i + mScrollLine].size()))
             {
-                lineText = mText[i + mScrollY].substr(mScrollX, textClientWidth());
+                lineText = mText[i + mScrollLine].substr(mScrollColumn, textClientWidth());
             }
-            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorY, mCursorX);
+            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorLine - mScrollLine, mCursorColumn - mScrollColumn);
         }
         for (; i < clientHeight(); ++i)
         {
-            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorY, mCursorX);
+            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
         }
     }
     else
     {
         int vertCenter = clientHeight() / 2;
         std::string lineText = "";
-        if (mScrollX < static_cast<int>(mText[0].size()))
+        if (mScrollColumn < static_cast<int>(mText[0].size()))
         {
-            lineText = mText[0].substr(mScrollX, textClientWidth());
+            lineText = mText[0].substr(mScrollColumn, textClientWidth());
         }
-        ConsoleManager::printMessage(*this, vertCenter, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorY, mCursorX);
+        ConsoleManager::printMessage(*this, vertCenter, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, vertCenter, mCursorColumn - mScrollColumn);
     }
 }
 
@@ -356,114 +358,93 @@ void TextBox::notify (GameManager * gm, const Button * button)
 
 void TextBox::moveCursorUp ()
 {
-    if (mCursorY > 0)
+    if (mCursorLine > 0)
     {
-        --mCursorY;
+        --mCursorLine;
+        
+        placeCursorClosestToDesiredColumn();
+        ensureCursorIsVisible();
     }
-    else
-    {
-        if (mScrollY > 0)
-        {
-            --mScrollY;
-        }
-    }
-    
-    placeCursorClosestToDesiredColumn();
-    ensureCursorIsVisible();
 }
 
 void TextBox::moveCursorDown ()
 {
-    if (mCursorY < (clientHeight() - 1) &&
-        mCursorY < (static_cast<int>(mText.size()) - mScrollY - 1))
+    if (mCursorLine < (static_cast<int>(mText.size()) - 1))
     {
-        ++mCursorY;
+        ++mCursorLine;
+        
+        placeCursorClosestToDesiredColumn();
+        ensureCursorIsVisible();
     }
-    else if (mCursorY == (clientHeight() - 1) &&
-             mScrollY < (static_cast<int>(mText.size()) - clientHeight()))
-    {
-        ++mScrollY;
-    }
-    
-    placeCursorClosestToDesiredColumn();
-    ensureCursorIsVisible();
 }
 
 void TextBox::moveCursorLeft ()
 {
-    if (mCursorX > 0)
+    if (mCursorColumn > 0)
     {
-        --mCursorX;
+        --mCursorColumn;
+        
+        mDesiredColumn = mCursorColumn;
+        ensureCursorIsVisible();
     }
-    else
+    else if (mCursorLine > 0)
     {
-        if (mScrollX > 0)
-        {
-            --mScrollX;
-        }
-        else if (mCursorY > 0 || mScrollY > 0)
-        {
-            --mCursorY;
-            mCursorX = static_cast<int>(mText[mScrollY + mCursorY].size());
-        }
+        --mCursorLine;
+        mCursorColumn = static_cast<int>(mText[mCursorLine].size());
+        
+        mDesiredColumn = mCursorColumn;
+        ensureCursorIsVisible();
     }
-    mDesiredColumn = mCursorX + mScrollX;
-    ensureCursorIsVisible();
 }
 
 void TextBox::moveCursorRight ()
 {
-    if (mCursorX < (textClientWidth() - 1) &&
-        mCursorY < (static_cast<int>(mText.size()) - mScrollY) &&
-        mCursorX < (static_cast<int>(mText[mCursorY + mScrollY].size()) - mScrollX))
+    if (mCursorColumn < (static_cast<int>(mText[mCursorLine].size())))
     {
-        ++mCursorX;
+        ++mCursorColumn;
+        
+        mDesiredColumn = mCursorColumn;
+        ensureCursorIsVisible();
     }
-    else if (mCursorX == (textClientWidth() - 1) &&
-             mCursorY < (static_cast<int>(mText.size()) - mScrollY) &&
-             mScrollX <= (static_cast<int>(mText[mCursorY + mScrollY].size()) - textClientWidth()))
+    else if (mCursorLine < (static_cast<int>(mText.size()) - 1))
     {
-        ++mScrollX;
+        ++mCursorLine;
+        mCursorColumn = 0;
+        
+        mDesiredColumn = mCursorColumn;
+        ensureCursorIsVisible();
     }
-    mDesiredColumn = mCursorX + mScrollX;
-    ensureCursorIsVisible();
 }
 
 void TextBox::placeCursorClosestToDesiredColumn ()
 {
-    if (mDesiredColumn > static_cast<int>(mText[mCursorY + mScrollY].size()))
+    if (mDesiredColumn > static_cast<int>(mText[mCursorLine].size()))
     {
-        mCursorX = static_cast<int>(mText[mCursorY + mScrollY].size() - mScrollX);
+        mCursorColumn = static_cast<int>(mText[mCursorLine].size());
     }
     else
     {
-        mCursorX = mDesiredColumn - mScrollX;
+        mCursorColumn = mDesiredColumn;
     }
 }
 
 void TextBox::ensureCursorIsVisible ()
 {
-    int cursorLineNumber = mScrollY + mCursorY;
-    if (mCursorY < 0)
+    if (mCursorLine < mScrollLine)
     {
-        mScrollY = cursorLineNumber;
-        mCursorY = 0;
+        mScrollLine = mCursorLine;
     }
-    else if (mCursorY > clientHeight() - 1)
+    else if (mCursorLine >= mScrollLine + clientHeight())
     {
-        mScrollY = cursorLineNumber - clientHeight() + 1;
-        mCursorY = clientHeight() - 1;
+        mScrollLine = mCursorLine - clientHeight() + 1;
     }
     
-    int cursorColumnNumber = mScrollX + mCursorX;
-    if (mCursorX < 0)
+    if (mCursorColumn < mScrollColumn)
     {
-        mScrollX = cursorColumnNumber;
-        mCursorX = 0;
+        mScrollColumn = mCursorColumn;
     }
-    else if (mCursorX > textClientWidth() - 1)
+    else if (mCursorColumn >= mScrollColumn + textClientWidth())
     {
-        mScrollX = cursorColumnNumber - textClientWidth() + 1;
-        mCursorX = textClientWidth() - 1;
+        mScrollColumn = mCursorColumn - textClientWidth() + 1;
     }
 }

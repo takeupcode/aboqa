@@ -94,10 +94,10 @@ private:
     Button * mMoveCursorRightButton;
     int mSelectedForeColor;
     int mSelectedBackColor;
-    int mScrollY;
-    int mScrollX;
-    int mCursorY;
-    int mCursorX;
+    int mScrollLine;
+    int mScrollColumn;
+    int mCursorLine;
+    int mCursorColumn;
     int mDesiredColumn;
     bool mMultiline;
 };
