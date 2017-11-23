@@ -401,8 +401,14 @@ void TextBox::moveCursorLeft ()
         {
             --mScrollX;
         }
+        else if (mCursorY > 0 || mScrollY > 0)
+        {
+            --mCursorY;
+            mCursorX = static_cast<int>(mText[mScrollY + mCursorY].size());
+        }
     }
     mDesiredColumn = mCursorX + mScrollX;
+    ensureCursorIsVisible();
 }
 
 void TextBox::moveCursorRight ()
@@ -420,6 +426,7 @@ void TextBox::moveCursorRight ()
         ++mScrollX;
     }
     mDesiredColumn = mCursorX + mScrollX;
+    ensureCursorIsVisible();
 }
 
 void TextBox::placeCursorClosestToDesiredColumn ()
