@@ -26,7 +26,7 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
   mTextChanged(new TextChangedEvent()), mSelectionChanged(new SelectionChangedEvent()),
   mSelectedForeColor(selectedForeColor), mSelectedBackColor(selectedBackColor),
-  mScrollY(0), mScrollX(0), mCursorY(0), mCursorX(0), mMultiline(multiline)
+  mScrollY(0), mScrollX(0), mCursorY(0), mCursorX(0), mDesiredCursorX(0), mMultiline(multiline)
 {
     if (multiline)
     {
@@ -176,6 +176,7 @@ void TextBox::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t bu
             
             mCursorY = cursorY;
             mCursorX = cursorX;
+            mDesiredCursorX = cursorX;
         }
     }
 }
@@ -346,6 +347,8 @@ void TextBox::moveCursorUp ()
     {
         --mCursorY;
     }
+    
+    placeCursorClosestToDesiredX();
 }
 
 void TextBox::moveCursorDown ()
@@ -355,13 +358,15 @@ void TextBox::moveCursorDown ()
     {
         ++mCursorY;
     }
+    
+    placeCursorClosestToDesiredX();
 }
 
 void TextBox::moveCursorLeft ()
 {
     if (mCursorX > 0)
     {
-        --mCursorX;
+        mDesiredCursorX = --mCursorX;
     }
 }
 
@@ -371,6 +376,18 @@ void TextBox::moveCursorRight ()
         mCursorY < (static_cast<int>(mText.size()) - mScrollY) &&
         mCursorX < (static_cast<int>(mText[mCursorY + mScrollY].size())))
     {
-        ++mCursorX;
+        mDesiredCursorX = ++mCursorX;
+    }
+}
+
+void TextBox::placeCursorClosestToDesiredX ()
+{
+    if (mDesiredCursorX > (static_cast<int>(mText[mCursorY + mScrollY].size()) - mScrollX))
+    {
+        mCursorX = static_cast<int>(mText[mCursorY + mScrollY].size() - mScrollX);
+    }
+    else
+    {
+        mCursorX = mDesiredCursorX;
     }
 }

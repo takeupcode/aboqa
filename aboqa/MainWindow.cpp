@@ -19,7 +19,7 @@ const std::string MainWindow::textBoxName = "textBox";
 MainWindow::MainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
 {
-    auto textBox = std::unique_ptr<TextBox>(new TextBox(textBoxName, "line 1\nline 2\nline 3", 0, 0, 7, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_CYAN, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_BLUE, true));
+    auto textBox = std::unique_ptr<TextBox>(new TextBox(textBoxName, "line 1\nline 2 is longer\nline 3\nline 4 is also long", 0, 0, 7, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_CYAN, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_BLUE, true));
     textBox->setAnchorTop(2);
     textBox->setAnchorBottom(2);
     textBox->setAnchorLeft(20);
