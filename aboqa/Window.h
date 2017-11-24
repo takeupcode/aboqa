@@ -189,6 +189,8 @@ protected:
     void anchorWindow (Window * win);
     
     void drawBorder () const;
+    
+    void setNonClientColor () const;
 
     WINDOW * mClientCursesWindow;
     std::unique_ptr<Window> mBorderWindow;

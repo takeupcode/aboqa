@@ -13,7 +13,7 @@
 #include "Justification.h"
 
 Button::Button (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor)
-: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, focusForeColor, focusBackColor, false),
+: Control(name, y, x, height, width, foreColor, backColor, focusForeColor, focusBackColor),
   mText(text), mClicked(new ClickedEvent())
 {
     setFillClientArea(false);
@@ -69,17 +69,6 @@ void Button::onDrawClient () const
     if (hasDirectFocus())
     {
         ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, focusForeColor(), focusBackColor(), Justification::Horizontal::center, true);
-        if (clientWidth() > 5)
-        {
-            // If we have room for at least 2 special chars on either side plus one more for the content,
-            // then show focus bars and default button marker.
-            mvwaddch(cursesWindow(), vertCenter, 0, '|');
-            if (wantEnter())
-            {
-                waddch(cursesWindow(), '>');
-            }
-            mvwaddch(cursesWindow(), vertCenter, width() - 1, '|');
-        }
     }
     else
     {

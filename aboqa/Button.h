@@ -12,9 +12,9 @@
 #include <memory>
 
 #include "EventPublisher.h"
-#include "Window.h"
+#include "Control.h"
 
-class Button : public Window
+class Button : public Control
 {
 public:
     using ClickedEvent = EventPublisher<GameManager *, const Button *>;

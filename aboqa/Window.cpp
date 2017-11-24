@@ -10,6 +10,7 @@
 
 #include <stdexcept>
 
+#include "Colors.h"
 #include "ConsoleManager.h"
 
 using namespace std;
@@ -843,4 +844,10 @@ void Window::drawBorder () const
 {
     // Draw an inside border. This should normally only need to be called for a border window.
     ConsoleManager::drawBox(*this, mY, mX, mHeight, mWidth, mBorderForeColor, mBorderBackColor);
+}
+
+void Window::setNonClientColor () const
+{
+    int i = Colors::colorPairIndex(Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+    wattrset(cursesWindow(), COLOR_PAIR(i));
 }

@@ -10,14 +10,16 @@
 #define Label_h
 
 #include "Justification.h"
-#include "Window.h"
+#include "Control.h"
 
-class Label : public Window
+class Label : public Control
 {
 public:
     Label (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, Justification::Horizontal horizontalJustification = Justification::Horizontal::left, Justification::Vertical verticalJustification = Justification::Vertical::center, bool multiline = false);
     
     void onDrawClient () const override;
+    
+    void onDrawNonClient () const override;
     
     bool isMultiline () const;
     

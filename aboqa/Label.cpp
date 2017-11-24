@@ -11,7 +11,7 @@
 #include "ConsoleManager.h"
 
 Label::Label (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, Justification::Horizontal horizontalJustification, Justification::Vertical verticalJustification, bool multiline)
-: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
+: Control(name, y, x, height, width, foreColor, backColor, foreColor, backColor),
   mText(text), mHorizontalJustification(horizontalJustification), mVerticalJustification(verticalJustification),
   mMultiline(multiline)
 {
@@ -72,6 +72,9 @@ void Label::onDrawClient () const
         ConsoleManager::printMessage(*this, vertCenter, 0, clientWidth(), mText, clientForeColor(), clientBackColor(), mHorizontalJustification, true);
     }
 }
+
+void Label::onDrawNonClient () const
+{ }
 
 bool Label::isMultiline () const
 {

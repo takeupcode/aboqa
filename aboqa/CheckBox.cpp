@@ -15,7 +15,7 @@
 #include "Justification.h"
 
 CheckBox::CheckBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor)
-: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, focusForeColor, focusBackColor, false),
+: Control(name, y, x, height, width, foreColor, backColor, focusForeColor, focusBackColor),
 mText(text), mClicked(new ClickedEvent())
 {
     if (width < 6)
@@ -79,15 +79,11 @@ void CheckBox::onDrawClient () const
     {
         ConsoleManager::printMessage(*this, vertCenter, 1, 3, checkState, focusForeColor(), focusBackColor(), Justification::Horizontal::left, false);
         ConsoleManager::printMessage(*this, vertCenter, 4, width() - 5, mText, focusForeColor(), focusBackColor(), Justification::Horizontal::left, true);
-        mvwaddch(cursesWindow(), vertCenter, 0, '|');
-        mvwaddch(cursesWindow(), vertCenter, width() - 1, '|');
     }
     else
     {
         ConsoleManager::printMessage(*this, vertCenter, 1, 3, checkState, clientForeColor(), clientBackColor(), Justification::Horizontal::left, false);
         ConsoleManager::printMessage(*this, vertCenter, 4, width() - 5, mText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
-        mvwaddch(cursesWindow(), vertCenter, 0, ' ');
-        mvwaddch(cursesWindow(), vertCenter, width() - 1, ' ');
     }
 }
 

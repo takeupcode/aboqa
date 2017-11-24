@@ -14,11 +14,11 @@
 
 #include "EventPublisher.h"
 #include "EventSubscriber.h"
-#include "Window.h"
+#include "Control.h"
 
 class Button;
 
-class TextBox : public Window, public EventSubscriber<GameManager *, const Button *>
+class TextBox : public Control, public EventSubscriber<GameManager *, const Button *>
 {
 public:
     using TextChangedEvent = EventPublisher<GameManager *, const TextBox *>;
@@ -30,8 +30,6 @@ public:
     void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
     
     void onDrawClient () const override;
-    
-    void onDrawNonClient () const override;
     
     void onResize () override;
     

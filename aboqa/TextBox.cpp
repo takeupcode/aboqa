@@ -23,7 +23,7 @@ const std::string TextBox::moveCursorLeftButtonName = "moveLeftButton";
 const std::string TextBox::moveCursorRightButtonName = "moveRightButton";
 
 TextBox::TextBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, bool multiline)
-: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
+: Control(name, y, x, height, width, foreColor, backColor, foreColor, backColor),
   mTextChanged(new TextChangedEvent()),
   mScrollLine(0), mScrollColumn(0), mCursorLine(0), mCursorColumn(0), mDesiredColumn(0), mMultiline(multiline)
 {
@@ -273,22 +273,6 @@ void TextBox::onDrawClient () const
             lineText = mText[0].substr(mScrollColumn, textClientWidth());
         }
         ConsoleManager::printMessage(*this, vertCenter, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, vertCenter, mCursorColumn - mScrollColumn);
-    }
-}
-
-void TextBox::onDrawNonClient () const
-{
-    if (visibleState() != Window::VisibleState::shown)
-    {
-        return;
-    }
-    
-    std::string focusMarker = hasDirectFocus() ? "|" : " ";
-    
-    for (int i = 0; i < clientHeight(); ++i)
-    {
-        ConsoleManager::printMessage(*this, i, 0, 1, focusMarker, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Justification::Horizontal::left, false);
-        ConsoleManager::printMessage(*this, i, clientWidth() - 1, 1, focusMarker, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Justification::Horizontal::left, false);
     }
 }
 

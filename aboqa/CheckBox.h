@@ -12,9 +12,9 @@
 #include <memory>
 
 #include "EventPublisher.h"
-#include "Window.h"
+#include "Control.h"
 
-class CheckBox : public Window
+class CheckBox : public Control
 {
 public:
     using ClickedEvent = EventPublisher<GameManager *, const CheckBox *>;
