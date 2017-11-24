@@ -122,9 +122,36 @@ bool TextBox::onKeyPress (GameManager * gm, int key)
     switch (key)
     {
     case 10: // Enter
+    case KEY_ENTER:
         breakLineAtCursor();
         break;
+    
+    case 127: // Delete
+        removeCharAtCursor();
+        break;
         
+    case 8: // Backspace
+    case KEY_DC:
+    case KEY_BACKSPACE:
+        if (mCursorColumn > 0)
+        {
+            mDesiredColumn = --mCursorColumn;
+            
+            removeCharAtCursor();
+            
+            ensureCursorIsVisible();
+        }
+        else if (mCursorLine > 0)
+        {
+            --mCursorLine;
+            mDesiredColumn = mCursorColumn = static_cast<int>(mText[mCursorLine].size());
+            
+            removeCharAtCursor();
+            
+            ensureCursorIsVisible();
+        }
+        break;
+            
     case KEY_UP:
         moveCursorUp();
         break;
@@ -142,7 +169,8 @@ bool TextBox::onKeyPress (GameManager * gm, int key)
         break;
         
     default:
-        return true;
+        addCharAtCursor(key);
+        break;
     }
     
     return true;
@@ -428,6 +456,33 @@ void TextBox::breakLineAtCursor ()
     
     ++mCursorLine;
     mDesiredColumn = mCursorColumn = 0;
+    ensureCursorIsVisible();
+}
+
+void TextBox::removeCharAtCursor ()
+{
+    if (mCursorColumn == static_cast<int>(mText[mCursorLine].size()) &&
+        mCursorLine < static_cast<int>(mText.size()) - 1)
+    {
+        mText[mCursorLine] = mText[mCursorLine] + mText[mCursorLine + 1];
+        mText.erase(mText.begin() + mCursorLine + 1);
+    }
+    else
+    {
+        mText[mCursorLine].erase(mText[mCursorLine].begin() + mCursorColumn);
+    }
+}
+
+void TextBox::addCharAtCursor (int key)
+{
+    if (key < 32 || key > 126)
+    {
+        return;
+    }
+    
+    mText[mCursorLine].insert(mText[mCursorLine].begin() + mCursorColumn, static_cast<char>(key));
+    
+    mDesiredColumn = ++mCursorColumn;
     ensureCursorIsVisible();
 }
 
