@@ -11,6 +11,8 @@
 
 #include "Window.h"
 
+class TextBox;
+
 class MainWindow : public Window
 {
 public:
@@ -25,6 +27,8 @@ public:
 private:
     static const std::string windowName;
     static const std::string textBoxName;
+    
+    TextBox * mTextBox;
 };
 
 #endif /* MainWindow_h */

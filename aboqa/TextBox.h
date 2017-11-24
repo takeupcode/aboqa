@@ -22,9 +22,8 @@ class TextBox : public Window, public EventSubscriber<GameManager *, const Butto
 {
 public:
     using TextChangedEvent = EventPublisher<GameManager *, const TextBox *>;
-    using SelectionChangedEvent = EventPublisher<GameManager *, const TextBox *>;
     
-    TextBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int selectedForeColor, int selectedBackColor, bool multiline = false);
+    TextBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, bool multiline = false);
     
     bool onKeyPress (GameManager * gm, int key) override;
     
@@ -56,27 +55,25 @@ public:
     
     std::string text () const;
     
-    std::string selectedText () const;
-    
     void setText (const std::string & text);
     
-    void appendText (const std::string & text);
+    void appendLines (const std::string & text);
     
-    void insertText (const std::string & text);
+    void insertLines (const std::string & text);
     
     TextChangedEvent * textChanged ();
     
-    SelectionChangedEvent * selectionChanged ();
-    
 private:
     void notify (GameManager * gm, const Button * button) override;
+    
+    void handleTextChange (GameManager * gm) const;
     
     void moveCursorUp ();
     void moveCursorDown ();
     void moveCursorLeft ();
     void moveCursorRight ();
     void breakLineAtCursor ();
-    void removeCharAtCursor ();
+    bool removeCharAtCursor ();
     bool addCharAtCursor (int key);
     
     void placeCursorClosestToDesiredColumn ();
@@ -90,13 +87,10 @@ private:
     
     std::vector<std::string> mText;
     std::unique_ptr<TextChangedEvent> mTextChanged;
-    std::unique_ptr<SelectionChangedEvent> mSelectionChanged;
     Button * mMoveCursorUpButton;
     Button * mMoveCursorDownButton;
     Button * mMoveCursorLeftButton;
     Button * mMoveCursorRightButton;
-    int mSelectedForeColor;
-    int mSelectedBackColor;
     int mScrollLine;
     int mScrollColumn;
     int mCursorLine;

@@ -22,10 +22,9 @@ const std::string TextBox::moveCursorDownButtonName = "moveDownButton";
 const std::string TextBox::moveCursorLeftButtonName = "moveLeftButton";
 const std::string TextBox::moveCursorRightButtonName = "moveRightButton";
 
-TextBox::TextBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int selectedForeColor, int selectedBackColor, bool multiline)
+TextBox::TextBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, bool multiline)
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, foreColor, backColor, false),
-  mTextChanged(new TextChangedEvent()), mSelectionChanged(new SelectionChangedEvent()),
-  mSelectedForeColor(selectedForeColor), mSelectedBackColor(selectedBackColor),
+  mTextChanged(new TextChangedEvent()),
   mScrollLine(0), mScrollColumn(0), mCursorLine(0), mCursorColumn(0), mDesiredColumn(0), mMultiline(multiline)
 {
     if (multiline)
@@ -59,16 +58,7 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
     
     setFillClientArea(false);
     
-    std::istringstream ss(text);
-    std::string line;
-    while (std::getline(ss, line))
-    {
-        mText.push_back(std::move(line));
-    }
-    if (mText.empty())
-    {
-        mText.push_back("");
-    }
+    setText(text);
     
     mMoveCursorLeftButton = new Button(moveCursorLeftButtonName, "<", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
     mMoveCursorLeftButton->clicked()->connect(windowName, this);
@@ -127,10 +117,14 @@ bool TextBox::onKeyPress (GameManager * gm, int key)
     case 10: // Enter
     case KEY_ENTER:
         breakLineAtCursor();
+        handleTextChange(gm);
         break;
     
     case 127: // Delete
-        removeCharAtCursor();
+        if (removeCharAtCursor())
+        {
+            handleTextChange(gm);
+        }
         break;
         
     case 8: // Backspace
@@ -140,7 +134,10 @@ bool TextBox::onKeyPress (GameManager * gm, int key)
         {
             mDesiredColumn = --mCursorColumn;
             
-            removeCharAtCursor();
+            if (removeCharAtCursor())
+            {
+                handleTextChange(gm);
+            }
             
             ensureCursorIsVisible();
         }
@@ -149,7 +146,10 @@ bool TextBox::onKeyPress (GameManager * gm, int key)
             --mCursorLine;
             mDesiredColumn = mCursorColumn = static_cast<int>(mText[mCursorLine].size());
             
-            removeCharAtCursor();
+            if (removeCharAtCursor())
+            {
+                handleTextChange(gm);
+            }
             
             ensureCursorIsVisible();
         }
@@ -172,7 +172,11 @@ bool TextBox::onKeyPress (GameManager * gm, int key)
         break;
         
     default:
-        if (!addCharAtCursor(key) && parent())
+        if (addCharAtCursor(key))
+        {
+            handleTextChange(gm);
+        }
+        else if (parent())
         {
             return parent()->onKeyPress(gm, key);
         }
@@ -332,26 +336,6 @@ void TextBox::setMinWidth (int width)
     mMinWidth = width;
 }
 
-int TextBox::selectedForeColor () const
-{
-    return mSelectedForeColor;
-}
-
-void TextBox::setSelectedForeColor (int color)
-{
-    mSelectedForeColor = color;
-}
-
-int TextBox::selectedBackColor () const
-{
-    return mSelectedBackColor;
-}
-
-void TextBox::setSelectedBackColor (int color)
-{
-    mSelectedBackColor = color;
-}
-
 bool TextBox::isMultiline () const
 {
     return mMultiline;
@@ -362,14 +346,70 @@ void TextBox::setMultiline (bool multiline)
     mMultiline = multiline;
 }
 
+std::string TextBox::text () const
+{
+    std::ostringstream ss;
+    
+    bool firstLine = true;
+    for (const auto & line: mText)
+    {
+        if (!firstLine)
+        {
+            ss << "\n";
+        }
+        
+        ss << line;
+        firstLine = false;
+    }
+    
+    return ss.str();
+}
+
+void TextBox::setText (const std::string & text)
+{
+    mText.clear();
+    
+    mCursorLine = 0;
+    mDesiredColumn = mCursorColumn = 0;
+    
+    insertLines(text);
+    
+    if (mText.empty())
+    {
+        mText.push_back("");
+    }
+    
+    ensureCursorIsVisible();
+}
+
+void TextBox::appendLines (const std::string & text)
+{
+    mCursorLine = static_cast<int>(mText.size());
+    
+    insertLines(text);
+    
+    mCursorLine = static_cast<int>(mText.size()) - 1;
+    
+    ensureCursorIsVisible();
+}
+
+void TextBox::insertLines (const std::string & text)
+{
+    std::istringstream ss(text);
+    std::string line;
+    
+    int i = mCursorLine;
+    while (std::getline(ss, line))
+    {
+        mText.insert(mText.begin() + i, std::move(line));
+        
+        ++i;
+    }
+}
+
 TextBox::TextChangedEvent * TextBox::textChanged ()
 {
     return mTextChanged.get();
-}
-
-TextBox::SelectionChangedEvent * TextBox::selectionChanged ()
-{
-    return mSelectionChanged.get();
 }
 
 void TextBox::notify (GameManager * gm, const Button * button)
@@ -390,6 +430,11 @@ void TextBox::notify (GameManager * gm, const Button * button)
     {
         moveCursorRight();
     }
+}
+
+void TextBox::handleTextChange (GameManager * gm) const
+{
+    mTextChanged->signal(gm, this);
 }
 
 void TextBox::moveCursorUp ()
@@ -465,18 +510,24 @@ void TextBox::breakLineAtCursor ()
     ensureCursorIsVisible();
 }
 
-void TextBox::removeCharAtCursor ()
+bool TextBox::removeCharAtCursor ()
 {
     if (mCursorColumn == static_cast<int>(mText[mCursorLine].size()) &&
         mCursorLine < static_cast<int>(mText.size()) - 1)
     {
         mText[mCursorLine] = mText[mCursorLine] + mText[mCursorLine + 1];
         mText.erase(mText.begin() + mCursorLine + 1);
+        
+        return true;
     }
-    else
+    else if (mCursorColumn < static_cast<int>(mText[mCursorLine].size()))
     {
         mText[mCursorLine].erase(mText[mCursorLine].begin() + mCursorColumn);
+        
+        return true;
     }
+    
+    return false;
 }
 
 bool TextBox::addCharAtCursor (int key)
