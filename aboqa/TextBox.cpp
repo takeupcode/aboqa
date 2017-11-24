@@ -33,13 +33,13 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
         {
             throw std::out_of_range("height cannot be less than 4 when using multi-line.");
         }
-        if (width < 2)
+        if (width < 3)
         {
-            throw std::out_of_range("width cannot be less than 2 when using multi-line.");
+            throw std::out_of_range("width cannot be less than 3 when using multi-line.");
         }
         
         mMinHeight = 4;
-        mMinWidth = 2;
+        mMinWidth = 3;
     }
     else
     {
@@ -47,13 +47,13 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
         {
             throw std::out_of_range("height must be 1 when using single-line.");
         }
-        if (width < 3)
+        if (width < 5)
         {
-            throw std::out_of_range("width cannot be less than 3 when using single-line.");
+            throw std::out_of_range("width cannot be less than 5 when using single-line.");
         }
         
         mMinHeight = 1;
-        mMinWidth = 3;
+        mMinWidth = 5;
     }
     
     setFillClientArea(false);
@@ -95,10 +95,10 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
     else
     {
         mMoveCursorLeftButton->setAnchorTop(0);
-        mMoveCursorLeftButton->setAnchorRight(1);
+        mMoveCursorLeftButton->setAnchorRight(2);
         
         mMoveCursorRightButton->setAnchorTop(0);
-        mMoveCursorRightButton->setAnchorRight(0);
+        mMoveCursorRightButton->setAnchorRight(1);
     }
     
     addControl(std::unique_ptr<Button>(mMoveCursorLeftButton));
@@ -195,32 +195,35 @@ void TextBox::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t bu
     
     if (buttonState & BUTTON1_CLICKED)
     {
+        int winY = y - clientY();
+        int winX = x - clientX();
+        
         // Don't move the cursor if the click is in the non-client area.
-        if (x - clientX() < textClientWidth())
+        if (winX == 0 ||
+            winX > textClientWidth())
         {
-            int winY = y - clientY();
-            int line = winY + mScrollLine;
-            int winX = x - clientX();
-            int column = winX + mScrollColumn;
-            
-            bool goToMaxColumn = false;
-            if (line >= (static_cast<int>(mText.size())))
-            {
-                line = static_cast<int>(mText.size()) - 1;
-                goToMaxColumn = true;
-            }
-            
-            if (goToMaxColumn ||
-                column > (static_cast<int>(mText[line].size())))
-            {
-                column = static_cast<int>(mText[line].size());
-            }
-            
-            mCursorLine = line;
-            mCursorColumn = column;
-            mDesiredColumn = column;
-            ensureCursorIsVisible();
+            return;
         }
+        int line = winY + mScrollLine;
+        int column = winX + mScrollColumn - 1; // Subtract one for the focus marker.
+        
+        bool goToMaxColumn = false;
+        if (line >= (static_cast<int>(mText.size())))
+        {
+            line = static_cast<int>(mText.size()) - 1;
+            goToMaxColumn = true;
+        }
+        
+        if (goToMaxColumn ||
+            column > (static_cast<int>(mText[line].size())))
+        {
+            column = static_cast<int>(mText[line].size());
+        }
+        
+        mCursorLine = line;
+        mCursorColumn = column;
+        mDesiredColumn = column;
+        ensureCursorIsVisible();
     }
 }
 
@@ -246,11 +249,19 @@ void TextBox::onDrawClient () const
             {
                 lineText = mText[i + mScrollLine].substr(mScrollColumn, textClientWidth());
             }
-            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorLine - mScrollLine, mCursorColumn - mScrollColumn);
+            
+            if (hasDirectFocus())
+            {
+                ConsoleManager::printMessage(*this, i, 1, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true, mCursorLine - mScrollLine, mCursorColumn - mScrollColumn + 1);
+            }
+            else
+            {
+                ConsoleManager::printMessage(*this, i, 1, textClientWidth(), lineText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+            }
         }
         for (; i < clientHeight(); ++i)
         {
-            ConsoleManager::printMessage(*this, i, 0, textClientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+            ConsoleManager::printMessage(*this, i, 1, textClientWidth(), " ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
         }
     }
     else
@@ -272,9 +283,12 @@ void TextBox::onDrawNonClient () const
         return;
     }
     
+    std::string focusMarker = hasDirectFocus() ? "|" : " ";
+    
     for (int i = 0; i < clientHeight(); ++i)
     {
-        ConsoleManager::printMessage(*this, i, clientWidth() - 1, 1, " ", Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Justification::Horizontal::left, false);
+        ConsoleManager::printMessage(*this, i, 0, 1, focusMarker, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Justification::Horizontal::left, false);
+        ConsoleManager::printMessage(*this, i, clientWidth() - 1, 1, focusMarker, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Justification::Horizontal::left, false);
     }
 }
 
@@ -285,15 +299,15 @@ void TextBox::onResize ()
 
 int TextBox::textClientWidth () const
 {
-    // This method accounts for the area used by the scrolling buttons.
+    // This method accounts for the area used by the scrolling buttons and focus marker.
     if (mMultiline)
     {
-        // If multi-line, then all the scrolling buttons are in the rightmost column.
-        return clientWidth() - 1;
+        // If multi-line, then all the scrolling buttons are in the rightmost column with the right focus marker.
+        return clientWidth() - 2;
     }
     
-    // For single-line, the left and right scrolling buttons occupy the last two columns.
-    return clientWidth() - 2;
+    // For single-line, the focus marker occupies the last column followed by the left and right scrolling buttons.
+    return clientWidth() - 4;
 }
 
 void TextBox::setMinHeight (int height)
@@ -320,16 +334,16 @@ void TextBox::setMinWidth (int width)
 {
     if (mMultiline)
     {
-        if (width < 2)
+        if (width < 3)
         {
-            throw std::out_of_range("width cannot be less than 2 when using multi-line.");
+            throw std::out_of_range("width cannot be less than 3 when using multi-line.");
         }
     }
     else
     {
-        if (width < 3)
+        if (width < 5)
         {
-            throw std::out_of_range("width cannot be less than 3 when using single-line.");
+            throw std::out_of_range("width cannot be less than 5 when using single-line.");
         }
     }
     
@@ -339,11 +353,6 @@ void TextBox::setMinWidth (int width)
 bool TextBox::isMultiline () const
 {
     return mMultiline;
-}
-
-void TextBox::setMultiline (bool multiline)
-{
-    mMultiline = multiline;
 }
 
 std::string TextBox::text () const

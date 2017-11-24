@@ -51,8 +51,6 @@ public:
     
     bool isMultiline () const;
     
-    void setMultiline (bool multiline);
-    
     std::string text () const;
     
     void setText (const std::string & text);
