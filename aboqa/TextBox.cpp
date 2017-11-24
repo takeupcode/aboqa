@@ -58,7 +58,6 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
     }
     
     setFillClientArea(false);
-    setWantEnter(true);
     
     std::istringstream ss(text);
     std::string line;
@@ -73,18 +72,22 @@ TextBox::TextBox (const std::string & name, const std::string & text, int y, int
     
     mMoveCursorLeftButton = new Button(moveCursorLeftButtonName, "<", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
     mMoveCursorLeftButton->clicked()->connect(windowName, this);
+    mMoveCursorLeftButton->setIsDirectFocusPossible(false);
     
     mMoveCursorRightButton = new Button(moveCursorRightButtonName, ">", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
     mMoveCursorRightButton->clicked()->connect(windowName, this);
+    mMoveCursorRightButton->setIsDirectFocusPossible(false);
     
     if (multiline)
     {
         mMoveCursorUpButton = new Button(moveCursorUpButtonName, "+", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
         mMoveCursorUpButton->clicked()->connect(windowName, this);
+        mMoveCursorUpButton->setIsDirectFocusPossible(false);
         addControl(std::unique_ptr<Button>(mMoveCursorUpButton));
         
         mMoveCursorDownButton = new Button(moveCursorDownButtonName, "-", 0, 0, 1, 1, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
         mMoveCursorDownButton->clicked()->connect(windowName, this);
+        mMoveCursorDownButton->setIsDirectFocusPossible(false);
         addControl(std::unique_ptr<Button>(mMoveCursorDownButton));
         
         mMoveCursorUpButton->setAnchorTop(0);
@@ -169,7 +172,10 @@ bool TextBox::onKeyPress (GameManager * gm, int key)
         break;
         
     default:
-        addCharAtCursor(key);
+        if (!addCharAtCursor(key) && parent())
+        {
+            return parent()->onKeyPress(gm, key);
+        }
         break;
     }
     
@@ -473,17 +479,19 @@ void TextBox::removeCharAtCursor ()
     }
 }
 
-void TextBox::addCharAtCursor (int key)
+bool TextBox::addCharAtCursor (int key)
 {
     if (key < 32 || key > 126)
     {
-        return;
+        return false;
     }
     
     mText[mCursorLine].insert(mText[mCursorLine].begin() + mCursorColumn, static_cast<char>(key));
     
     mDesiredColumn = ++mCursorColumn;
     ensureCursorIsVisible();
+    
+    return true;
 }
 
 void TextBox::placeCursorClosestToDesiredColumn ()

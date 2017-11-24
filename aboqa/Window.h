@@ -155,6 +155,8 @@ public:
     
     virtual bool hasDirectFocus () const;
     
+    virtual void setIsDirectFocusPossible (bool value);
+    
     virtual bool setFocus (bool focus);
     
     virtual bool setFocus (int y, int x);
@@ -164,9 +166,9 @@ public:
     Window * parent () const;
     
     void setParent (Window * parent);
-    
+
     virtual bool wantEnter () const;
-    
+
     virtual void setWantEnter (bool value);
     
     virtual VisibleState visibleState () const;
@@ -211,6 +213,7 @@ protected:
     Window * mParent;
     bool mBorder;
     bool mHasFocus;
+    bool mIsDirectFocusPossible;
     bool mHasDirectFocus;
     bool mFillClientArea;
     bool mWantEnter;

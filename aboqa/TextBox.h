@@ -77,7 +77,7 @@ private:
     void moveCursorRight ();
     void breakLineAtCursor ();
     void removeCharAtCursor ();
-    void addCharAtCursor (int key);
+    bool addCharAtCursor (int key);
     
     void placeCursorClosestToDesiredColumn ();
     void ensureCursorIsVisible ();

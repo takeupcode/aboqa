@@ -19,8 +19,6 @@ public:
     
     void onDrawClient () const override;
     
-    bool canHaveDirectFocus () const override;
-    
     bool isMultiline () const;
     
     void setMultiline (bool multiline);

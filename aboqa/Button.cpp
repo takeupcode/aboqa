@@ -30,14 +30,7 @@ bool Button::onKeyPress (GameManager * gm, int key)
     switch (key)
     {
     case 32: // Space
-        handleClick(gm);
-        break;
-            
     case 10: // Enter
-        if (parent() && parent()->wantEnter())
-        {
-            return parent()->onKeyPress(gm, key);
-        }
         handleClick(gm);
         break;
             

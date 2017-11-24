@@ -15,6 +15,8 @@ Label::Label (const std::string & name, const std::string & text, int y, int x, 
   mText(text), mHorizontalJustification(horizontalJustification), mVerticalJustification(verticalJustification),
   mMultiline(multiline)
 {
+    setIsDirectFocusPossible(false);
+    
     setFillClientArea(false);
 }
 
@@ -69,11 +71,6 @@ void Label::onDrawClient () const
         int vertCenter = clientHeight() / 2;
         ConsoleManager::printMessage(*this, vertCenter, 0, clientWidth(), mText, clientForeColor(), clientBackColor(), mHorizontalJustification, true);
     }
-}
-
-bool Label::canHaveDirectFocus () const
-{
-    return false;
 }
 
 bool Label::isMultiline () const

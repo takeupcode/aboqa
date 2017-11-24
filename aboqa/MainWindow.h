@@ -22,8 +22,6 @@ public:
     
     void onDrawClient () const override;
     
-    bool canHaveDirectFocus () const override;
-    
 private:
     static const std::string windowName;
     static const std::string textBoxName;

@@ -24,8 +24,6 @@ public:
     void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
     
     void onDrawClient () const override;
-    
-    bool canHaveDirectFocus () const override;
 
 private:
     void notify (GameManager * gm, const Button * button) override;

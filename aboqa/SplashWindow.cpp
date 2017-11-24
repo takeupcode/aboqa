@@ -22,6 +22,8 @@ const std::string SplashWindow::introLabelName = "introLabel";
 SplashWindow::SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
 {
+    setIsDirectFocusPossible(false);
+    
     auto playButton = std::unique_ptr<Button>(new Button(playButtonName, "Play", 0, 0, 1, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED));
     playButton->setAnchorBottom(0);
     playButton->setAnchorRight(0);
@@ -85,11 +87,6 @@ void SplashWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask
 void SplashWindow::onDrawClient () const
 {
     
-}
-
-bool SplashWindow::canHaveDirectFocus () const
-{
-    return false;
 }
 
 void SplashWindow::notify (GameManager * gm, const Button * button)
