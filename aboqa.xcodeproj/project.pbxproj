@@ -10,6 +10,7 @@
 		3E6A281B1FB6C25C009458A7 /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28191FB6C25C009458A7 /* Label.cpp */; };
 		3E6A281F1FBFE4FF009458A7 /* TextUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A281D1FBFE4FF009458A7 /* TextUtil.cpp */; };
 		3E6A28221FBFF68B009458A7 /* TextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28201FBFF68B009458A7 /* TextBox.cpp */; };
+		3E6A28251FC7F6FF009458A7 /* CheckBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28231FC7F6FF009458A7 /* CheckBox.cpp */; };
 		3EB347BF1FAAC28F0031025E /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347BD1FAAC28F0031025E /* Window.cpp */; };
 		3EB347C51FAAE19B0031025E /* Colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C31FAAE19B0031025E /* Colors.cpp */; };
 		3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C61FAEC57C0031025E /* SplashWindow.cpp */; };
@@ -47,6 +48,8 @@
 		3E6A281E1FBFE4FF009458A7 /* TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextUtil.h; sourceTree = "<group>"; };
 		3E6A28201FBFF68B009458A7 /* TextBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextBox.cpp; sourceTree = "<group>"; };
 		3E6A28211FBFF68B009458A7 /* TextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBox.h; sourceTree = "<group>"; };
+		3E6A28231FC7F6FF009458A7 /* CheckBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CheckBox.cpp; sourceTree = "<group>"; };
+		3E6A28241FC7F6FF009458A7 /* CheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckBox.h; sourceTree = "<group>"; };
 		3EB347BD1FAAC28F0031025E /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		3EB347BE1FAAC28F0031025E /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		3EB347C31FAAE19B0031025E /* Colors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colors.cpp; sourceTree = "<group>"; };
@@ -138,6 +141,8 @@
 				3E6A281E1FBFE4FF009458A7 /* TextUtil.h */,
 				3E6A28201FBFF68B009458A7 /* TextBox.cpp */,
 				3E6A28211FBFF68B009458A7 /* TextBox.h */,
+				3E6A28231FC7F6FF009458A7 /* CheckBox.cpp */,
+				3E6A28241FC7F6FF009458A7 /* CheckBox.h */,
 			);
 			path = aboqa;
 			sourceTree = "<group>";
@@ -211,6 +216,7 @@
 				3ED7859D1FA591A3002D9B78 /* LogManager.cpp in Sources */,
 				3EB347CE1FAEC5B80031025E /* ExitWindow.cpp in Sources */,
 				3EB347D41FB2A6350031025E /* CursesUtil.cpp in Sources */,
+				3E6A28251FC7F6FF009458A7 /* CheckBox.cpp in Sources */,
 				3EB347C51FAAE19B0031025E /* Colors.cpp in Sources */,
 				3EB347BF1FAAC28F0031025E /* Window.cpp in Sources */,
 				3ED7859F1FA591A3002D9B78 /* GameManager.cpp in Sources */,

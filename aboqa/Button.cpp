@@ -11,7 +11,6 @@
 #include "ConsoleManager.h"
 #include "GameManager.h"
 #include "Justification.h"
-#include "LogManager.h"
 
 Button::Button (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor)
 : Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, focusForeColor, focusBackColor, false),
@@ -66,6 +65,7 @@ void Button::onDrawClient () const
     }
     
     int vertCenter = height() / 2;
+    
     if (hasDirectFocus())
     {
         ConsoleManager::printMessage(*this, vertCenter, 0, width(), mText, focusForeColor(), focusBackColor(), Justification::Horizontal::center, true);
@@ -89,8 +89,6 @@ void Button::onDrawClient () const
 
 void Button::handleClick (GameManager * gm) const
 {
-    ABOQALOG(Info, name() << " clicked");
-    
     mClicked->signal(gm, this);
 }
 

@@ -1,0 +1,114 @@
+//
+//  CheckBox.cpp
+//  aboqa
+//
+//  Created by Abdul Wahid Tanner on 11/24/17.
+//  Copyright © 2017 Take Up Code. All rights reserved.
+//
+
+#include "CheckBox.h"
+
+#include <stdexcept>
+
+#include "ConsoleManager.h"
+#include "GameManager.h"
+#include "Justification.h"
+
+CheckBox::CheckBox (const std::string & name, const std::string & text, int y, int x, int height, int width, int foreColor, int backColor, int focusForeColor, int focusBackColor)
+: Window(name, y, x, height, width, foreColor, backColor, foreColor, backColor, focusForeColor, focusBackColor, false),
+mText(text), mClicked(new ClickedEvent())
+{
+    if (width < 6)
+    {
+        throw std::out_of_range("width cannot be less than 6.");
+    }
+    
+    setFillClientArea(false);
+}
+
+bool CheckBox::onKeyPress (GameManager * gm, int key)
+{
+    if (enableState() != Window::EnableState::enabled)
+    {
+        return false;
+    }
+    
+    switch (key)
+    {
+        case 32: // Space
+        case 10: // Enter
+            handleClick(gm);
+            break;
+            
+        default:
+            if (parent())
+            {
+                return parent()->onKeyPress(gm, key);
+            }
+            return false;
+    }
+    
+    return true;
+}
+
+void CheckBox::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState)
+{
+    if (enableState() != Window::EnableState::enabled)
+    {
+        return;
+    }
+    
+    if (buttonState & BUTTON1_CLICKED)
+    {
+        handleClick(gm);
+    }
+}
+
+void CheckBox::onDrawClient () const
+{
+    if (visibleState() != Window::VisibleState::shown)
+    {
+        return;
+    }
+    
+    std::string checkState = mIsChecked ? " X " : "   ";
+    
+    int vertCenter = height() / 2;
+    
+    if (hasDirectFocus())
+    {
+        ConsoleManager::printMessage(*this, vertCenter, 1, 3, checkState, focusForeColor(), focusBackColor(), Justification::Horizontal::left, false);
+        ConsoleManager::printMessage(*this, vertCenter, 4, width() - 5, mText, focusForeColor(), focusBackColor(), Justification::Horizontal::left, true);
+        mvwaddch(cursesWindow(), vertCenter, 0, '|');
+        mvwaddch(cursesWindow(), vertCenter, width() - 1, '|');
+    }
+    else
+    {
+        ConsoleManager::printMessage(*this, vertCenter, 1, 3, checkState, clientForeColor(), clientBackColor(), Justification::Horizontal::left, false);
+        ConsoleManager::printMessage(*this, vertCenter, 4, width() - 5, mText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
+        mvwaddch(cursesWindow(), vertCenter, 0, ' ');
+        mvwaddch(cursesWindow(), vertCenter, width() - 1, ' ');
+    }
+}
+
+bool CheckBox::isChecked () const
+{
+    return mIsChecked;
+}
+
+void CheckBox::setIsChecked (bool value)
+{
+    mIsChecked = value;
+}
+
+void CheckBox::handleClick (GameManager * gm)
+{
+    mIsChecked = !mIsChecked;
+    
+    mClicked->signal(gm, this);
+}
+
+CheckBox::ClickedEvent * CheckBox::clicked ()
+{
+    return mClicked.get();
+}

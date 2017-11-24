@@ -12,6 +12,7 @@
 #include "Window.h"
 
 class TextBox;
+class CheckBox;
 
 class MainWindow : public Window
 {
@@ -27,8 +28,10 @@ public:
 private:
     static const std::string windowName;
     static const std::string textBoxName;
+    static const std::string checkBoxName;
     
     TextBox * mTextBox;
+    CheckBox * mCheckBox;
 };
 
 #endif /* MainWindow_h */
