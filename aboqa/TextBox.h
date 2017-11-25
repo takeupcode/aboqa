@@ -39,14 +39,6 @@ public:
     
     void setMinWidth (int width) override;
     
-    int selectedForeColor () const;
-    
-    void setSelectedForeColor (int color);
-    
-    int selectedBackColor () const;
-    
-    void setSelectedBackColor (int color);
-    
     bool isMultiline () const;
     
     std::string text () const;

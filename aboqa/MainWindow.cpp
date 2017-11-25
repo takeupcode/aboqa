@@ -13,10 +13,12 @@
 #include "LogManager.h"
 #include "TextBox.h"
 #include "CheckBox.h"
+#include "NumberBox.h"
 
 const std::string MainWindow::windowName = "MainWindow";
 const std::string MainWindow::textBoxName = "textBox";
 const std::string MainWindow::checkBoxName = "checkBox";
+const std::string MainWindow::numberBoxName = "numberBox";
 
 MainWindow::MainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
@@ -34,6 +36,11 @@ MainWindow::MainWindow (const std::string & name, int y, int x, int height, int 
     mCheckBox->setAnchorBottom(1);
     mCheckBox->setAnchorRight(1);
     addControl(std::unique_ptr<CheckBox>(mCheckBox));
+    
+    mNumberBox = new NumberBox(numberBoxName, 0, 0, 0, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE);
+    mNumberBox->setAnchorBottom(1);
+    mNumberBox->setAnchorLeft(1);
+    addControl(std::unique_ptr<NumberBox>(mNumberBox));
 }
 
 bool MainWindow::onKeyPress (GameManager * gm, int key)
