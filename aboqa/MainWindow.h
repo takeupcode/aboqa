@@ -14,6 +14,7 @@
 class TextBox;
 class CheckBox;
 class NumberBox;
+class ListBox;
 
 class MainWindow : public Window
 {
@@ -31,10 +32,12 @@ private:
     static const std::string textBoxName;
     static const std::string checkBoxName;
     static const std::string numberBoxName;
+    static const std::string listBoxName;
     
     TextBox * mTextBox;
     CheckBox * mCheckBox;
     NumberBox * mNumberBox;
+    ListBox * mListBox;
 };
 
 #endif /* MainWindow_h */

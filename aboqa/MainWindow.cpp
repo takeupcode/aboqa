@@ -14,11 +14,13 @@
 #include "TextBox.h"
 #include "CheckBox.h"
 #include "NumberBox.h"
+#include "ListBox.h"
 
 const std::string MainWindow::windowName = "MainWindow";
 const std::string MainWindow::textBoxName = "textBox";
 const std::string MainWindow::checkBoxName = "checkBox";
 const std::string MainWindow::numberBoxName = "numberBox";
+const std::string MainWindow::listBoxName = "listBox";
 
 MainWindow::MainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
@@ -27,7 +29,7 @@ MainWindow::MainWindow (const std::string & name, int y, int x, int height, int 
     
     mTextBox = new TextBox(textBoxName, "line 1\nline 2 is longer\nline 3\nline 4 is also long\nline 5\nline 6", 0, 0, 7, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_CYAN, true);
     mTextBox->setAnchorTop(2);
-    mTextBox->setAnchorBottom(2);
+    mTextBox->setAnchorBottom(3);
     mTextBox->setAnchorLeft(20);
     mTextBox->setAnchorRight(15);
     addControl(std::unique_ptr<TextBox>(mTextBox));
@@ -41,6 +43,29 @@ MainWindow::MainWindow (const std::string & name, int y, int x, int height, int 
     mNumberBox->setAnchorBottom(1);
     mNumberBox->setAnchorLeft(1);
     addControl(std::unique_ptr<NumberBox>(mNumberBox));
+
+    std::vector<std::string> items;
+    items.push_back("zero");
+    items.push_back("one");
+    items.push_back("two");
+    items.push_back("three");
+    items.push_back("four");
+    items.push_back("five");
+    items.push_back("six");
+    items.push_back("seven");
+    items.push_back("eight");
+    items.push_back("nine");
+    items.push_back("a");
+    items.push_back("b");
+    items.push_back("c");
+    items.push_back("d");
+    items.push_back("e");
+    items.push_back("f");
+    
+    mListBox = new ListBox(listBoxName, items, 0, 0, 10, 15, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+    mListBox->setAnchorTop(2);
+    mListBox->setAnchorLeft(2);
+    addControl(std::unique_ptr<ListBox>(mListBox));
 }
 
 bool MainWindow::onKeyPress (GameManager * gm, int key)
