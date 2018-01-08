@@ -1,0 +1,918 @@
+# The world is a cube. With 100 squares per cube face
+# at the highest zoom level.
+item:world int:dimension="100"; int:base="3";
+
+# Define the zoom levels. This world uses base^n meters per square
+# for each zoom level. For base 3, this gives: 1, 3, 9, 27, 81, 243, 729, 2187, 6561, 19683
+hash:zoom string:id="local"; int:value="0"; # 1
+hash:zoom string:id="world"; int:value="9"; # 19683
+
+# Define what needs glyphs to be shown to the player
+hash:mappable string:id="terrain";
+hash:mappable string:id="hero";
+hash:mappable string:id="transport";
+hash:mappable string:id="creature";
+
+# Define what types are generic and represent specific types
+hash:generic string:id="plant"
+hash:generic string:id="tree"
+
+# Define the possible terrain types.
+hash:terrain string:id="glacier"; string:name="Glacier"; unichar:glyph="1A0F";
+hash:terrain string:id="mountain"; string:name="Mountain"; unichar:glyph="1A0F";
+hash:terrain string:id="forest"; string:name="Forest"; unichar:glyph="1A0F";
+hash:terrain string:id="steppe"; string:name="Steppe"; unichar:glyph="1A0F";
+hash:terrain string:id="volcanic"; string:name="Volcanic"; unichar:glyph="1A0F";
+hash:terrain string:id="marsh"; string:name="Marsh"; unichar:glyph="17F3";
+hash:terrain string:id="lake"; string:name="Lake"; unichar:glyph="23D6";
+hash:terrain string:id="sand"; string:name="Sand"; unichar:glyph="1886";
+hash:terrain string:id="sea"; string:name="Sea"; unichar:glyph="1886";
+hash:terrain string:id="ice"; string:name="Ice"; unichar:glyph="1A0F";
+hash:terrain string:id="plant"; string:name="Plant"; unichar:glyph="1A0F";
+hash:terrain string:id="tree"; string:name="Tree"; unichar:glyph="1A0F";
+hash:terrain string:id="grass"; string:name="Grass"; unichar:glyph="1A0F";
+hash:terrain string:id="dirt"; string:name="Dirt"; unichar:glyph="1A0F";
+hash:terrain string:id="rock"; string:name="Rock"; unichar:glyph="1A0F";
+hash:terrain string:id="rubble"; string:name="Rubble"; unichar:glyph="1A0F";
+hash:terrain string:id="lava"; string:name="Lava"; unichar:glyph="1A0F";
+hash:terrain string:id="river"; string:name="River"; unichar:glyph="1A0F";
+hash:terrain string:id="waystone"; string:name="Waystone"; unichar:glyph="1A0F";
+hash:terrain string:id="waterfall"; string:name="Waterfall"; unichar:glyph="1A0F";
+hash:terrain string:id="rapids"; string:name="Rapids"; unichar:glyph="1A0F";
+hash:terrain string:id="ford"; string:name="Ford"; unichar:glyph="1A0F";
+hash:terrain string:id="path"; string:name="Path"; unichar:glyph="1A0F";
+hash:terrain string:id="road"; string:name="Road"; unichar:glyph="1A0F";
+hash:terrain string:id="sewer"; string:name="Sewer"; unichar:glyph="1A0F";
+hash:terrain string:id="cave"; string:name="Cave"; unichar:glyph="1A0F";
+hash:terrain string:id="well"; string:name="Well"; unichar:glyph="1A0F";
+hash:terrain string:id="grave"; string:name="Grave"; unichar:glyph="1A0F";
+hash:terrain string:id="dock"; string:name="Dock"; unichar:glyph="1A0F";
+hash:terrain string:id="bridge"; string:name="Bridge"; unichar:glyph="1A0F";
+hash:terrain string:id="stairs"; string:name="Stairs"; unichar:glyph="1750";
+hash:terrain string:id="ladder"; string:name="Ladder"; unichar:glyph="1750";
+hash:terrain string:id="elevator"; string:name="Elevator"; unichar:glyph="1750";
+hash:terrain string:id="floor"; string:name="Floor"; unichar:glyph="1750";
+hash:terrain string:id="door"; string:name="Door"; unichar:glyph="1750";
+hash:terrain string:id="trapDoor"; string:name="Trap door"; unichar:glyph="1750";
+hash:terrain string:id="pillar"; string:name="Pillar"; unichar:glyph="1A0F";
+hash:terrain string:id="fence"; string:name="Fence"; unichar:glyph="1A0F";
+hash:terrain string:id="statue"; string:name="Statue"; unichar:glyph="1A0F";
+hash:terrain string:id="fountain"; string:name="Fountain"; unichar:glyph="1A0F";
+hash:terrain string:id="woodpile"; string:name="Woodpile"; unichar:glyph="1A0F";
+hash:terrain string:id="log"; string:name="Log"; unichar:glyph="1A0F";
+hash:terrain string:id="boulder"; string:name="Boulder"; unichar:glyph="1A0F";
+hash:terrain string:id="smelter"; string:name="Smelter"; unichar:glyph="1A0F";
+hash:terrain string:id="forge"; string:name="Forge"; unichar:glyph="1A0F";
+hash:terrain string:id="workbench"; string:name="Workbench"; unichar:glyph="1A0F";
+hash:terrain string:id="altar"; string:name="Altar"; unichar:glyph="1A0F";
+hash:terrain string:id="target"; string:name="Target"; unichar:glyph="1A0F";
+hash:terrain string:id="chest"; string:name="Chest"; unichar:glyph="1A0F";
+hash:terrain string:id="bed"; string:name="Bed"; unichar:glyph="1A0F";
+hash:terrain string:id="table"; string:name="Table"; unichar:glyph="1A0F";
+hash:terrain string:id="chair"; string:name="Chair"; unichar:glyph="1A0F";
+hash:terrain string:id="shelf"; string:name="Shelf"; unichar:glyph="1A0F";
+hash:terrain string:id="stove"; string:name="Stove"; unichar:glyph="1A0F";
+hash:terrain string:id="campfire"; string:name="Campfire"; glyph="205B";
+hash:terrain string:id="ulCorner"; string:name="Wall"; unichar:glyph="250C";
+hash:terrain string:id="llCorner"; string:name="Wall"; unichar:glyph="2514";
+hash:terrain string:id="urCorner"; string:name="Wall"; unichar:glyph="2510";
+hash:terrain string:id="lrCorner"; string:name="Wall"; unichar:glyph="2518";
+hash:terrain string:id="rTee"; string:name="Wall"; unichar:glyph="251C";
+hash:terrain string:id="lTee"; string:name="Wall"; unichar:glyph="2524";
+hash:terrain string:id="uTee"; string:name="Wall"; unichar:glyph="2534";
+hash:terrain string:id="dTee"; string:name="Wall"; unichar:glyph="252C";
+hash:terrain string:id="hLine"; string:name="Wall"; unichar:glyph="2500";
+hash:terrain string:id="vLine"; string:name="Wall"; unichar:glyph="2502";
+hash:terrain string:id="crossover"; string:name="Wall"; unichar:glyph="253C";
+
+# Define hero
+hash:hero string:id="hero"; string:name="Hero"; unichar:glyph="1A0F";
+
+# Define transport
+hash:transport string:id="ship"; string:name="Ship"; unichar:glyph="1A0F";
+hash:transport string:id="wagon"; string:name="Wagon"; unichar:glyph="1A0F";
+hash:transport string:id="cart"; string:name="Cart"; unichar:glyph="1A0F";
+
+# Define creatures
+hash:creature string:id="horse"; string:name="Horse"; unichar:glyph="1A0F";
+hash:creature string:id="cow"; string:name="Cow"; unichar:glyph="1A0F";
+hash:creature string:id="snake"; string:name="Snake"; unichar:glyph="222B";
+hash:creature string:id="fish"; string:name="Fish"; unichar:glyph="1A0F";
+hash:creature string:id="clams"; string:name="Clams"; unichar:glyph="1A0F";
+hash:creature string:id="rabbit"; string:name="Rabbit"; unichar:glyph="1A0F";
+hash:creature string:id="chicken"; string:name="Chicken"; unichar:glyph="1A0F";
+hash:creature string:id="sheep"; string:name="Sheep"; unichar:glyph="1A0F";
+hash:creature string:id="goat"; string:name="Goat"; unichar:glyph="1A0F";
+hash:creature string:id="deer"; string:name="Deer"; unichar:glyph="1A0F";
+hash:creature string:id="rat"; string:name="Rat"; unichar:glyph="1A0F";
+hash:creature string:id="lizard"; string:name="Lizard"; unichar:glyph="1A0F";
+hash:creature string:id="crab"; string:name="Crab"; unichar:glyph="1A0F";
+hash:creature string:id="spider"; string:name="Spider"; unichar:glyph="1A0F";
+hash:creature string:id="wolf"; string:name="Wolf"; unichar:glyph="1A0F";
+hash:creature string:id="mountainLion"; string:name="Mountain lion"; unichar:glyph="1A0F";
+hash:creature string:id="bear"; string:name="Bear"; unichar:glyph="1A0F";
+hash:creature string:id="coyote"; string:name="Coyote"; unichar:glyph="1A0F";
+hash:creature string:id="redFox"; string:name="Red fox"; unichar:glyph="1A0F";
+hash:creature string:id="human"; string:name="Human"; unichar:glyph="A238";
+hash:creature string:id="orc"; string:name="Orc"; unichar:glyph="1A0F";
+hash:creature string:id="goblin"; string:name="Goblin"; unichar:glyph="1A0F";
+hash:creature string:id="dwarf"; string:name="Dwarf"; unichar:glyph="1A0F";
+hash:creature string:id="waterElemental"; string:name="Water elemental"; unichar:glyph="1A0F";
+hash:creature string:id="rockElemental"; string:name="Rock elemental"; unichar:glyph="1A0F";
+hash:creature string:id="airElemental"; string:name="Air elemental"; unichar:glyph="1A0F";
+hash:creature string:id="fireElemental"; string:name="Fire elemental"; unichar:glyph="1A0F";
+hash:creature string:id="elf"; string:name="Elf"; unichar:glyph="1A0F";
+hash:creature string:id="skeleton"; string:name="Skeleton"; unichar:glyph="1A0F";
+hash:creature string:id="blob"; string:name="Blob"; unichar:glyph="1A0F";
+hash:creature string:id="ghost"; string:name="Ghost"; unichar:glyph="1A0F";
+hash:creature string:id="dragon"; string:name="Dragon"; unichar:glyph="1A0F";
+hash:creature string:id="troll"; string:name="Troll"; unichar:glyph="1A0F";
+hash:creature string:id="nymph"; string:name="Nymph"; unichar:glyph="1A0F";
+hash:creature string:id="jinn"; string:name="Jinn"; unichar:glyph="1A0F";
+hash:creature string:id="centaur"; string:name="Centaur"; unichar:glyph="1A0F";
+hash:creature string:id="giant"; string:name="Giant"; unichar:glyph="1A0F";
+hash:creature string:id="ogre"; string:name="Ogre"; unichar:glyph="1A0F";
+hash:creature string:id="shadow"; string:name="Shadow"; unichar:glyph="1A0F";
+hash:creature string:id="twitchRoot"; string:name="Twitch root"; unichar:glyph="1A0F";
+hash:creature string:id="worm"; string:name="Worm"; unichar:glyph="1A0F";
+
+# Define the world mapping symbols
+hash:worldTerrain string:id="g"; string:terrain="glacier";
+hash:worldTerrain string:id="m"; string:terrain="mountain";
+hash:worldTerrain string:id="f"; string:terrain="forest";
+hash:worldTerrain string:id="p"; string:terrain="steppe";
+hash:worldTerrain string:id="V"; string:terrain="volcanic";
+hash:worldTerrain string:id="r"; string:terrain="marsh";
+hash:worldTerrain string:id="L"; string:terrain="lake";
+hash:worldTerrain string:id="a"; string:terrain="sand";
+hash:worldTerrain string:id="s"; string:terrain="sea";
+
+# Define the local mapping symbols
+hash:localTerrain string:id="i"; string:terrain="ice";
+hash:localTerrain string:id="P"; string:terrain="plant";
+hash:localTerrain string:id="T"; string:terrain="tree";
+hash:localTerrain string:id="g"; string:terrain="grass";
+hash:localTerrain string:id="d"; string:terrain="dirt";
+hash:localTerrain string:id="o"; string:terrain="rock";
+hash:localTerrain string:id="U"; string:terrain="rubble";
+hash:localTerrain string:id="V"; string:terrain="volcanic";
+hash:localTerrain string:id="L"; string:terrain="lava";
+hash:localTerrain string:id="r"; string:terrain="marsh";
+hash:localTerrain string:id="L"; string:terrain="lake";
+hash:localTerrain string:id="a"; string:terrain="sand";
+hash:localTerrain string:id="R"; string:terrain="river";
+hash:localTerrain string:id="s"; string:terrain="sea";
+hash:localTerrain string:id="W"; string:terrain="waystone";
+hash:localTerrain string:id="!"; string:terrain="waterfall";
+hash:localTerrain string:id="*"; string:terrain="rapids";
+hash:localTerrain string:id="="; string:terrain="ford";
+hash:localTerrain string:id="."; string:terrain="path";
+hash:localTerrain string:id="+"; string:terrain="road";
+hash:localTerrain string:id="-"; string:terrain="sewer";
+hash:localTerrain string:id="^"; string:terrain="cave";
+hash:localTerrain string:id="M"; string:terrain="well";
+hash:localTerrain string:id="G"; string:terrain="grave";
+hash:localTerrain string:id="0"; string:terrain="dock";
+hash:localTerrain string:id="B"; string:terrain="bridge";
+hash:localTerrain string:id="Z"; string:terrain="stairs";
+hash:localTerrain string:id="7"; string:terrain="ladder";
+hash:localTerrain string:id="E"; string:terrain="elevator";
+hash:localTerrain string:id="f"; string:terrain="floor";
+hash:localTerrain string:id="D"; string:terrain="door";
+hash:localTerrain string:id="$"; string:terrain="trapDoor";
+hash:localTerrain string:id="Y"; string:terrain="pillar";
+hash:localTerrain string:id="F"; string:terrain="fence";
+hash:localTerrain string:id="S"; string:terrain="statue";
+hash:localTerrain string:id="O"; string:terrain="fountain";
+hash:localTerrain string:id="H"; string:terrain="woodpile";
+hash:localTerrain string:id="8"; string:terrain="log";
+hash:localTerrain string:id="b"; string:terrain="boulder";
+hash:localTerrain string:id="3"; string:terrain="smelter";
+hash:localTerrain string:id="4"; string:terrain="forge";
+hash:localTerrain string:id="5"; string:terrain="workbench";
+hash:localTerrain string:id="A"; string:terrain="altar";
+hash:localTerrain string:id="X"; string:terrain="target";
+hash:localTerrain string:id="C"; string:terrain="chest";
+hash:localTerrain string:id="Q"; string:terrain="bed";
+hash:localTerrain string:id="2"; string:terrain="table";
+hash:localTerrain string:id="6"; string:terrain="chair";
+hash:localTerrain string:id="9"; string:terrain="shelf";
+hash:localTerrain string:id="1"; string:terrain="stove";
+hash:localTerrain string:id="c"; string:terrain="campfire";
+hash:localTerrain string:id="l"; string:terrain="ulCorner";
+hash:localTerrain string:id="m"; string:terrain="llCorner";
+hash:localTerrain string:id="k"; string:terrain="urCorner";
+hash:localTerrain string:id="j"; string:terrain="lrCorner";
+hash:localTerrain string:id="t"; string:terrain="rTee";
+hash:localTerrain string:id="u"; string:terrain="lTee";
+hash:localTerrain string:id="v"; string:terrain="uTee";
+hash:localTerrain string:id="w"; string:terrain="dTee";
+hash:localTerrain string:id="q"; string:terrain="hLine";
+hash:localTerrain string:id="x"; string:terrain="vLine";
+hash:localTerrain string:id="n"; string:terrain="crossover";
+
+# Define specific trees
+hash:tree string:id="paperBarkTree"; string:name="Paper bark tree";
+hash:tree string:id="yewTree"; string:name="Yew tree";
+hash:tree string:id="cypressTree"; string:name="Cypress tree";
+hash:tree string:id="cinammonTree"; string:name="Cinnamon tree";
+hash:tree string:id="appleTree"; string:name="Apple tree";
+hash:tree string:id="coconutTree"; string:name="Coconut tree";
+hash:tree string:id="palmTree"; string:name="Palm tree";
+hash:tree string:id="orangeTree"; string:name="Orange tree";
+hash:tree string:id="pearTree"; string:name="Pear tree";
+hash:tree string:id="walnutTree"; string:name="Walnut tree";
+hash:tree string:id="tamarindTree"; string:name="Tamarind tree";
+hash:tree string:id="oakTree"; string:name="Oak tree";
+hash:tree string:id="pineTree"; string:name="Pine tree";
+
+# Define specific plants
+hash:plant string:id="commonBush"; string:name="Common bush";
+hash:plant string:id="redBerryBush"; string:name="Red berry bush";
+hash:plant string:id="whiteFlowerBush"; string:name="White flower bush";
+hash:plant string:id="blueFlowerBush"; string:name="Blue flower bush";
+hash:plant string:id="thornBush"; string:name="Thorn bush";
+hash:plant string:id="grapeVine"; string:name="Grape vine";
+hash:plant string:id="teaPlant"; string:name="Tea plant";
+hash:plant string:id="potatoPlant"; string:name="Potato plant";
+hash:plant string:id="cornPlant"; string:name="Corn plant";
+hash:plant string:id="tomatoPlant"; string:name="Tomato plant";
+hash:plant string:id="lettucePlant"; string:name="Lettuce plant";
+hash:plant string:id="cabbagePlant"; string:name="Cabbage plant";
+hash:plant string:id="carrotPlant"; string:name="Carrot plant";
+hash:plant string:id="sugarCanePlant"; string:name="Sugar cane plant";
+hash:plant string:id="blackPepperPlant"; string:name="Black pepper plant";
+hash:plant string:id="hotPepperPlant"; string:name="Hot pepper plant";
+hash:plant string:id="hopsPlant"; string:name="Hops plant";
+hash:plant string:id="wheatPlant"; string:name="Wheat plant";
+hash:plant string:id="oatPlant"; string:name="Oat plant";
+hash:plant string:id="sunflowerPlant"; string:name="Sunflower plant";
+hash:plant string:id="jutePlant"; string:name="Jute plant";
+hash:plant string:id="flaxPlant"; string:name="Flax plant";
+hash:plant string:id="ricePlant"; string:name="Rice plant";
+hash:plant string:id="gingerPlant"; string:name="Ginger plant";
+hash:plant string:id="tumericPlant"; string:name="Tumeric plant";
+hash:plant string:id="onionPlant"; string:name="Onion plant";
+hash:plant string:id="garlicPlant"; string:name="Garlic plant";
+hash:plant string:id="squashPlant"; string:name="Squash plant";
+hash:plant string:id="fennelPlant"; string:name="Fennel plant";
+hash:plant string:id="alfalfaPlant"; string:name="Alfalfa plant";
+hash:plant string:id="peanutPlant"; string:name="Peanut plant";
+hash:plant string:id="nightshadePlant"; string:name="Nightshade plant";
+hash:plant string:id="bloodweedPlant"; string:name="Bloodweed plant";
+hash:plant string:id="swampbulbPlant"; string:name="Swampbulb plant";
+hash:plant string:id="waterHemlockPlant"; string:name="Water hemlock plant";
+hash:plant string:id="whiteSnakerootPlant"; string:name="White snakeroot plant";
+hash:plant string:id="healingPlant"; string:name="Healing plant";
+hash:plant string:id="thistlePlant"; string:name="Thistle plant";
+hash:plant string:id="daffodilPlant"; string:name="Daffodil plant";
+hash:plant string:id="cactusPlant"; string:name="Cactus plant";
+hash:plant string:id="fernPlant"; string:name="Fern plant";
+hash:plant string:id="watergrassPlant"; string:name="Watergrass plant";
+
+# Define things that are hidden
+hash:hidden string:id="nest"
+hash:hidden string:id="mineral"
+hash:hidden string:id="mushroom"
+
+# Define hidden nests
+hash:nest string:id="beehive"; string:name="Beehive"; array:string:location="tree","log";
+hash:nest string:id="birdnest"; string:name="Bird nest"; array:string:location="tree","grass";
+
+# Define hidden minerals
+hash:mineral string:id="coalDeposit"; string:name="Coal deposit"; array:string:location="grass","dirt";
+hash:mineral string:id="saltDeposit"; string:name="Salt deposit"; array:string:location="dirt";
+hash:mineral string:id="chalkDeposit"; string:name="Chalk deposit"; array:string:location="rock";
+hash:mineral string:id="ironOre"; string:name="Iron ore"; array:string:location="rock";
+hash:mineral string:id="copperOre"; string:name="Copper ore"; array:string:location="rock";
+hash:mineral string:id="leadOre"; string:name="Lead ore"; array:string:location="rock";
+hash:mineral string:id="tinOre"; string:name="Tin ore"; array:string:location="rock";
+hash:mineral string:id="goldOre"; string:name="Gold ore"; array:string:location="rock","volcanic";
+hash:mineral string:id="silverOre"; string:name="Silver ore"; array:string:location="rock","volcanic";
+
+# Define hidden mushrooms
+hash:mushroom string:id="buttonMushroom"; string:name="Button mushroom"; array:string:location="grass";
+hash:mushroom string:id="tallMushroom"; string:name="Tall mushroom"; array:string:location="grass";
+hash:mushroom string:id="cupMushroom"; string:name="Cup mushroom"; array:string:location="log";
+hash:mushroom string:id="veinedMushroom"; string:name="Veined mushroom"; array:string:location="log","cave","sewer";
+hash:mushroom string:id="puffMushroom"; string:name="Puff mushroom"; array:string:location="marsh";
+hash:mushroom string:id="stinkhornMushroom"; string:name="Stinkhorn mushroom"; array:string:location="cave";
+hash:mushroom string:id="amanitaMushroom"; string:name="Amanita mushroom"; array:string:location="grass";
+hash:mushroom string:id="blueMilkcapMushroom"; string:name="Blue milkcap mushroom"; array:string:location="cave","swamp";
+hash:mushroom string:id="orangeShaggyMushroom"; string:name="Orange shaggy mushroom"; array:string:location="grass";
+hash:mushroom string:id="psilocybeMushroom"; string:name="Psilocybe mushroom"; array:string:location="cave";
+hash:mushroom string:id="tinderMushroom"; string:name="Tinder mushroom"; array:string:location="tree";
+
+# Map the terrain for 6 cube faces, north, south, front, back, east, west
+# where the faces are arranged in a T that can fold into a cube like this:
+# n
+# f e b w
+# s
+hash:terrainMap string:id="n"; array:string:data="mmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmmmmmmmmmmmmmmmmmmmmmmmm",
+"mmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmmmmmmmmmmmmmmmmmmmmm",
+"mmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmmmssssssssmmmmmmmmm",
+"mmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmmmm",
+"mmmmmssssssssmmmmsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmmm",
+"mmmsssssssmmmmmsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmm",
+"mmssssmmmmmmmsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"mmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssggggggggggggggsssssgggggggggssssssssssssssssssssssssssssssssssssssssssss",
+"sssssssssssssssssssssssssgggggggggggggggggssssssgggggggggggggggggggggggsssssssssssssssssssssssssssss",
+"sssssssssssssssssssssgggggggggggggggggggggggsssssssgggggggggggggggggggggggssssssssssssssssssssssssss",
+"ssssssssssssssssssssssggggggggggggggggggggggssssssggggggggggggggggggggggggggggssssssssssssssssssssss",
+"ssssssssssssssssssssssssgggggggggggggggggggggssssssgggggggggggggggggggggggggssssssssssssssssssssssss",
+"sssssssssssssssssssssssssssgggggggmmgggggggggggssggggggggggggggggggggggggggggsssssssssssssssssssssss",
+"sssssssssssssssssssssssssssggggggggmmmggggggggggggggggggggggggggggggggggggggssssssssssssssssssssssss",
+"sssssssssssssssssssgggggggggggggggggmmggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssgggggsssssggggggggggmggggggggggggggggggggggggggggggggggggssssssssssssssssssssssssss",
+"ssssssssssssssssgggggssssssggggggggggmmmggggggggggggggggggggggggggggsssgggggggssssssssssssssssssssss",
+"sssssssssssssssssgggggsssssssgggggggggmmgggggggggggggggggggggggggssssssssgggggssssssssssssssssssssss",
+"ssssssssssssssssssggsssssssssssgggggggmmggggggggggggggggggggggggssssssggggggggggggssssssssssssssssss",
+"sssssssssssssssssssssssssssssggggggggggmmmmgggggggggggggggggggggggsssssggggggggggsssssssssssssssssss",
+"sssssssssssssssssssssssssssssssggggggggggmmmggggggggggggggggggssssssssssgggggggsssssssssssssssssssss",
+"ssssssssssssssssssssssssssssggggggggggggggmmgggggggggggggggssssssssssssssgggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssggggggggggggggggmmmmmmgggggggggggggsssggssssssssgggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssssssgggggggggggggggmmmmmmmmmgggggggggggggggssssssssssssssssssssssssssssss",
+"sssssssssssssssssssssssssssssggggggggggggggggggggggmmmmmmmmmmmggggggssssssssssssssssssssssssssssssss",
+"sssssssssssssssssssssssssssggggggggggggggggggggggggggggmmmmgggggggggsssgggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssssgggggggggggggggggggggggggmmmgggggggggggggggggggggssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssggggggggssssggggggggggggggmmggggggggggggggggggggggssssssssssssssssssssss",
+"ssssssssssssssssssssssssgggggggggggssssssgggggggggggggmmmmmgggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssggggggggssssssssssgggggggggmmmmggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssgggggssssggggssssggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssggsssssgggggggsssssggggggggggggggggggggggggggggssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssggggggggssssssssgggggggggggggggggggggggggggsssssssssssssssssssssssss",
+"sssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssssss",
+"ssssssssssssssssssggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"ssssssssssssssssssggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"ssssssssssssssssssggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"ssssssssssssssssssssssggggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"ssssssssssssssssssssssggggggggggggggggggggggggggggggggggggggssssssggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssggggggggggggggggggggggggggggggggggggggssssssssgggggggggssssssssssssssssssssss",
+"ssssssssssssssssssssggggggggggggggggggggggggggggggggggggggggsssssssssssgggggggssssssssssssssssssssss",
+"ssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggsssssssssggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssssssssssssss",
+"sssssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssssssssssss",
+"sssssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssssssssssss",
+"sssssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"ssssssssssssssssssssssssggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"ssssssssssssssssssssssssggggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssssssssgggggggggggggggggggggggggggggggggggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssssssssssssssggggggggggggggggssssssssssgggggggggggggssssssssssssssssssssss",
+"sssssssssssssssssssssssssssssssssssssssssgggggggggggssssssssssssssggggggggggggggggssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssggggggggggggggssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssgggggggggsssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"sssssmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"sssmmmmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"mmmmmmmssssmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmm",
+"mmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmmmmmmm",
+"mssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmm",
+"mmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmmmm",
+"mmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmmmmmm",
+"mmmmmmmmmssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssmmmmm";
+
+hash:terrainMap string:id="s"; array:string:data="ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+
+hash:terrainMap string:id="f"; array:string:data="ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+
+hash:terrainMap string:id="e"; array:string:data="ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+
+hash:terrainMap string:id="b"; array:string:data="ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+
+hash:terrainMap string:id="w"; array:string:data="ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss",
+"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss";
+
+
+

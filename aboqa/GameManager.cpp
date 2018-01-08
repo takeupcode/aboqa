@@ -115,7 +115,6 @@ void GameManager::initialize ()
     nodelay(stdscr, true);
     keypad(stdscr, true);
     mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, nullptr);
-    
     Colors::initializeColorPairs();
 
     CursesUtil::getScreenMaxYX(mScreenMaxY, mScreenMaxX);

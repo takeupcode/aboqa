@@ -71,18 +71,21 @@ void CheckBox::onDrawClient () const
         return;
     }
     
-    std::string checkState = mIsChecked ? " X " : "   ";
+    cchar_t check = {0, L'\u25A3'};
+    cchar_t uncheck = {0, L'\u25A1'};
     
     int vertCenter = height() / 2;
     
     if (hasDirectFocus())
     {
-        ConsoleManager::printMessage(*this, vertCenter, 1, 3, checkState, focusForeColor(), focusBackColor(), Justification::Horizontal::left, false);
+        ConsoleManager::printMessage(*this, vertCenter, 1, 3, "   ", focusForeColor(), focusBackColor(), Justification::Horizontal::left, false);
+        mvwadd_wch(cursesWindow(), vertCenter, 2, mIsChecked ? &check : &uncheck);
         ConsoleManager::printMessage(*this, vertCenter, 4, width() - 5, mText, focusForeColor(), focusBackColor(), Justification::Horizontal::left, true);
     }
     else
     {
-        ConsoleManager::printMessage(*this, vertCenter, 1, 3, checkState, clientForeColor(), clientBackColor(), Justification::Horizontal::left, false);
+        ConsoleManager::printMessage(*this, vertCenter, 1, 3, "   ", clientForeColor(), clientBackColor(), Justification::Horizontal::left, false);
+        mvwadd_wch(cursesWindow(), vertCenter, 2, mIsChecked ? &check : &uncheck);
         ConsoleManager::printMessage(*this, vertCenter, 4, width() - 5, mText, clientForeColor(), clientBackColor(), Justification::Horizontal::left, true);
     }
 }

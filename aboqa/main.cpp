@@ -6,6 +6,7 @@
 //  Copyright © 2017 Take Up Code. All rights reserved.
 //
 
+#include <locale.h>
 #include <memory>
 
 #include "Colors.h"
@@ -16,6 +17,8 @@
 
 int main()
 {
+    setlocale (LC_ALL, "");
+    
     GameManager gm;
     
     gm.setMinScreenDimensions(10, 35);

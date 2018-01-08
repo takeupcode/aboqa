@@ -14,6 +14,7 @@
 		3E6A28281FC8CD40009458A7 /* Control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28261FC8CD40009458A7 /* Control.cpp */; };
 		3E6A282B1FC8DAC6009458A7 /* NumberBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28291FC8DAC6009458A7 /* NumberBox.cpp */; };
 		3E6A282E1FC90B07009458A7 /* ListBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A282C1FC90B07009458A7 /* ListBox.cpp */; };
+		3E6A28321FCA6076009458A7 /* libcurses.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E6A28311FCA6076009458A7 /* libcurses.a */; };
 		3EB347BF1FAAC28F0031025E /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347BD1FAAC28F0031025E /* Window.cpp */; };
 		3EB347C51FAAE19B0031025E /* Colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C31FAAE19B0031025E /* Colors.cpp */; };
 		3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C61FAEC57C0031025E /* SplashWindow.cpp */; };
@@ -26,7 +27,6 @@
 		3ED7859D1FA591A3002D9B78 /* LogManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785961FA591A3002D9B78 /* LogManager.cpp */; };
 		3ED7859E1FA591A3002D9B78 /* FileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785981FA591A3002D9B78 /* FileManager.cpp */; };
 		3ED7859F1FA591A3002D9B78 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7859A1FA591A3002D9B78 /* GameManager.cpp */; };
-		3ED785A21FA5B668002D9B78 /* libcurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED785A11FA5B668002D9B78 /* libcurses.tbd */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,6 +59,8 @@
 		3E6A282A1FC8DAC6009458A7 /* NumberBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBox.h; sourceTree = "<group>"; };
 		3E6A282C1FC90B07009458A7 /* ListBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ListBox.cpp; sourceTree = "<group>"; };
 		3E6A282D1FC90B07009458A7 /* ListBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListBox.h; sourceTree = "<group>"; };
+		3E6A28301FC93EFD009458A7 /* world-0000.map */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = "world-0000.map"; sourceTree = "<group>"; };
+		3E6A28311FCA6076009458A7 /* libcurses.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurses.a; path = ../../../../../opt/local/lib/libcurses.a; sourceTree = "<group>"; };
 		3EB347BD1FAAC28F0031025E /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		3EB347BE1FAAC28F0031025E /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		3EB347C31FAAE19B0031025E /* Colors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colors.cpp; sourceTree = "<group>"; };
@@ -91,16 +93,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3ED785A21FA5B668002D9B78 /* libcurses.tbd in Frameworks */,
+				3E6A28321FCA6076009458A7 /* libcurses.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E6A282F1FC93DD7009458A7 /* resources */ = {
+			isa = PBXGroup;
+			children = (
+				3E6A28301FC93EFD009458A7 /* world-0000.map */,
+			);
+			path = resources;
+			sourceTree = "<group>";
+		};
 		3ED785811FA58EDF002D9B78 = {
 			isa = PBXGroup;
 			children = (
+				3E6A282F1FC93DD7009458A7 /* resources */,
 				3ED7858C1FA58EDF002D9B78 /* aboqa */,
 				3ED7858B1FA58EDF002D9B78 /* Products */,
 				3ED785A01FA5B668002D9B78 /* Frameworks */,
@@ -165,6 +176,7 @@
 		3ED785A01FA5B668002D9B78 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3E6A28311FCA6076009458A7 /* libcurses.a */,
 				3ED785A11FA5B668002D9B78 /* libcurses.tbd */,
 			);
 			name = Frameworks;
@@ -342,6 +354,16 @@
 		3ED785921FA58EDF002D9B78 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = (
+					"DEBUG=1",
+					"$(inherited)",
+					NCURSES_WIDECHAR,
+				);
+				HEADER_SEARCH_PATHS = /opt/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -349,6 +371,13 @@
 		3ED785931FA58EDF002D9B78 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = NCURSES_WIDECHAR;
+				"GCC_PREPROCESSOR_DEFINITIONS[arch=*]" = "";
+				HEADER_SEARCH_PATHS = /opt/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

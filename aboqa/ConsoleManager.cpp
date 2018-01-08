@@ -322,7 +322,6 @@ void ConsoleManager::printMessage (const Window & win, int y, int x, int width, 
             }
             if (cursorY == y && cursorX == i)
             {
-                
                 waddch(cursesWin, ' ' | A_REVERSE);
             }
             else

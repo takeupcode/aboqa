@@ -32,7 +32,8 @@ void Control::onDrawNonClient () const
         mvwaddch(cursesWindow(), i, 0, focusMarker);
         if (wantEnter())
         {
-            waddch(cursesWindow(), '>');
+            cchar_t ch = {0, L'\u25B7'};
+            wadd_wch(cursesWindow(), &ch);
         }
         mvwaddch(cursesWindow(), i, clientWidth() - 1, focusMarker);
     }
