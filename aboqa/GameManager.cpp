@@ -13,6 +13,7 @@
 #include <thread>
 
 #include "Colors.h"
+#include "ConfigInfo.h"
 #include "CursesUtil.h"
 #include "LogManager.h"
 #include "ConsoleManager.h"
@@ -118,6 +119,9 @@ void GameManager::initialize ()
     Colors::initializeColorPairs();
 
     CursesUtil::getScreenMaxYX(mScreenMaxY, mScreenMaxX);
+    
+    ConfigInfo config;
+    //config.load("config/world-000.config");
 }
 
 void GameManager::deinitialize ()

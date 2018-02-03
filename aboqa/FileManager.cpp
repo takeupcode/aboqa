@@ -13,7 +13,7 @@
 
 using namespace std;
 
-vector<char> FileManager::readBytes (string & fileName)
+vector<char> FileManager::readBytes (const string & fileName)
 {
     ifstream fs(fileName, ios_base::binary);
     if (fs.fail())
@@ -37,25 +37,17 @@ vector<char> FileManager::readBytes (string & fileName)
     return content;
 }
 
-vector<string> FileManager::readLines (string & fileName)
+vector<string> FileManager::readLines (const string & fileName)
 {
-    ifstream fs(fileName);
-    if (fs.fail())
-    {
-        string message = "Could not open ";
-        message += fileName;
-        throw runtime_error(message);
-    }
-    
     vector<string> content;
     
-    string line;
-    while (getline(fs, line))
+    auto storeLine = [&content](std::string && line)
     {
-        content.push_back(move(line));
-    }
+        content.push_back(std::move(line));
+    };
     
-    fs.close();
+    processLines(fileName, storeLine);
     
     return content;
 }
+
