@@ -6,6 +6,8 @@
 //  Copyright © 2017 Take Up Code. All rights reserved.
 //
 
+#include <iostream>
+#include<limits>
 #include <locale.h>
 #include <memory>
 
@@ -15,8 +17,28 @@
 #include "MainWindow.h"
 #include "ExitWindow.h"
 
-int main()
+int main(int argc, const char *argv[])
 {
+    for (int i = 1; i < argc; i++)
+    {
+        if (strcmp(argv[i], "--debug") == 0)
+        {
+            std::cout << "Debugging in terminal. Press enter key to continue." << std::endl;
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cin.clear();
+            std::string temp;
+            std::getline(std::cin, temp);
+            break;
+        }
+    }
+    
+    char *term = getenv("TERM");
+    if (!term)
+    {
+        std::cout << "ncurses not available. Exiting." << std::endl;
+        return 1;
+    }
+    
     setlocale (LC_ALL, "");
     
     GameManager gm;
