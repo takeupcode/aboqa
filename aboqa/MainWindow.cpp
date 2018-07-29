@@ -8,13 +8,9 @@
 
 #include "MainWindow.h"
 
-#include "Colors.h"
-#include "GameManager.h"
-#include "LogManager.h"
-#include "TextBox.h"
-#include "CheckBox.h"
-#include "NumberBox.h"
-#include "ListBox.h"
+#include "../submodules/TUCUT/Curses/Colors.h"
+#include "../submodules/TUCUT/Curses/GameManager.h"
+#include "../submodules/TUCUT/Log/LogManager.h"
 
 const std::string MainWindow::windowName = "MainWindow";
 const std::string MainWindow::textBoxName = "textBox";
@@ -26,24 +22,29 @@ MainWindow::MainWindow (const std::string & name, int y, int x, int height, int 
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
 {
     setIsDirectFocusPossible(false);
+}
+
+void MainWindow::initialize ()
+{
+    Window::initialize();
     
-    mTextBox = new TextBox(textBoxName, "line 1\nline 2 is longer\nline 3\nline 4 is also long\nline 5\nline 6", 0, 0, 7, 20, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_CYAN, true);
+    mTextBox = TUCUT::Curses::TextBox::createSharedTextBox(textBoxName, "line 1\nline 2 is longer\nline 3\nline 4 is also long\nline 5\nline 6", 0, 0, 7, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true);
     mTextBox->setAnchorTop(2);
     mTextBox->setAnchorBottom(3);
     mTextBox->setAnchorLeft(20);
     mTextBox->setAnchorRight(15);
-    addControl(std::unique_ptr<TextBox>(mTextBox));
+    addControl(mTextBox);
     
-    mCheckBox = new CheckBox(checkBoxName, "check box", 0, 0, 1, 15, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_RED, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_RED);
+    mCheckBox = TUCUT::Curses::CheckBox::createSharedCheckBox(checkBoxName, "check box", 0, 0, 1, 15, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
     mCheckBox->setAnchorBottom(1);
     mCheckBox->setAnchorRight(1);
-    addControl(std::unique_ptr<CheckBox>(mCheckBox));
+    addControl(mCheckBox);
     
-    mNumberBox = new NumberBox(numberBoxName, 0, 0, 0, 10, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE);
+    mNumberBox = TUCUT::Curses::NumberBox::createSharedNumberBox(numberBoxName, 0, 0, 0, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE);
     mNumberBox->setAnchorBottom(1);
     mNumberBox->setAnchorLeft(1);
-    addControl(std::unique_ptr<NumberBox>(mNumberBox));
-
+    addControl(mNumberBox);
+    
     std::vector<std::string> items;
     items.push_back("zero");
     items.push_back("one");
@@ -62,25 +63,39 @@ MainWindow::MainWindow (const std::string & name, int y, int x, int height, int 
     items.push_back("e");
     items.push_back("f");
     
-    mListBox = new ListBox(listBoxName, items, 0, 0, 10, 15, Colors::COLOR_DIM_BLACK, Colors::COLOR_BRIGHT_WHITE, Colors::COLOR_DIM_BLACK, Colors::COLOR_DIM_WHITE);
+    mListBox = TUCUT::Curses::ListBox::createSharedListBox(listBoxName, items, 0, 0, 10, 15, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE);
     mListBox->setAnchorTop(2);
     mListBox->setAnchorLeft(2);
-    addControl(std::unique_ptr<ListBox>(mListBox));
+    addControl(mListBox);
 }
 
-bool MainWindow::onKeyPress (GameManager * gm, int key)
+std::shared_ptr<MainWindow> MainWindow::createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
+{
+    auto result = std::shared_ptr<MainWindow>(new MainWindow(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, border));
+    
+    result->initialize();
+    
+    return result;
+}
+
+std::shared_ptr<MainWindow> MainWindow::getSharedMainWindow ()
+{
+    return std::static_pointer_cast<MainWindow>(shared_from_this());
+}
+
+bool MainWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
 {
     switch (key)
     {
     case KEY_DOWN:
-        ABOQALOG(Info, "Down key pressed from main window.");
+        TUCUTLOG(Info, "Down key pressed from main window.");
         break;
     case KEY_UP:
         break;
     case 10: // Enter
         break;
     case KEY_F(1):
-        ABOQALOG(Info, mTextBox->text());
+        TUCUTLOG(Info, mTextBox->text());
         gm->selectNextWindow("exit");
         break;
     default:
@@ -94,19 +109,19 @@ bool MainWindow::onKeyPress (GameManager * gm, int key)
     return true;
 }
 
-void MainWindow::onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState)
+void MainWindow::onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y, int x, mmask_t buttonState)
 {
     if (buttonState & BUTTON1_CLICKED)
     {
-        ABOQALOG(Info, "Mouse button 1 clicked at y=" << y << " x=" << x);
+        TUCUTLOG(Info, "Mouse button 1 clicked at y=" << y << " x=" << x);
     }
     else if (buttonState & BUTTON2_CLICKED)
     {
-        ABOQALOG(Info, "Mouse button 2 clicked at y=" << y << " x=" << x);
+        TUCUTLOG(Info, "Mouse button 2 clicked at y=" << y << " x=" << x);
     }
     else if (buttonState & BUTTON3_CLICKED)
     {
-        ABOQALOG(Info, "Mouse button 3 clicked at y=" << y << " x=" << x);
+        TUCUTLOG(Info, "Mouse button 3 clicked at y=" << y << " x=" << x);
     }
 }
 

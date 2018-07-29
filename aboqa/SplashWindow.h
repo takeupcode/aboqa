@@ -9,24 +9,30 @@
 #ifndef SplashWindow_h
 #define SplashWindow_h
 
-#include "EventSubscriber.h"
-#include "Window.h"
+#include "../submodules/TUCUT/Event/EventSubscriber.h"
+#include "../submodules/TUCUT/Curses/Button.h"
+#include "../submodules/TUCUT/Curses/Window.h"
 
-class Button;
-
-class SplashWindow : public Window, public EventSubscriber<GameManager *, const Button *>
+class SplashWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, const TUCUT::Curses::Button *>
 {
 public:
-    SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
+    static std::shared_ptr<SplashWindow> createSharedSplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
     
-    bool onKeyPress (GameManager * gm, int key) override;
+    std::shared_ptr<SplashWindow> getSharedSplashWindow ();
     
-    void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
+    bool onKeyPress (TUCUT::Curses::GameManager * gm, int key) override;
+    
+    void onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
     
     void onDrawClient () const override;
+    
+protected:
+    SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
+    
+    void initialize () override;
 
 private:
-    void notify (GameManager * gm, const Button * button) override;
+    void notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button) override;
     
     static const std::string windowName;
     static const std::string playButtonName;

@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E3F8412210D68E800501126 /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F840B210D68E800501126 /* libboost_system-mt.dylib */; };
+		3E3F8413210D68E800501126 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F8411210D68E800501126 /* libboost_filesystem-mt.dylib */; };
+		3E3F8414210D690800501126 /* libTUCUT-curses.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F8403210D632900501126 /* libTUCUT-curses.a */; };
+		3E3F8415210D690800501126 /* libTUCUT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F83FB210D632900501126 /* libTUCUT.a */; };
 		3E59E6F92026649000C5009A /* libcurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED785A11FA5B668002D9B78 /* libcurses.tbd */; };
 		3EA6428F20261FE300B5A6D2 /* world-0000.config in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E6A28301FC93EFD009458A7 /* world-0000.config */; };
 		3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C61FAEC57C0031025E /* SplashWindow.cpp */; };
@@ -14,6 +18,44 @@
 		3EB347CE1FAEC5B80031025E /* ExitWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347CC1FAEC5B80031025E /* ExitWindow.cpp */; };
 		3ED7858E1FA58EDF002D9B78 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7858D1FA58EDF002D9B78 /* main.cpp */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3E3F83FA210D632900501126 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E3F83F1210D632800501126 /* TUCUT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3E259DAC20E3398E00F01379;
+			remoteInfo = TUCUT;
+		};
+		3E3F83FC210D632900501126 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E3F83F1210D632800501126 /* TUCUT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3E2F9C0F20FB7D0F008C90A9;
+			remoteInfo = ProtocolCompiler;
+		};
+		3E3F83FE210D632900501126 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E3F83F1210D632800501126 /* TUCUT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3ED4127420FED19500BC7226;
+			remoteInfo = TestTUCUT;
+		};
+		3E3F8400210D632900501126 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E3F83F1210D632800501126 /* TUCUT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3ED4129120FED29400BC7226;
+			remoteInfo = TestProtocolCompiler;
+		};
+		3E3F8402210D632900501126 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 3E3F83F1210D632800501126 /* TUCUT.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 3E3F83AF210A36CD00501126;
+			remoteInfo = "TUCUT-curses";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		3ED785881FA58EDF002D9B78 /* CopyFiles */ = {
@@ -29,6 +71,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3E3F83F1210D632800501126 /* TUCUT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TUCUT.xcodeproj; sourceTree = "<group>"; };
+		3E3F840B210D68E800501126 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../../../../opt/local/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
+		3E3F8411210D68E800501126 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../opt/local/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
 		3E6A28301FC93EFD009458A7 /* world-0000.config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "world-0000.config"; sourceTree = "<group>"; };
 		3E6A28311FCA6076009458A7 /* libcurses.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurses.a; path = ../../../../../opt/local/lib/libcurses.a; sourceTree = "<group>"; };
 		3EB347C61FAEC57C0031025E /* SplashWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashWindow.cpp; sourceTree = "<group>"; };
@@ -47,7 +92,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E3F8414210D690800501126 /* libTUCUT-curses.a in Frameworks */,
+				3E3F8415210D690800501126 /* libTUCUT.a in Frameworks */,
 				3E59E6F92026649000C5009A /* libcurses.tbd in Frameworks */,
+				3E3F8412210D68E800501126 /* libboost_system-mt.dylib in Frameworks */,
+				3E3F8413210D68E800501126 /* libboost_filesystem-mt.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,8 +106,29 @@
 		3E3F83ED210D58A800501126 /* submodules */ = {
 			isa = PBXGroup;
 			children = (
+				3E3F83F0210D62D500501126 /* TUCUT */,
 			);
 			path = submodules;
+			sourceTree = "<group>";
+		};
+		3E3F83F0210D62D500501126 /* TUCUT */ = {
+			isa = PBXGroup;
+			children = (
+				3E3F83F1210D632800501126 /* TUCUT.xcodeproj */,
+			);
+			path = TUCUT;
+			sourceTree = "<group>";
+		};
+		3E3F83F2210D632800501126 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3E3F83FB210D632900501126 /* libTUCUT.a */,
+				3E3F83FD210D632900501126 /* ProtocolCompiler */,
+				3E3F83FF210D632900501126 /* TestTUCUT */,
+				3E3F8401210D632900501126 /* TestProtocolCompiler */,
+				3E3F8403210D632900501126 /* libTUCUT-curses.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		3E6A282F1FC93DD7009458A7 /* resources */ = {
@@ -105,6 +175,8 @@
 		3ED785A01FA5B668002D9B78 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3E3F8411210D68E800501126 /* libboost_filesystem-mt.dylib */,
+				3E3F840B210D68E800501126 /* libboost_system-mt.dylib */,
 				3E6A28311FCA6076009458A7 /* libcurses.a */,
 				3ED785A11FA5B668002D9B78 /* libcurses.tbd */,
 			);
@@ -156,12 +228,56 @@
 			mainGroup = 3ED785811FA58EDF002D9B78;
 			productRefGroup = 3ED7858B1FA58EDF002D9B78 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 3E3F83F2210D632800501126 /* Products */;
+					ProjectRef = 3E3F83F1210D632800501126 /* TUCUT.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				3ED785891FA58EDF002D9B78 /* aboqa */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		3E3F83FB210D632900501126 /* libTUCUT.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libTUCUT.a;
+			remoteRef = 3E3F83FA210D632900501126 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3E3F83FD210D632900501126 /* ProtocolCompiler */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = ProtocolCompiler;
+			remoteRef = 3E3F83FC210D632900501126 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3E3F83FF210D632900501126 /* TestTUCUT */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = TestTUCUT;
+			remoteRef = 3E3F83FE210D632900501126 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3E3F8401210D632900501126 /* TestProtocolCompiler */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = TestProtocolCompiler;
+			remoteRef = 3E3F8400210D632900501126 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		3E3F8403210D632900501126 /* libTUCUT-curses.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libTUCUT-curses.a";
+			remoteRef = 3E3F8402210D632900501126 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3ED785861FA58EDF002D9B78 /* Sources */ = {

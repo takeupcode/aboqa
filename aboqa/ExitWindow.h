@@ -9,18 +9,25 @@
 #ifndef ExitWindow_h
 #define ExitWindow_h
 
-#include "Window.h"
+#include "../submodules/TUCUT/Curses/Window.h"
 
-class ExitWindow : public Window
+class ExitWindow : public TUCUT::Curses::Window
 {
 public:
-    ExitWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
+    static std::shared_ptr<ExitWindow> createSharedExitWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
     
-    bool onKeyPress (GameManager * gm, int key) override;
+    std::shared_ptr<ExitWindow> getSharedExitWindow ();
     
-    void onMouseEvent (GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
+    bool onKeyPress (TUCUT::Curses::GameManager * gm, int key) override;
+    
+    void onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
     
     void onDrawClient () const override;
+    
+protected:
+    ExitWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
+    
+    void initialize () override;
 };
 
 #endif /* ExitWindow_h */
