@@ -8,27 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		3E59E6F92026649000C5009A /* libcurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED785A11FA5B668002D9B78 /* libcurses.tbd */; };
-		3E6A281B1FB6C25C009458A7 /* Label.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28191FB6C25C009458A7 /* Label.cpp */; };
-		3E6A281F1FBFE4FF009458A7 /* TextUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A281D1FBFE4FF009458A7 /* TextUtil.cpp */; };
-		3E6A28221FBFF68B009458A7 /* TextBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28201FBFF68B009458A7 /* TextBox.cpp */; };
-		3E6A28251FC7F6FF009458A7 /* CheckBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28231FC7F6FF009458A7 /* CheckBox.cpp */; };
-		3E6A28281FC8CD40009458A7 /* Control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28261FC8CD40009458A7 /* Control.cpp */; };
-		3E6A282B1FC8DAC6009458A7 /* NumberBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A28291FC8DAC6009458A7 /* NumberBox.cpp */; };
-		3E6A282E1FC90B07009458A7 /* ListBox.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E6A282C1FC90B07009458A7 /* ListBox.cpp */; };
 		3EA6428F20261FE300B5A6D2 /* world-0000.config in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E6A28301FC93EFD009458A7 /* world-0000.config */; };
-		3EB347BF1FAAC28F0031025E /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347BD1FAAC28F0031025E /* Window.cpp */; };
-		3EB347C51FAAE19B0031025E /* Colors.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C31FAAE19B0031025E /* Colors.cpp */; };
 		3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C61FAEC57C0031025E /* SplashWindow.cpp */; };
 		3EB347CB1FAEC59E0031025E /* MainWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C91FAEC59E0031025E /* MainWindow.cpp */; };
 		3EB347CE1FAEC5B80031025E /* ExitWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347CC1FAEC5B80031025E /* ExitWindow.cpp */; };
-		3EB347D11FB019CA0031025E /* Button.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347CF1FB019CA0031025E /* Button.cpp */; };
-		3EB347D41FB2A6350031025E /* CursesUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347D21FB2A6350031025E /* CursesUtil.cpp */; };
 		3ED7858E1FA58EDF002D9B78 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7858D1FA58EDF002D9B78 /* main.cpp */; };
-		3ED7859C1FA591A3002D9B78 /* ConsoleManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785941FA591A3002D9B78 /* ConsoleManager.cpp */; };
-		3ED7859D1FA591A3002D9B78 /* LogManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785961FA591A3002D9B78 /* LogManager.cpp */; };
-		3ED7859E1FA591A3002D9B78 /* FileManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED785981FA591A3002D9B78 /* FileManager.cpp */; };
-		3ED7859F1FA591A3002D9B78 /* GameManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3ED7859A1FA591A3002D9B78 /* GameManager.cpp */; };
-		3EFBD45D2004844C005A71C6 /* ConfigInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EFBD45B2004844C005A71C6 /* ConfigInfo.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,52 +29,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		3E6A28171FB69F23009458A7 /* EventPublisher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventPublisher.h; sourceTree = "<group>"; };
-		3E6A28181FB69F23009458A7 /* EventSubscriber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventSubscriber.h; sourceTree = "<group>"; };
-		3E6A28191FB6C25C009458A7 /* Label.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Label.cpp; sourceTree = "<group>"; };
-		3E6A281A1FB6C25C009458A7 /* Label.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Label.h; sourceTree = "<group>"; };
-		3E6A281C1FBE9508009458A7 /* Justification.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Justification.h; sourceTree = "<group>"; };
-		3E6A281D1FBFE4FF009458A7 /* TextUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextUtil.cpp; sourceTree = "<group>"; };
-		3E6A281E1FBFE4FF009458A7 /* TextUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextUtil.h; sourceTree = "<group>"; };
-		3E6A28201FBFF68B009458A7 /* TextBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextBox.cpp; sourceTree = "<group>"; };
-		3E6A28211FBFF68B009458A7 /* TextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBox.h; sourceTree = "<group>"; };
-		3E6A28231FC7F6FF009458A7 /* CheckBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CheckBox.cpp; sourceTree = "<group>"; };
-		3E6A28241FC7F6FF009458A7 /* CheckBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckBox.h; sourceTree = "<group>"; };
-		3E6A28261FC8CD40009458A7 /* Control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Control.cpp; sourceTree = "<group>"; };
-		3E6A28271FC8CD40009458A7 /* Control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Control.h; sourceTree = "<group>"; };
-		3E6A28291FC8DAC6009458A7 /* NumberBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NumberBox.cpp; sourceTree = "<group>"; };
-		3E6A282A1FC8DAC6009458A7 /* NumberBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberBox.h; sourceTree = "<group>"; };
-		3E6A282C1FC90B07009458A7 /* ListBox.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ListBox.cpp; sourceTree = "<group>"; };
-		3E6A282D1FC90B07009458A7 /* ListBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ListBox.h; sourceTree = "<group>"; };
 		3E6A28301FC93EFD009458A7 /* world-0000.config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "world-0000.config"; sourceTree = "<group>"; };
 		3E6A28311FCA6076009458A7 /* libcurses.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurses.a; path = ../../../../../opt/local/lib/libcurses.a; sourceTree = "<group>"; };
-		3EB347BD1FAAC28F0031025E /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
-		3EB347BE1FAAC28F0031025E /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		3EB347C31FAAE19B0031025E /* Colors.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Colors.cpp; sourceTree = "<group>"; };
-		3EB347C41FAAE19B0031025E /* Colors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Colors.h; sourceTree = "<group>"; };
 		3EB347C61FAEC57C0031025E /* SplashWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashWindow.cpp; sourceTree = "<group>"; };
 		3EB347C71FAEC57C0031025E /* SplashWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SplashWindow.h; sourceTree = "<group>"; };
 		3EB347C91FAEC59E0031025E /* MainWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainWindow.cpp; sourceTree = "<group>"; };
 		3EB347CA1FAEC59E0031025E /* MainWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainWindow.h; sourceTree = "<group>"; };
 		3EB347CC1FAEC5B80031025E /* ExitWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExitWindow.cpp; sourceTree = "<group>"; };
 		3EB347CD1FAEC5B80031025E /* ExitWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExitWindow.h; sourceTree = "<group>"; };
-		3EB347CF1FB019CA0031025E /* Button.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Button.cpp; sourceTree = "<group>"; };
-		3EB347D01FB019CA0031025E /* Button.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Button.h; sourceTree = "<group>"; };
-		3EB347D21FB2A6350031025E /* CursesUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CursesUtil.cpp; sourceTree = "<group>"; };
-		3EB347D31FB2A6350031025E /* CursesUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CursesUtil.h; sourceTree = "<group>"; };
 		3ED7858A1FA58EDF002D9B78 /* aboqa */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = aboqa; sourceTree = BUILT_PRODUCTS_DIR; };
 		3ED7858D1FA58EDF002D9B78 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		3ED785941FA591A3002D9B78 /* ConsoleManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConsoleManager.cpp; sourceTree = "<group>"; };
-		3ED785951FA591A3002D9B78 /* ConsoleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConsoleManager.h; sourceTree = "<group>"; };
-		3ED785961FA591A3002D9B78 /* LogManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogManager.cpp; sourceTree = "<group>"; };
-		3ED785971FA591A3002D9B78 /* LogManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogManager.h; sourceTree = "<group>"; };
-		3ED785981FA591A3002D9B78 /* FileManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileManager.cpp; sourceTree = "<group>"; };
-		3ED785991FA591A3002D9B78 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
-		3ED7859A1FA591A3002D9B78 /* GameManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameManager.cpp; sourceTree = "<group>"; };
-		3ED7859B1FA591A3002D9B78 /* GameManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameManager.h; sourceTree = "<group>"; };
 		3ED785A11FA5B668002D9B78 /* libcurses.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurses.tbd; path = usr/lib/libcurses.tbd; sourceTree = SDKROOT; };
-		3EFBD45B2004844C005A71C6 /* ConfigInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ConfigInfo.cpp; sourceTree = "<group>"; };
-		3EFBD45C2004844C005A71C6 /* ConfigInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfigInfo.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +54,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E3F83ED210D58A800501126 /* submodules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = submodules;
+			sourceTree = "<group>";
+		};
 		3E6A282F1FC93DD7009458A7 /* resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,6 +72,7 @@
 		3ED785811FA58EDF002D9B78 = {
 			isa = PBXGroup;
 			children = (
+				3E3F83ED210D58A800501126 /* submodules */,
 				3E6A282F1FC93DD7009458A7 /* resources */,
 				3ED7858C1FA58EDF002D9B78 /* aboqa */,
 				3ED7858B1FA58EDF002D9B78 /* Products */,
@@ -134,48 +91,13 @@
 		3ED7858C1FA58EDF002D9B78 /* aboqa */ = {
 			isa = PBXGroup;
 			children = (
-				3E6A28171FB69F23009458A7 /* EventPublisher.h */,
-				3E6A28181FB69F23009458A7 /* EventSubscriber.h */,
-				3EB347C31FAAE19B0031025E /* Colors.cpp */,
-				3EB347C41FAAE19B0031025E /* Colors.h */,
-				3ED785941FA591A3002D9B78 /* ConsoleManager.cpp */,
-				3ED785951FA591A3002D9B78 /* ConsoleManager.h */,
-				3ED785961FA591A3002D9B78 /* LogManager.cpp */,
-				3ED785971FA591A3002D9B78 /* LogManager.h */,
-				3ED785981FA591A3002D9B78 /* FileManager.cpp */,
-				3ED785991FA591A3002D9B78 /* FileManager.h */,
-				3ED7859A1FA591A3002D9B78 /* GameManager.cpp */,
-				3ED7859B1FA591A3002D9B78 /* GameManager.h */,
 				3ED7858D1FA58EDF002D9B78 /* main.cpp */,
-				3EB347BD1FAAC28F0031025E /* Window.cpp */,
-				3EB347BE1FAAC28F0031025E /* Window.h */,
 				3EB347C61FAEC57C0031025E /* SplashWindow.cpp */,
 				3EB347C71FAEC57C0031025E /* SplashWindow.h */,
 				3EB347C91FAEC59E0031025E /* MainWindow.cpp */,
 				3EB347CA1FAEC59E0031025E /* MainWindow.h */,
 				3EB347CC1FAEC5B80031025E /* ExitWindow.cpp */,
 				3EB347CD1FAEC5B80031025E /* ExitWindow.h */,
-				3EB347CF1FB019CA0031025E /* Button.cpp */,
-				3EB347D01FB019CA0031025E /* Button.h */,
-				3EB347D21FB2A6350031025E /* CursesUtil.cpp */,
-				3EB347D31FB2A6350031025E /* CursesUtil.h */,
-				3E6A28191FB6C25C009458A7 /* Label.cpp */,
-				3E6A281A1FB6C25C009458A7 /* Label.h */,
-				3E6A281C1FBE9508009458A7 /* Justification.h */,
-				3E6A281D1FBFE4FF009458A7 /* TextUtil.cpp */,
-				3E6A281E1FBFE4FF009458A7 /* TextUtil.h */,
-				3E6A28201FBFF68B009458A7 /* TextBox.cpp */,
-				3E6A28211FBFF68B009458A7 /* TextBox.h */,
-				3E6A28231FC7F6FF009458A7 /* CheckBox.cpp */,
-				3E6A28241FC7F6FF009458A7 /* CheckBox.h */,
-				3E6A28261FC8CD40009458A7 /* Control.cpp */,
-				3E6A28271FC8CD40009458A7 /* Control.h */,
-				3E6A28291FC8DAC6009458A7 /* NumberBox.cpp */,
-				3E6A282A1FC8DAC6009458A7 /* NumberBox.h */,
-				3E6A282C1FC90B07009458A7 /* ListBox.cpp */,
-				3E6A282D1FC90B07009458A7 /* ListBox.h */,
-				3EFBD45B2004844C005A71C6 /* ConfigInfo.cpp */,
-				3EFBD45C2004844C005A71C6 /* ConfigInfo.h */,
 			);
 			path = aboqa;
 			sourceTree = "<group>";
@@ -246,26 +168,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E6A281F1FBFE4FF009458A7 /* TextUtil.cpp in Sources */,
-				3ED7859D1FA591A3002D9B78 /* LogManager.cpp in Sources */,
-				3E6A282B1FC8DAC6009458A7 /* NumberBox.cpp in Sources */,
 				3EB347CE1FAEC5B80031025E /* ExitWindow.cpp in Sources */,
-				3EB347D41FB2A6350031025E /* CursesUtil.cpp in Sources */,
-				3E6A28251FC7F6FF009458A7 /* CheckBox.cpp in Sources */,
-				3EFBD45D2004844C005A71C6 /* ConfigInfo.cpp in Sources */,
-				3EB347C51FAAE19B0031025E /* Colors.cpp in Sources */,
-				3EB347BF1FAAC28F0031025E /* Window.cpp in Sources */,
-				3ED7859F1FA591A3002D9B78 /* GameManager.cpp in Sources */,
-				3E6A282E1FC90B07009458A7 /* ListBox.cpp in Sources */,
-				3E6A28221FBFF68B009458A7 /* TextBox.cpp in Sources */,
 				3EB347CB1FAEC59E0031025E /* MainWindow.cpp in Sources */,
-				3E6A28281FC8CD40009458A7 /* Control.cpp in Sources */,
-				3E6A281B1FB6C25C009458A7 /* Label.cpp in Sources */,
 				3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */,
 				3ED7858E1FA58EDF002D9B78 /* main.cpp in Sources */,
-				3ED7859C1FA591A3002D9B78 /* ConsoleManager.cpp in Sources */,
-				3EB347D11FB019CA0031025E /* Button.cpp in Sources */,
-				3ED7859E1FA591A3002D9B78 /* FileManager.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

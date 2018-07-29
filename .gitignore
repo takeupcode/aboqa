@@ -47,3 +47,6 @@ profile
 
 # Generated output from tools
 Generated/
+
+# Submodules
+submodules/
