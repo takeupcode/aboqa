@@ -8,16 +8,35 @@
 
 #include "ExitWindow.h"
 
+#include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/GameManager.h"
+#include "../submodules/TUCUT/Curses/Label.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
+
+const std::string ExitWindow::windowName = "ExitWindow";
+const std::string ExitWindow::exitButtonName = "exitButton";
+const std::string ExitWindow::thanksLabelName = "thanksLabel";
 
 ExitWindow::ExitWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
-{ }
+{
+    setIsDirectFocusPossible(false);
+}
 
 void ExitWindow::initialize ()
 {
     Window::initialize();
+    
+    auto exitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
+    exitButton->setAnchorBottom(0);
+    exitButton->setAnchorRight(12);
+    exitButton->clicked()->connect(windowName, getSharedExitWindow());
+    addControl(exitButton);
+    
+    auto thanksLabel = TUCUT::Curses::Label::createSharedLabel(thanksLabelName, "Thanks for playing!", 0, 0, 1, 25, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::right, TUCUT::Curses::Justification::Vertical::center, true);
+    thanksLabel->setAnchorLeft(20);
+    thanksLabel->setAnchorRight(15);
+    addControl(thanksLabel);
 }
 
 std::shared_ptr<ExitWindow> ExitWindow::createSharedExitWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
@@ -38,44 +57,31 @@ bool ExitWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
 {
     switch (key)
     {
-    case KEY_DOWN:
-        TUCUTLOG(Info, "Down key pressed from exit window.");
-        break;
-    case KEY_UP:
-        break;
-    case 10: // Enter
-        break;
-    case KEY_F(1):
-        gm->exit();
-        break;
-    default:
-        if (parent())
-        {
-            return parent()->onKeyPress(gm, key);
-        }
-        return false;
+        case 10: // Enter
+            for (auto & control: mControls)
+            {
+                if (control->wantEnter())
+                {
+                    setFocus(control->y(), control->x());
+                    return control->onKeyPress(gm, key);
+                }
+            }
+            break;
+        default:
+            if (parent())
+            {
+                return parent()->onKeyPress(gm, key);
+            }
+            return false;
     }
     
     return true;
 }
 
-void ExitWindow::onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y, int x, mmask_t buttonState)
+void ExitWindow::notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button)
 {
-    if (buttonState & BUTTON1_CLICKED)
+    if (button->name() == exitButtonName)
     {
-        TUCUTLOG(Info, "Mouse button 1 clicked at y=" << y << " x=" << x);
+        gm->exit();
     }
-    else if (buttonState & BUTTON2_CLICKED)
-    {
-        TUCUTLOG(Info, "Mouse button 2 clicked at y=" << y << " x=" << x);
-    }
-    else if (buttonState & BUTTON3_CLICKED)
-    {
-        TUCUTLOG(Info, "Mouse button 3 clicked at y=" << y << " x=" << x);
-    }
-}
-
-void ExitWindow::onDrawClient () const
-{
-    
 }

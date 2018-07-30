@@ -41,7 +41,7 @@ void SplashWindow::initialize ()
     exitButton->clicked()->connect(windowName, getSharedSplashWindow());
     addControl(exitButton);
     
-    auto introLabel = TUCUT::Curses::Label::createSharedLabel(introLabelName, "Play game?\nThis is a long multi-string that goes beyond 20 characters.", 0, 0, 7, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::right, TUCUT::Curses::Justification::Vertical::center, true);
+    auto introLabel = TUCUT::Curses::Label::createSharedLabel(introLabelName, "Play game?", 0, 0, 1, 25, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::right, TUCUT::Curses::Justification::Vertical::center, true);
     introLabel->setAnchorLeft(20);
     introLabel->setAnchorRight(15);
     addControl(introLabel);
@@ -84,27 +84,6 @@ bool SplashWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
     }
     
     return true;
-}
-
-void SplashWindow::onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y, int x, mmask_t buttonState)
-{
-    if (buttonState & BUTTON1_CLICKED)
-    {
-        TUCUTLOG(Info, "Mouse button 1 clicked at y=" << y << " x=" << x);
-    }
-    else if (buttonState & BUTTON2_CLICKED)
-    {
-        TUCUTLOG(Info, "Mouse button 2 clicked at y=" << y << " x=" << x);
-    }
-    else if (buttonState & BUTTON3_CLICKED)
-    {
-        TUCUTLOG(Info, "Mouse button 3 clicked at y=" << y << " x=" << x);
-    }
-}
-
-void SplashWindow::onDrawClient () const
-{
-    
 }
 
 void SplashWindow::notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button)

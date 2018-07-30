@@ -21,6 +21,10 @@
 
 int main(int argc, const char *argv[])
 {
+    setlocale (LC_ALL, "");
+    
+    TUCUT::Log::LogManager::initialize("logs", "aboqa");
+    
     for (int i = 1; i < argc; i++)
     {
         if (strcmp(argv[i], "--debug") == 0)
@@ -41,35 +45,23 @@ int main(int argc, const char *argv[])
         return 1;
     }
     
-    setlocale (LC_ALL, "");
-    
-    try
-    {
-        TUCUT::Curses::GameManager gm;
-        
-        TUCUT::Log::LogManager::initialize("logs", "aboqa");
-        
-        gm.setMinScreenDimensions(10, 35);
-        gm.setMaxScreenDimensions(60, 200);
-        gm.initialize();
+    TUCUT::Curses::GameManager gm;
+    gm.initialize();
 
-        gm.addWindow(SplashWindow::createSharedSplashWindow("splash", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
-        
-        gm.addWindow(MainWindow::createSharedMainWindow("main", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, true));
-        
-        gm.addWindow(ExitWindow::createSharedExitWindow("exit", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
-        
-        gm.selectNextWindow("splash");
-        
-        gm.play();
-        
-        TUCUT::Log::LogManager::instance()->deinitialize();
-    }
-    catch (const std::bad_weak_ptr & ex)
-    {
-        std::cout << "bad_weak_ptr. Exiting.\n" << std::endl;
-        return 1;
-    }
+    gm.setMinScreenDimensions(10, 35);
+    gm.setMaxScreenDimensions(60, 200);
+
+    gm.addWindow(SplashWindow::createSharedSplashWindow("splash", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
+    
+    gm.addWindow(MainWindow::createSharedMainWindow("main", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, true));
+    
+    gm.addWindow(ExitWindow::createSharedExitWindow("exit", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
+    
+    gm.selectNextWindow("splash");
+    
+    gm.play();
+    
+    TUCUT::Log::LogManager::instance()->deinitialize();
     
     return 0;
 }
