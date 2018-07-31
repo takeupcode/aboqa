@@ -53,7 +53,7 @@ int main(int argc, const char *argv[])
 
     gm.addWindow(SplashWindow::createSharedSplashWindow("splash", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
     
-    gm.addWindow(MainWindow::createSharedMainWindow("main", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, true));
+    gm.addWindow(MainWindow::createSharedMainWindow("main", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, TUCUT::Curses::Colors::COLOR_DIM_YELLOW, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, true));
     
     gm.addWindow(ExitWindow::createSharedExitWindow("exit", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
     

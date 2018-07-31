@@ -13,6 +13,7 @@
 #include "../submodules/TUCUT/Log/LogManager.h"
 
 const std::string MainWindow::windowName = "MainWindow";
+const std::string MainWindow::exitButtonName = "exitButton";
 const std::string MainWindow::textBoxName = "textBox";
 const std::string MainWindow::checkBoxName = "checkBox";
 const std::string MainWindow::numberBoxName = "numberBox";
@@ -30,18 +31,18 @@ void MainWindow::initialize ()
     
     mTextBox = TUCUT::Curses::TextBox::createSharedTextBox(textBoxName, "line 1\nline 2 is longer\nline 3\nline 4 is also long\nline 5\nline 6", 0, 0, 7, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true);
     mTextBox->setAnchorTop(2);
-    mTextBox->setAnchorBottom(3);
+    mTextBox->setAnchorBottom(5);
     mTextBox->setAnchorLeft(20);
     mTextBox->setAnchorRight(15);
     addControl(mTextBox);
     
     mCheckBox = TUCUT::Curses::CheckBox::createSharedCheckBox(checkBoxName, "check box", 0, 0, 1, 15, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
-    mCheckBox->setAnchorBottom(1);
+    mCheckBox->setAnchorBottom(2);
     mCheckBox->setAnchorRight(1);
     addControl(mCheckBox);
     
     mNumberBox = TUCUT::Curses::NumberBox::createSharedNumberBox(numberBoxName, 0, 0, 0, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE);
-    mNumberBox->setAnchorBottom(1);
+    mNumberBox->setAnchorBottom(2);
     mNumberBox->setAnchorLeft(1);
     addControl(mNumberBox);
     
@@ -64,9 +65,15 @@ void MainWindow::initialize ()
     items.push_back("f");
     
     mListBox = TUCUT::Curses::ListBox::createSharedListBox(listBoxName, items, 0, 0, 10, 15, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE);
-    mListBox->setAnchorTop(2);
-    mListBox->setAnchorLeft(2);
+    mListBox->setAnchorTop(0);
+    mListBox->setAnchorLeft(0);
     addControl(mListBox);
+    
+    auto exitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
+    exitButton->setAnchorBottom(0);
+    exitButton->setAnchorRight(0);
+    exitButton->clicked()->connect(windowName, getSharedMainWindow());
+    addControl(exitButton);
 }
 
 std::shared_ptr<MainWindow> MainWindow::createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
@@ -87,23 +94,22 @@ bool MainWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
 {
     switch (key)
     {
-    case KEY_DOWN:
-        TUCUTLOG(Info, "Down key pressed from main window.");
-        break;
-    case KEY_UP:
-        break;
-    case 10: // Enter
-        break;
-    case KEY_F(1):
-        TUCUTLOG(Info, mTextBox->text());
-        gm->selectNextWindow("exit");
-        break;
-    default:
-        if (parent())
-        {
-            return parent()->onKeyPress(gm, key);
-        }
-        return false;
+        case 10: // Enter
+            for (auto & control: mControls)
+            {
+                if (control->wantEnter())
+                {
+                    setFocus(control->y(), control->x());
+                    return control->onKeyPress(gm, key);
+                }
+            }
+            break;
+        default:
+            if (parent())
+            {
+                return parent()->onKeyPress(gm, key);
+            }
+            return false;
     }
     
     return true;
@@ -125,7 +131,10 @@ void MainWindow::onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y,
     }
 }
 
-void MainWindow::onDrawClient () const
+void MainWindow::notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button)
 {
-    
+    if (button->name() == exitButtonName)
+    {
+        gm->selectNextWindow("exit");
+    }
 }
