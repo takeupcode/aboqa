@@ -17,6 +17,8 @@
 #include "../submodules/TUCUT/Curses/TextBox.h"
 #include "../submodules/TUCUT/Curses/Window.h"
 
+#include "Character.h"
+
 class MainWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, const TUCUT::Curses::Button *>
 {
 public:
@@ -38,15 +40,11 @@ private:
     
     static const std::string windowName;
     static const std::string textBoxName;
-    static const std::string checkBoxName;
-    static const std::string numberBoxName;
-    static const std::string listBoxName;
     static const std::string exitButtonName;
     
     std::shared_ptr<TUCUT::Curses::TextBox> mTextBox;
-    std::shared_ptr<TUCUT::Curses::CheckBox> mCheckBox;
-    std::shared_ptr<TUCUT::Curses::NumberBox> mNumberBox;
-    std::shared_ptr<TUCUT::Curses::ListBox> mListBox;
+    
+    Character mCharacter;
 };
 
-#endif /* MainWindow_h */
+#endif // MainWindow_h

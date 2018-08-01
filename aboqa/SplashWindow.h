@@ -36,4 +36,4 @@ private:
     static const std::string introLabelName;
 };
 
-#endif /* SplashWindow_h */
+#endif // SplashWindow_h

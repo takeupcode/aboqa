@@ -11,6 +11,11 @@
 		3E3F8413210D68E800501126 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F8411210D68E800501126 /* libboost_filesystem-mt.dylib */; };
 		3E3F8414210D690800501126 /* libTUCUT-curses.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F8403210D632900501126 /* libTUCUT-curses.a */; };
 		3E3F8415210D690800501126 /* libTUCUT.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F83FB210D632900501126 /* libTUCUT.a */; };
+		3E3F841A21114EBF00501126 /* Character.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F841821114EBF00501126 /* Character.cpp */; };
+		3E3F8422211150BF00501126 /* PhysicalProperties.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F8420211150BF00501126 /* PhysicalProperties.cpp */; };
+		3E3F84252111515100501126 /* PropertyGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F84232111515100501126 /* PropertyGroup.cpp */; };
+		3E3F84282111525C00501126 /* PropertyContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F84262111525C00501126 /* PropertyContainer.cpp */; };
+		3E3F842B211164AC00501126 /* PropertyValue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E3F8429211164AC00501126 /* PropertyValue.cpp */; };
 		3E59E6F92026649000C5009A /* libcurses.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED785A11FA5B668002D9B78 /* libcurses.tbd */; };
 		3EA6428F20261FE300B5A6D2 /* world-0000.config in CopyFiles */ = {isa = PBXBuildFile; fileRef = 3E6A28301FC93EFD009458A7 /* world-0000.config */; };
 		3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3EB347C61FAEC57C0031025E /* SplashWindow.cpp */; };
@@ -74,6 +79,16 @@
 		3E3F83F1210D632800501126 /* TUCUT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TUCUT.xcodeproj; sourceTree = "<group>"; };
 		3E3F840B210D68E800501126 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../../../../opt/local/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
 		3E3F8411210D68E800501126 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../opt/local/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
+		3E3F841821114EBF00501126 /* Character.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Character.cpp; sourceTree = "<group>"; };
+		3E3F841921114EBF00501126 /* Character.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Character.h; sourceTree = "<group>"; };
+		3E3F8420211150BF00501126 /* PhysicalProperties.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PhysicalProperties.cpp; sourceTree = "<group>"; };
+		3E3F8421211150BF00501126 /* PhysicalProperties.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PhysicalProperties.h; sourceTree = "<group>"; };
+		3E3F84232111515100501126 /* PropertyGroup.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyGroup.cpp; sourceTree = "<group>"; };
+		3E3F84242111515100501126 /* PropertyGroup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyGroup.h; sourceTree = "<group>"; };
+		3E3F84262111525C00501126 /* PropertyContainer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyContainer.cpp; sourceTree = "<group>"; };
+		3E3F84272111525C00501126 /* PropertyContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyContainer.h; sourceTree = "<group>"; };
+		3E3F8429211164AC00501126 /* PropertyValue.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PropertyValue.cpp; sourceTree = "<group>"; };
+		3E3F842A211164AC00501126 /* PropertyValue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PropertyValue.h; sourceTree = "<group>"; };
 		3E6A28301FC93EFD009458A7 /* world-0000.config */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "world-0000.config"; sourceTree = "<group>"; };
 		3E6A28311FCA6076009458A7 /* libcurses.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurses.a; path = ../../../../../opt/local/lib/libcurses.a; sourceTree = "<group>"; };
 		3EB347C61FAEC57C0031025E /* SplashWindow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashWindow.cpp; sourceTree = "<group>"; };
@@ -168,6 +183,16 @@
 				3EB347CA1FAEC59E0031025E /* MainWindow.h */,
 				3EB347CC1FAEC5B80031025E /* ExitWindow.cpp */,
 				3EB347CD1FAEC5B80031025E /* ExitWindow.h */,
+				3E3F841821114EBF00501126 /* Character.cpp */,
+				3E3F841921114EBF00501126 /* Character.h */,
+				3E3F8420211150BF00501126 /* PhysicalProperties.cpp */,
+				3E3F8421211150BF00501126 /* PhysicalProperties.h */,
+				3E3F84232111515100501126 /* PropertyGroup.cpp */,
+				3E3F84242111515100501126 /* PropertyGroup.h */,
+				3E3F84262111525C00501126 /* PropertyContainer.cpp */,
+				3E3F84272111525C00501126 /* PropertyContainer.h */,
+				3E3F8429211164AC00501126 /* PropertyValue.cpp */,
+				3E3F842A211164AC00501126 /* PropertyValue.h */,
 			);
 			path = aboqa;
 			sourceTree = "<group>";
@@ -285,8 +310,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				3EB347CE1FAEC5B80031025E /* ExitWindow.cpp in Sources */,
+				3E3F84252111515100501126 /* PropertyGroup.cpp in Sources */,
+				3E3F8422211150BF00501126 /* PhysicalProperties.cpp in Sources */,
 				3EB347CB1FAEC59E0031025E /* MainWindow.cpp in Sources */,
 				3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */,
+				3E3F841A21114EBF00501126 /* Character.cpp in Sources */,
+				3E3F842B211164AC00501126 /* PropertyValue.cpp in Sources */,
+				3E3F84282111525C00501126 /* PropertyContainer.cpp in Sources */,
 				3ED7858E1FA58EDF002D9B78 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

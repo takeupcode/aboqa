@@ -35,4 +35,4 @@ private:
     static const std::string thanksLabelName;
 };
 
-#endif /* ExitWindow_h */
+#endif // ExitWindow_h
