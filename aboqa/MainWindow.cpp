@@ -14,7 +14,7 @@
 
 const std::string MainWindow::windowName = "MainWindow";
 const std::string MainWindow::exitButtonName = "exitButton";
-const std::string MainWindow::textBoxName = "textBox";
+const std::string MainWindow::displayBoxName = "displayBox";
 
 MainWindow::MainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
@@ -26,10 +26,10 @@ void MainWindow::initialize ()
 {
     Window::initialize();
     
-    mTextBox = TUCUT::Curses::TextBox::createSharedTextBox(textBoxName, "", 0, 0, 10, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true);
-    mTextBox->setAnchorTop(2);
-    mTextBox->setAnchorLeft(20);
-    addControl(mTextBox);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, false, false);
+    mDisplayBox->setAnchorTop(2);
+    mDisplayBox->setAnchorLeft(20);
+    addControl(mDisplayBox);
     
     auto exitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
     exitButton->setAnchorBottom(0);
