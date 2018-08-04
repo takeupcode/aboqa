@@ -8,6 +8,8 @@
 
 #include "MainWindow.h"
 
+#include <sstream>
+
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/GameManager.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
@@ -15,6 +17,7 @@
 const std::string MainWindow::windowName = "MainWindow";
 const std::string MainWindow::exitButtonName = "exitButton";
 const std::string MainWindow::displayBoxName = "displayBox";
+const std::string MainWindow::statusName = "status";
 
 MainWindow::MainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
@@ -26,11 +29,17 @@ void MainWindow::initialize ()
 {
     Window::initialize();
     
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, false, false);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, false);
     mDisplayBox->setAnchorTop(2);
     mDisplayBox->setAnchorLeft(20);
+    mDisplayBox->cursorChanged()->connect(windowName, getSharedMainWindow());
     addControl(mDisplayBox);
     
+    mStatus = TUCUT::Curses::Label::createSharedLabel(statusName, "", 0, 0, 3, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::left, TUCUT::Curses::Justification::Vertical::top, true);
+    mStatus->setAnchorTop(15);
+    mStatus->setAnchorLeft(20);
+    addControl(mStatus);
+
     auto exitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
     exitButton->setAnchorBottom(0);
     exitButton->setAnchorRight(0);
@@ -98,5 +107,16 @@ void MainWindow::notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::B
     if (button->name() == exitButtonName)
     {
         gm->selectNextWindow("exit");
+    }
+}
+
+void MainWindow::notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::DisplayBox * display, int y, int x)
+{
+    if (display->name() == displayBoxName)
+    {
+        std::stringstream ss;
+        ss << "Cursor location (x=" << x << ", y=" << y << ")";
+        
+        mStatus->setText(ss.str());
     }
 }

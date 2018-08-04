@@ -12,11 +12,13 @@
 #include "../submodules/TUCUT/Event/EventSubscriber.h"
 #include "../submodules/TUCUT/Curses/Button.h"
 #include "../submodules/TUCUT/Curses/DisplayBox.h"
+#include "../submodules/TUCUT/Curses/Label.h"
 #include "../submodules/TUCUT/Curses/Window.h"
 
 #include "Character.h"
 
-class MainWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, const TUCUT::Curses::Button *>
+class MainWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, const TUCUT::Curses::Button *>,
+    public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, const TUCUT::Curses::DisplayBox *, int, int>
 {
 public:
     static std::shared_ptr<MainWindow> createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
@@ -35,12 +37,16 @@ protected:
 private:
     void notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button) override;
     
+    void notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::DisplayBox * display, int y, int x) override;
+    
     static const std::string windowName;
     static const std::string displayBoxName;
+    static const std::string statusName;
     static const std::string exitButtonName;
     
     std::shared_ptr<TUCUT::Curses::DisplayBox> mDisplayBox;
-    
+    std::shared_ptr<TUCUT::Curses::Label> mStatus;
+
     Character mCharacter;
 };
 
