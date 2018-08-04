@@ -32,6 +32,7 @@ void MainWindow::initialize ()
     mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, false);
     mDisplayBox->setAnchorTop(2);
     mDisplayBox->setAnchorLeft(20);
+    mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
     mDisplayBox->cursorChanged()->connect(windowName, getSharedMainWindow());
     addControl(mDisplayBox);
     
@@ -102,21 +103,39 @@ void MainWindow::onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y,
     }
 }
 
-void MainWindow::notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button)
+void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button)
 {
+    if (id != TUCUT::Curses::Button::ClickedEventId)
+    {
+        return;
+    }
+    
     if (button->name() == exitButtonName)
     {
         gm->selectNextWindow("exit");
     }
 }
 
-void MainWindow::notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::DisplayBox * display, int y, int x)
+void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::DisplayBox * display, int y, int x)
 {
-    if (display->name() == displayBoxName)
+    if (id == TUCUT::Curses::DisplayBox::ClickedEventId)
     {
-        std::stringstream ss;
-        ss << "Cursor location (x=" << x << ", y=" << y << ")";
-        
-        mStatus->setText(ss.str());
+        if (display->name() == displayBoxName)
+        {
+            std::stringstream ss;
+            ss << "Clicked location (x=" << x << ", y=" << y << ")";
+            
+            mStatus->setText(ss.str());
+        }
+    }
+    else if (id == TUCUT::Curses::DisplayBox::CursorChangedEventId)
+    {
+        if (display->name() == displayBoxName)
+        {
+            std::stringstream ss;
+            ss << "Cursor location (x=" << x << ", y=" << y << ")";
+            
+            mStatus->setText(ss.str());
+        }
     }
 }

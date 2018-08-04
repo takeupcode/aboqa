@@ -28,7 +28,7 @@ protected:
     void initialize () override;
 
 private:
-    void notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button) override;
+    void notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button) override;
     
     static const std::string windowName;
     static const std::string playButtonName;

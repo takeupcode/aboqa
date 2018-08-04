@@ -35,9 +35,9 @@ protected:
     void initialize () override;
 
 private:
-    void notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button) override;
+    void notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button) override;
     
-    void notify (TUCUT::Curses::GameManager * gm, const TUCUT::Curses::DisplayBox * display, int y, int x) override;
+    void notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::DisplayBox * display, int y, int x) override;
     
     static const std::string windowName;
     static const std::string displayBoxName;
