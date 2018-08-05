@@ -29,10 +29,11 @@ void MainWindow::initialize ()
 {
     Window::initialize();
     
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, false);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true);
     mDisplayBox->setAnchorTop(2);
     mDisplayBox->setAnchorLeft(20);
     mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
+    mDisplayBox->scrollChanged()->connect(windowName, getSharedMainWindow());
     mDisplayBox->cursorChanged()->connect(windowName, getSharedMainWindow());
     addControl(mDisplayBox);
     
@@ -41,11 +42,11 @@ void MainWindow::initialize ()
     mStatus->setAnchorLeft(20);
     addControl(mStatus);
 
-    auto exitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
-    exitButton->setAnchorBottom(0);
-    exitButton->setAnchorRight(0);
-    exitButton->clicked()->connect(windowName, getSharedMainWindow());
-    addControl(exitButton);
+    mExitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
+    mExitButton->setAnchorBottom(0);
+    mExitButton->setAnchorRight(0);
+    mExitButton->clicked()->connect(windowName, getSharedMainWindow());
+    addControl(mExitButton);
 }
 
 std::shared_ptr<MainWindow> MainWindow::createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
@@ -124,6 +125,16 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::C
         {
             std::stringstream ss;
             ss << "Clicked location (x=" << x << ", y=" << y << ")";
+            
+            mStatus->setText(ss.str());
+        }
+    }
+    else if (id == TUCUT::Curses::DisplayBox::ScrollChangedEventId)
+    {
+        if (display->name() == displayBoxName)
+        {
+            std::stringstream ss;
+            ss << "Scroll location (x=" << x << ", y=" << y << ")";
             
             mStatus->setText(ss.str());
         }

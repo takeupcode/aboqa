@@ -46,6 +46,7 @@ private:
     
     std::shared_ptr<TUCUT::Curses::DisplayBox> mDisplayBox;
     std::shared_ptr<TUCUT::Curses::Label> mStatus;
+    std::shared_ptr<TUCUT::Curses::Button> mExitButton;
 
     Character mCharacter;
 };
