@@ -29,12 +29,12 @@ void MainWindow::initialize ()
 {
     Window::initialize();
     
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, true);
     mDisplayBox->setAnchorTop(2);
     mDisplayBox->setAnchorLeft(20);
     mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
     mDisplayBox->scrollChanged()->connect(windowName, getSharedMainWindow());
-    mDisplayBox->cursorChanged()->connect(windowName, getSharedMainWindow());
+    mDisplayBox->centerChanged()->connect(windowName, getSharedMainWindow());
     addControl(mDisplayBox);
     
     mStatus = TUCUT::Curses::Label::createSharedLabel(statusName, "", 0, 0, 3, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::left, TUCUT::Curses::Justification::Vertical::top, true);
@@ -139,12 +139,12 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::C
             mStatus->setText(ss.str());
         }
     }
-    else if (id == TUCUT::Curses::DisplayBox::CursorChangedEventId)
+    else if (id == TUCUT::Curses::DisplayBox::CenterChangedEventId)
     {
         if (display->name() == displayBoxName)
         {
             std::stringstream ss;
-            ss << "Cursor location (x=" << x << ", y=" << y << ")";
+            ss << "Center location (x=" << x << ", y=" << y << ")";
             
             mStatus->setText(ss.str());
         }
