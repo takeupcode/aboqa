@@ -29,7 +29,7 @@ void MainWindow::initialize ()
 {
     Window::initialize();
     
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, true);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, true);
     mDisplayBox->setAnchorTop(2);
     mDisplayBox->setAnchorLeft(20);
     mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
