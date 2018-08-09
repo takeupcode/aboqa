@@ -37,6 +37,44 @@ void MainWindow::initialize ()
     mDisplayBox->centerChanged()->connect(windowName, getSharedMainWindow());
     addControl(mDisplayBox);
     
+    std::vector<std::string> content = {
+        "     .                        ",
+        "     .                        ",
+        "     .                        ",
+        ".. ...                        ",
+        " . .                          ",
+        " . .........                  ",
+        " .                            ",
+        " . ...........................",
+        " . .                          ",
+        " . .                          ",
+        " .                            ",
+        " . .                  ........",
+        " . .                         .",
+        " . .                  .      .",
+        " . .                  .      .",
+        " . .                  ........",
+        " . .                          ",
+        " . .                          ",
+        " . .                          ",
+        " . .                          ",
+        " . .                          ",
+        " . .  . .                     ",
+        " . .  . .                     ",
+        " . .... ..................    ",
+        " .                       .    ",
+        " .                       .    ",
+        " .                       .    ",
+        " .                       .    ",
+        " .........................    ",
+        "                              "
+    };
+    
+    for (int i = 0; i < content.size(); i++)
+    {
+        mDisplayBox->setSymbols(content[i], i);
+    }
+    
     mStatus = TUCUT::Curses::Label::createSharedLabel(statusName, "", 0, 0, 3, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::left, TUCUT::Curses::Justification::Vertical::top, true);
     mStatus->setAnchorTop(15);
     mStatus->setAnchorLeft(20);
