@@ -17,8 +17,8 @@
 
 #include "Character.h"
 
-class MainWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, const TUCUT::Curses::Button *>,
-    public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, const TUCUT::Curses::DisplayBox *, int, int>
+class MainWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::Button *>,
+    public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::DisplayBox *, int, int>
 {
 public:
     static std::shared_ptr<MainWindow> createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
@@ -35,9 +35,9 @@ protected:
     void initialize () override;
 
 private:
-    void notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button) override;
+    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button) override;
     
-    void notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::DisplayBox * display, int y, int x) override;
+    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x) override;
     
     static const std::string windowName;
     static const std::string displayBoxName;

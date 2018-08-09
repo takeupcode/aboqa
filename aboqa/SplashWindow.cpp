@@ -86,7 +86,7 @@ bool SplashWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
     return true;
 }
 
-void SplashWindow::notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button)
+void SplashWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button)
 {
     if (id != TUCUT::Curses::Button::ClickedEventId)
     {

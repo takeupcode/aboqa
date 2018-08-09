@@ -29,7 +29,7 @@ void MainWindow::initialize ()
 {
     Window::initialize();
     
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, true);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true);
     mDisplayBox->setAnchorTop(2);
     mDisplayBox->setAnchorLeft(20);
     mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
@@ -104,7 +104,7 @@ void MainWindow::onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y,
     }
 }
 
-void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::Button * button)
+void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button)
 {
     if (id != TUCUT::Curses::Button::ClickedEventId)
     {
@@ -117,12 +117,14 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::C
     }
 }
 
-void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, const TUCUT::Curses::DisplayBox * display, int y, int x)
+void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x)
 {
     if (id == TUCUT::Curses::DisplayBox::ClickedEventId)
     {
         if (display->name() == displayBoxName)
         {
+            display->showClickLocation(true);
+            
             std::stringstream ss;
             ss << "Clicked location (x=" << x << ", y=" << y << ")";
             
