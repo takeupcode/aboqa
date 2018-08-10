@@ -18,6 +18,7 @@
 #include "Character.h"
 
 class MainWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::Button *>,
+    public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::DisplayBox *, int, int, bool &>,
     public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::DisplayBox *, int, int>
 {
 public:
@@ -37,8 +38,10 @@ protected:
 private:
     void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button) override;
     
-    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x) override;
+    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x, bool & cancel) override;
     
+    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x) override;
+
     static const std::string windowName;
     static const std::string displayBoxName;
     static const std::string statusName;

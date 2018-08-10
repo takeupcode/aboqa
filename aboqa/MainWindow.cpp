@@ -34,7 +34,8 @@ void MainWindow::initialize ()
     mDisplayBox->setAnchorLeft(20);
     mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
     mDisplayBox->scrollChanged()->connect(windowName, getSharedMainWindow());
-    mDisplayBox->centerChanged()->connect(windowName, getSharedMainWindow());
+    mDisplayBox->beforeCenterChanged()->connect(windowName, getSharedMainWindow());
+    mDisplayBox->afterCenterChanged()->connect(windowName, getSharedMainWindow());
     addControl(mDisplayBox);
     
     std::vector<std::string> content = {
@@ -155,6 +156,17 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
     }
 }
 
+void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x, bool & cancel)
+{
+    if (id == TUCUT::Curses::DisplayBox::BeforeCenterChangedEventId)
+    {
+        if (display->symbol(y, x) == '.')
+        {
+            cancel = true;
+        }
+    }
+}
+
 void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x)
 {
     if (id == TUCUT::Curses::DisplayBox::ClickedEventId)
@@ -179,7 +191,7 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
             mStatus->setText(ss.str());
         }
     }
-    else if (id == TUCUT::Curses::DisplayBox::CenterChangedEventId)
+    else if (id == TUCUT::Curses::DisplayBox::AfterCenterChangedEventId)
     {
         if (display->name() == displayBoxName)
         {
