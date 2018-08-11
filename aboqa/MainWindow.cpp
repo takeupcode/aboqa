@@ -76,6 +76,11 @@ void MainWindow::initialize ()
         mDisplayBox->setSymbols(content[i], i);
     }
     
+    int startingY = 12;
+    int startingX = 21;
+    mDisplayBox->setCenter(startingY, startingX);
+    mDisplayBox->ensurePointIsVisible(startingY, startingX, 2, 5);
+
     mStatus = TUCUT::Curses::Label::createSharedLabel(statusName, "", 0, 0, 3, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::left, TUCUT::Curses::Justification::Vertical::top, true);
     mStatus->setAnchorTop(15);
     mStatus->setAnchorLeft(20);
