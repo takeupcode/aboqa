@@ -29,9 +29,9 @@ void MainWindow::initialize ()
 {
     Window::initialize();
     
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 10, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true);
-    mDisplayBox->setAnchorTop(2);
-    mDisplayBox->setAnchorLeft(20);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 20, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, 2, 2, 2, 2);
+    mDisplayBox->setAnchorTop(0);
+    mDisplayBox->setAnchorLeft(0);
     mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
     mDisplayBox->scrollChanged()->connect(windowName, getSharedMainWindow());
     mDisplayBox->beforeCenterChanged()->connect(windowName, getSharedMainWindow());
@@ -79,11 +79,11 @@ void MainWindow::initialize ()
     int startingY = 12;
     int startingX = 21;
     mDisplayBox->setCenter(startingY, startingX);
-    mDisplayBox->ensurePointIsVisible(startingY, startingX, 2, 5);
+    mDisplayBox->ensureCenterIsVisible();
 
     mStatus = TUCUT::Curses::Label::createSharedLabel(statusName, "", 0, 0, 3, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::left, TUCUT::Curses::Justification::Vertical::top, true);
-    mStatus->setAnchorTop(15);
-    mStatus->setAnchorLeft(20);
+    mStatus->setAnchorTop(20);
+    mStatus->setAnchorLeft(0);
     addControl(mStatus);
 
     mExitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
