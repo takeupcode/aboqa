@@ -29,16 +29,9 @@ void MainWindow::initialize ()
 {
     Window::initialize();
     
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 20, 20, 30, 30, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, 2, 2, 2, 2);
-    mDisplayBox->setAnchorTop(0);
-    mDisplayBox->setAnchorLeft(0);
-    mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
-    mDisplayBox->scrollChanged()->connect(windowName, getSharedMainWindow());
-    mDisplayBox->beforeCenterChanged()->connect(windowName, getSharedMainWindow());
-    mDisplayBox->afterCenterChanged()->connect(windowName, getSharedMainWindow());
-    addControl(mDisplayBox);
-    
-    std::vector<std::string> content = {
+    mMapHeight = 30;
+    mMapWidth = 30;
+    mMap = {
         "     .                        ",
         "     .                        ",
         "     .                        ",
@@ -49,12 +42,12 @@ void MainWindow::initialize ()
         " . ...........................",
         " . .                          ",
         " . .                          ",
-        " .                            ",
-        " . .                  ........",
+        "                              ",
+        " . ................   ........",
         " . .                         .",
-        " . .                  .      .",
-        " . .                  .      .",
-        " . .                  ........",
+        " . .              .   .      .",
+        " . .              .   .      .",
+        " . ................   ........",
         " . .                          ",
         " . .                          ",
         " . .                          ",
@@ -70,20 +63,28 @@ void MainWindow::initialize ()
         " .........................    ",
         "                              "
     };
+
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 20, 20, mMapHeight, mMapWidth, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, 2, 2, 2, 2);
+    mDisplayBox->setAnchorTop(0);
+    mDisplayBox->setAnchorBottom(0);
+    mDisplayBox->setAnchorLeft(0);
+    mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
+    mDisplayBox->scrollChanged()->connect(windowName, getSharedMainWindow());
+    mDisplayBox->beforeCenterChanged()->connect(windowName, getSharedMainWindow());
+    mDisplayBox->afterCenterChanged()->connect(windowName, getSharedMainWindow());
+    addControl(mDisplayBox);
     
-    for (int i = 0; i < content.size(); i++)
-    {
-        mDisplayBox->setSymbols(content[i], i);
-    }
-    
-    int startingY = 12;
-    int startingX = 21;
-    mDisplayBox->setCenter(startingY, startingX);
+    mY = 12;
+    mX = 21;
+    mDisplayBox->setCenter(mY, mX);
     mDisplayBox->ensureCenterIsVisible();
+    
+    updateDisplay();
 
     mStatus = TUCUT::Curses::Label::createSharedLabel(statusName, "", 0, 0, 3, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::left, TUCUT::Curses::Justification::Vertical::top, true);
-    mStatus->setAnchorTop(20);
-    mStatus->setAnchorLeft(0);
+    mStatus->setAnchorBottom(0);
+    mStatus->setAnchorLeft(20);
+    mStatus->setAnchorRight(10);
     addControl(mStatus);
 
     mExitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
@@ -200,10 +201,72 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
     {
         if (display->name() == displayBoxName)
         {
+            mY = y;
+            mX = x;
+            updateDisplay();
+            
             std::stringstream ss;
             ss << "Center location (x=" << x << ", y=" << y << ")";
             
             mStatus->setText(ss.str());
         }
+    }
+}
+
+void MainWindow::updateDisplay ()
+{
+    // xx*xx
+    // x***x
+    // **0**
+    // x***x
+    // xx*xx
+    if (mY >= 2)
+    {
+        mDisplayBox->setSymbol(mMap[mY - 2][mX], mY - 2, mX);
+    }
+    if (mY >= 1)
+    {
+        if (mX >= 1)
+        {
+            mDisplayBox->setSymbol(mMap[mY - 1][mX - 1], mY - 1, mX - 1);
+        }
+        mDisplayBox->setSymbol(mMap[mY - 1][mX], mY - 1, mX);
+        if (mX < mMapWidth - 1)
+        {
+            mDisplayBox->setSymbol(mMap[mY - 1][mX + 1], mY - 1, mX + 1);
+        }
+    }
+    if (mX >= 2)
+    {
+        mDisplayBox->setSymbol(mMap[mY][mX - 2], mY, mX - 2);
+    }
+    if (mX >= 1)
+    {
+        mDisplayBox->setSymbol(mMap[mY][mX - 1], mY, mX - 1);
+    }
+    mDisplayBox->setSymbol(mMap[mY][mX], mY, mX);
+    if (mX < mMapWidth - 1)
+    {
+        mDisplayBox->setSymbol(mMap[mY][mX + 1], mY, mX + 1);
+    }
+    if (mX < mMapWidth - 2)
+    {
+        mDisplayBox->setSymbol(mMap[mY][mX + 2], mY, mX + 2);
+    }
+    if (mY < mMapHeight - 1)
+    {
+        if (mX >= 1)
+        {
+            mDisplayBox->setSymbol(mMap[mY + 1][mX - 1], mY + 1, mX - 1);
+        }
+        mDisplayBox->setSymbol(mMap[mY + 1][mX], mY + 1, mX);
+        if (mX < mMapWidth - 1)
+        {
+            mDisplayBox->setSymbol(mMap[mY + 1][mX + 1], mY + 1, mX + 1);
+        }
+    }
+    if (mY < mMapHeight - 2)
+    {
+        mDisplayBox->setSymbol(mMap[mY + 2][mX], mY + 2, mX);
     }
 }

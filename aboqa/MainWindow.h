@@ -41,6 +41,8 @@ private:
     void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x, bool & cancel) override;
     
     void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x) override;
+    
+    void updateDisplay ();
 
     static const std::string windowName;
     static const std::string displayBoxName;
@@ -52,6 +54,11 @@ private:
     std::shared_ptr<TUCUT::Curses::Button> mExitButton;
 
     Character mCharacter;
+    std::vector<std::string> mMap;
+    int mMapHeight;
+    int mMapWidth;
+    int mY;
+    int mX;
 };
 
 #endif // MainWindow_h
