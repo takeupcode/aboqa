@@ -79,7 +79,8 @@ void MainWindow::initialize ()
     mDisplayBox->setCenter(mY, mX);
     mDisplayBox->ensureCenterIsVisible();
     
-    updateDisplay();
+    mVisibleRange = 3;
+    updateVisibleDisplay();
 
     mStatus = TUCUT::Curses::Label::createSharedLabel(statusName, "", 0, 0, 3, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::left, TUCUT::Curses::Justification::Vertical::top, true);
     mStatus->setAnchorBottom(0);
@@ -203,7 +204,7 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
         {
             mY = y;
             mX = x;
-            updateDisplay();
+            updateVisibleDisplay();
             
             std::stringstream ss;
             ss << "Center location (x=" << x << ", y=" << y << ")";
@@ -213,60 +214,50 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
     }
 }
 
-void MainWindow::updateDisplay ()
+void MainWindow::updateVisibleDisplay ()
 {
     // xx*xx
     // x***x
     // **0**
     // x***x
     // xx*xx
-    if (mY >= 2)
+    for (int y = -mVisibleRange; y <= mVisibleRange; y++)
     {
-        mDisplayBox->setSymbol(mMap[mY - 2][mX], mY - 2, mX);
-    }
-    if (mY >= 1)
-    {
-        if (mX >= 1)
+        int offset = 0;
+        if (y < 0)
         {
-            mDisplayBox->setSymbol(mMap[mY - 1][mX - 1], mY - 1, mX - 1);
+            offset = -y;
+            if (mY < offset)
+            {
+                continue;
+            }
         }
-        mDisplayBox->setSymbol(mMap[mY - 1][mX], mY - 1, mX);
-        if (mX < mMapWidth - 1)
+        else
         {
-            mDisplayBox->setSymbol(mMap[mY - 1][mX + 1], mY - 1, mX + 1);
+            offset = y;
+            if (mY >= mMapHeight - offset)
+            {
+                break;
+            }
         }
-    }
-    if (mX >= 2)
-    {
-        mDisplayBox->setSymbol(mMap[mY][mX - 2], mY, mX - 2);
-    }
-    if (mX >= 1)
-    {
-        mDisplayBox->setSymbol(mMap[mY][mX - 1], mY, mX - 1);
-    }
-    mDisplayBox->setSymbol(mMap[mY][mX], mY, mX);
-    if (mX < mMapWidth - 1)
-    {
-        mDisplayBox->setSymbol(mMap[mY][mX + 1], mY, mX + 1);
-    }
-    if (mX < mMapWidth - 2)
-    {
-        mDisplayBox->setSymbol(mMap[mY][mX + 2], mY, mX + 2);
-    }
-    if (mY < mMapHeight - 1)
-    {
-        if (mX >= 1)
+        for (int x = -mVisibleRange + offset; x <= mVisibleRange - offset; x++)
         {
-            mDisplayBox->setSymbol(mMap[mY + 1][mX - 1], mY + 1, mX - 1);
+            if (x < 0)
+            {
+                if (mX < -x)
+                {
+                    continue;
+                }
+            }
+            else
+            {
+                if (mX >= mMapWidth - x)
+                {
+                    break;
+                }
+            }
+            
+            mDisplayBox->setSymbol(mMap[mY + y][mX + x], mY + y, mX + x);
         }
-        mDisplayBox->setSymbol(mMap[mY + 1][mX], mY + 1, mX);
-        if (mX < mMapWidth - 1)
-        {
-            mDisplayBox->setSymbol(mMap[mY + 1][mX + 1], mY + 1, mX + 1);
-        }
-    }
-    if (mY < mMapHeight - 2)
-    {
-        mDisplayBox->setSymbol(mMap[mY + 2][mX], mY + 2, mX);
     }
 }

@@ -42,7 +42,7 @@ private:
     
     void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x) override;
     
-    void updateDisplay ();
+    void updateVisibleDisplay ();
 
     static const std::string windowName;
     static const std::string displayBoxName;
@@ -59,6 +59,7 @@ private:
     int mMapWidth;
     int mY;
     int mX;
+    int mVisibleRange;
 };
 
 #endif // MainWindow_h
