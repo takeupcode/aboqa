@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3E06180621210676000B634B /* InventoryWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E06180421210676000B634B /* InventoryWindow.cpp */; };
+		3E06180E21211787000B634B /* CharacterManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E06180C21211787000B634B /* CharacterManager.cpp */; };
 		3E3F8412210D68E800501126 /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F840B210D68E800501126 /* libboost_system-mt.dylib */; };
 		3E3F8413210D68E800501126 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F8411210D68E800501126 /* libboost_filesystem-mt.dylib */; };
 		3E3F8414210D690800501126 /* libTUCUT-curses.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F8403210D632900501126 /* libTUCUT-curses.a */; };
@@ -79,6 +80,8 @@
 /* Begin PBXFileReference section */
 		3E06180421210676000B634B /* InventoryWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InventoryWindow.cpp; sourceTree = "<group>"; };
 		3E06180521210676000B634B /* InventoryWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InventoryWindow.h; sourceTree = "<group>"; };
+		3E06180C21211787000B634B /* CharacterManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CharacterManager.cpp; sourceTree = "<group>"; };
+		3E06180D21211787000B634B /* CharacterManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CharacterManager.h; sourceTree = "<group>"; };
 		3E3F83F1210D632800501126 /* TUCUT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TUCUT.xcodeproj; sourceTree = "<group>"; };
 		3E3F840B210D68E800501126 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../../../../opt/local/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
 		3E3F8411210D68E800501126 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../opt/local/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
@@ -198,6 +201,8 @@
 				3E3F842A211164AC00501126 /* PropertyValue.h */,
 				3E06180421210676000B634B /* InventoryWindow.cpp */,
 				3E06180521210676000B634B /* InventoryWindow.h */,
+				3E06180C21211787000B634B /* CharacterManager.cpp */,
+				3E06180D21211787000B634B /* CharacterManager.h */,
 			);
 			path = aboqa;
 			sourceTree = "<group>";
@@ -322,6 +327,7 @@
 				3EB347C81FAEC57C0031025E /* SplashWindow.cpp in Sources */,
 				3E3F841A21114EBF00501126 /* Character.cpp in Sources */,
 				3E3F842B211164AC00501126 /* PropertyValue.cpp in Sources */,
+				3E06180E21211787000B634B /* CharacterManager.cpp in Sources */,
 				3E3F84282111525C00501126 /* PropertyContainer.cpp in Sources */,
 				3ED7858E1FA58EDF002D9B78 /* main.cpp in Sources */,
 			);

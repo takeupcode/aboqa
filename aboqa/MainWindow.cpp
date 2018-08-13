@@ -7,6 +7,8 @@
 //
 
 #include "MainWindow.h"
+#include "Character.h"
+#include "CharacterManager.h"
 
 #include <sstream>
 
@@ -100,6 +102,9 @@ void MainWindow::initialize ()
     mInventoryButton->setAnchorRight(0);
     mInventoryButton->clicked()->connect(windowName, getSharedMainWindow());
     addControl(mInventoryButton);
+    
+    auto characterManager = CharacterManager::instance();
+    mHero = characterManager->getHero()->getSharedCharacter();
 }
 
 std::shared_ptr<MainWindow> MainWindow::createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
