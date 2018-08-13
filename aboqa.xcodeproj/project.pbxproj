@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3E06180621210676000B634B /* InventoryWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3E06180421210676000B634B /* InventoryWindow.cpp */; };
 		3E3F8412210D68E800501126 /* libboost_system-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F840B210D68E800501126 /* libboost_system-mt.dylib */; };
 		3E3F8413210D68E800501126 /* libboost_filesystem-mt.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F8411210D68E800501126 /* libboost_filesystem-mt.dylib */; };
 		3E3F8414210D690800501126 /* libTUCUT-curses.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E3F8403210D632900501126 /* libTUCUT-curses.a */; };
@@ -76,6 +77,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		3E06180421210676000B634B /* InventoryWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = InventoryWindow.cpp; sourceTree = "<group>"; };
+		3E06180521210676000B634B /* InventoryWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = InventoryWindow.h; sourceTree = "<group>"; };
 		3E3F83F1210D632800501126 /* TUCUT.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = TUCUT.xcodeproj; sourceTree = "<group>"; };
 		3E3F840B210D68E800501126 /* libboost_system-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_system-mt.dylib"; path = "../../../../../opt/local/lib/libboost_system-mt.dylib"; sourceTree = "<group>"; };
 		3E3F8411210D68E800501126 /* libboost_filesystem-mt.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libboost_filesystem-mt.dylib"; path = "../../../../../opt/local/lib/libboost_filesystem-mt.dylib"; sourceTree = "<group>"; };
@@ -193,6 +196,8 @@
 				3E3F84272111525C00501126 /* PropertyContainer.h */,
 				3E3F8429211164AC00501126 /* PropertyValue.cpp */,
 				3E3F842A211164AC00501126 /* PropertyValue.h */,
+				3E06180421210676000B634B /* InventoryWindow.cpp */,
+				3E06180521210676000B634B /* InventoryWindow.h */,
 			);
 			path = aboqa;
 			sourceTree = "<group>";
@@ -309,6 +314,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E06180621210676000B634B /* InventoryWindow.cpp in Sources */,
 				3EB347CE1FAEC5B80031025E /* ExitWindow.cpp in Sources */,
 				3E3F84252111515100501126 /* PropertyGroup.cpp in Sources */,
 				3E3F8422211150BF00501126 /* PhysicalProperties.cpp in Sources */,

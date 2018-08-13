@@ -29,13 +29,14 @@ void ExitWindow::initialize ()
     
     auto exitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
     exitButton->setAnchorBottom(0);
-    exitButton->setAnchorRight(12);
+    exitButton->setAnchorRight(0);
     exitButton->clicked()->connect(windowName, getSharedExitWindow());
     addControl(exitButton);
     
     auto thanksLabel = TUCUT::Curses::Label::createSharedLabel(thanksLabelName, "Thanks for playing!", 0, 0, 1, 25, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::right, TUCUT::Curses::Justification::Vertical::center, true);
-    thanksLabel->setAnchorLeft(20);
-    thanksLabel->setAnchorRight(15);
+    thanksLabel->setAnchorTop(3);
+    thanksLabel->setAnchorLeft(10);
+    thanksLabel->setAnchorRight(10);
     addControl(thanksLabel);
 }
 

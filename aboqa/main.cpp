@@ -18,6 +18,7 @@
 #include "SplashWindow.h"
 #include "MainWindow.h"
 #include "ExitWindow.h"
+#include "InventoryWindow.h"
 
 int main(int argc, const char *argv[])
 {
@@ -57,6 +58,8 @@ int main(int argc, const char *argv[])
     
     gm.addWindow(ExitWindow::createSharedExitWindow("exit", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
     
+    gm.addWindow(InventoryWindow::createSharedInventoryWindow("inventory", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
+
     gm.selectNextWindow("splash");
     
     gm.play();

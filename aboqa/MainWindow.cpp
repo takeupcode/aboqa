@@ -15,9 +15,10 @@
 #include "../submodules/TUCUT/Log/LogManager.h"
 
 const std::string MainWindow::windowName = "MainWindow";
-const std::string MainWindow::exitButtonName = "exitButton";
 const std::string MainWindow::displayBoxName = "displayBox";
 const std::string MainWindow::statusName = "status";
+const std::string MainWindow::exitButtonName = "exitButton";
+const std::string MainWindow::inventoryButtonName = "inventoryButton";
 
 MainWindow::MainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
 : Window(name, y, x, height, width, clientForeColor, clientBackColor, borderForeColor, borderBackColor, clientForeColor, clientBackColor, border)
@@ -93,6 +94,12 @@ void MainWindow::initialize ()
     mExitButton->setAnchorRight(0);
     mExitButton->clicked()->connect(windowName, getSharedMainWindow());
     addControl(mExitButton);
+
+    mInventoryButton = TUCUT::Curses::Button::createSharedButton(inventoryButtonName, "Items", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
+    mInventoryButton->setAnchorBottom(1);
+    mInventoryButton->setAnchorRight(0);
+    mInventoryButton->clicked()->connect(windowName, getSharedMainWindow());
+    addControl(mInventoryButton);
 }
 
 std::shared_ptr<MainWindow> MainWindow::createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
@@ -160,6 +167,10 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
     if (button->name() == exitButtonName)
     {
         gm->selectNextWindow("exit");
+    }
+    else if (button->name() == inventoryButtonName)
+    {
+        gm->selectNextWindow("inventory");
     }
 }
 
