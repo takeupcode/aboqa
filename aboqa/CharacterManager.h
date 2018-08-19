@@ -10,8 +10,9 @@
 #define CharacterManager_h
 
 #include <memory>
+#include <unordered_map>
 
-class Character;
+#include "Character.h"
 
 class CharacterManager
 {
@@ -22,12 +23,18 @@ public:
     
     void deinitialize ();
     
-    Character * getHero ();
+    bool addCharacter (const std::string & characterName, const std::shared_ptr<Character> & character);
+    
+    void removeCharacter (const std::string & characterName);
+
+    std::shared_ptr<Character> getCharacter (const std::string & characterName) const;
     
 private:
+    using CharacterMap = std::unordered_map<std::string, std::shared_ptr<Character>>;
+    
     CharacterManager ();
     
-    std::shared_ptr<Character> mHero;
+    CharacterMap mCharacters;
 };
 
 #endif // CharacterManager_h

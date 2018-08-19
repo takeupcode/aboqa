@@ -35,7 +35,7 @@ void InventoryWindow::initialize ()
     addControl(exitButton);
     
     auto characterManager = CharacterManager::instance();
-    mHero = characterManager->getHero()->getSharedCharacter();
+    mHero = characterManager->getCharacter("hero")->getSharedCharacter();
 }
 
 std::shared_ptr<InventoryWindow> InventoryWindow::createSharedInventoryWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)

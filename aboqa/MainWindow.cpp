@@ -81,9 +81,10 @@ void MainWindow::initialize ()
     int x = 21;
     
     auto characterManager = CharacterManager::instance();
-    mHero = characterManager->getHero()->getSharedCharacter();
-    mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::YPropertyValue)->setInteger(y);
-    mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::XPropertyValue)->setInteger(x);
+    mHero = characterManager->getCharacter("hero")->getSharedCharacter();
+    auto locationGroup = mHero->properties().getGroup(Character::LocationPropertyGroup);
+    locationGroup->getValue(Character::YPropertyValue)->setInteger(y);
+    locationGroup->getValue(Character::XPropertyValue)->setInteger(x);
     
     mDisplayBox->setCenter(y, x);
     mDisplayBox->ensureCenterIsVisible();
@@ -221,8 +222,9 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
     {
         if (display->name() == displayBoxName)
         {
-            mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::YPropertyValue)->setInteger(y);
-            mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::XPropertyValue)->setInteger(x);
+            auto locationGroup = mHero->properties().getGroup(Character::LocationPropertyGroup);
+            locationGroup->getValue(Character::YPropertyValue)->setInteger(y);
+            locationGroup->getValue(Character::XPropertyValue)->setInteger(x);
             updateVisibleDisplay();
             
             std::stringstream ss;
@@ -240,8 +242,9 @@ void MainWindow::updateVisibleDisplay ()
     // **0**
     // x***x
     // xx*xx
-    int heroY = mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::YPropertyValue)->getInteger();
-    int heroX = mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::XPropertyValue)->getInteger();
+    auto locationGroup = mHero->properties().getGroup(Character::LocationPropertyGroup);
+    int heroY = locationGroup->getValue(Character::YPropertyValue)->getInteger();
+    int heroX = locationGroup->getValue(Character::XPropertyValue)->getInteger();
 
     for (int y = -mVisibleRange; y <= mVisibleRange; y++)
     {

@@ -26,15 +26,34 @@ CharacterManager * CharacterManager::instance ()
 
 void CharacterManager::initialize ()
 {
-    mHero = Character::createSharedCharacter();
+    addCharacter("hero", Character::createSharedCharacter());
 }
 
 void CharacterManager::deinitialize ()
 {
-    mHero.reset();
+    mCharacters.clear();
 }
 
-Character * CharacterManager::getHero ()
+
+bool CharacterManager::addCharacter (const std::string & characterName, const std::shared_ptr<Character> & character)
 {
-    return mHero.get();
+    auto result = mCharacters.try_emplace(characterName, character);
+    
+    return result.second;
+}
+
+void CharacterManager::removeCharacter (const std::string & characterName)
+{
+    mCharacters.erase(characterName);
+}
+
+std::shared_ptr<Character> CharacterManager::getCharacter (const std::string & characterName) const
+{
+    auto characterMapResult = mCharacters.find(characterName);
+    if (characterMapResult == mCharacters.end())
+    {
+        return nullptr;
+    }
+    
+    return characterMapResult->second;
 }
