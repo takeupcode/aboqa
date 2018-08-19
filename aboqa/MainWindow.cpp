@@ -77,9 +77,15 @@ void MainWindow::initialize ()
     mDisplayBox->afterCenterChanged()->connect(windowName, getSharedMainWindow());
     addControl(mDisplayBox);
     
-    mY = 12;
-    mX = 21;
-    mDisplayBox->setCenter(mY, mX);
+    int y = 12;
+    int x = 21;
+    
+    auto characterManager = CharacterManager::instance();
+    mHero = characterManager->getHero()->getSharedCharacter();
+    mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::YPropertyValue)->setInteger(y);
+    mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::XPropertyValue)->setInteger(x);
+    
+    mDisplayBox->setCenter(y, x);
     mDisplayBox->ensureCenterIsVisible();
     
     mVisibleRange = 3;
@@ -102,9 +108,6 @@ void MainWindow::initialize ()
     mInventoryButton->setAnchorRight(0);
     mInventoryButton->clicked()->connect(windowName, getSharedMainWindow());
     addControl(mInventoryButton);
-    
-    auto characterManager = CharacterManager::instance();
-    mHero = characterManager->getHero()->getSharedCharacter();
 }
 
 std::shared_ptr<MainWindow> MainWindow::createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)
@@ -218,8 +221,8 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
     {
         if (display->name() == displayBoxName)
         {
-            mY = y;
-            mX = x;
+            mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::YPropertyValue)->setInteger(y);
+            mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::XPropertyValue)->setInteger(x);
             updateVisibleDisplay();
             
             std::stringstream ss;
@@ -237,13 +240,16 @@ void MainWindow::updateVisibleDisplay ()
     // **0**
     // x***x
     // xx*xx
+    int heroY = mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::YPropertyValue)->getInteger();
+    int heroX = mHero->properties().getGroup(Character::LocationPropertyGroup)->getValue(Character::XPropertyValue)->getInteger();
+
     for (int y = -mVisibleRange; y <= mVisibleRange; y++)
     {
         int offset = 0;
         if (y < 0)
         {
             offset = -y;
-            if (mY < offset)
+            if (heroY < offset)
             {
                 continue;
             }
@@ -251,7 +257,7 @@ void MainWindow::updateVisibleDisplay ()
         else
         {
             offset = y;
-            if (mY >= mMapHeight - offset)
+            if (heroY >= mMapHeight - offset)
             {
                 break;
             }
@@ -260,20 +266,20 @@ void MainWindow::updateVisibleDisplay ()
         {
             if (x < 0)
             {
-                if (mX < -x)
+                if (heroX < -x)
                 {
                     continue;
                 }
             }
             else
             {
-                if (mX >= mMapWidth - x)
+                if (heroX >= mMapWidth - x)
                 {
                     break;
                 }
             }
             
-            mDisplayBox->setSymbol(mMap[mY + y][mX + x], mY + y, mX + x);
+            mDisplayBox->setSymbol(mMap[heroY + y][heroX + x], heroY + y, heroX + x);
         }
     }
 }

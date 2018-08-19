@@ -8,24 +8,64 @@
 
 #include "PropertyValue.h"
 
-PropertyValue::PropertyValue (bool readOnly)
-: mValue("0"), mReadOnly(readOnly)
-{ }
+#include <stdexcept>
 
-PropertyValue::~PropertyValue ()
-{ }
-
-std::string PropertyValue::get () const
+std::unique_ptr<PropertyValue> PropertyValue::createStringPropertyValue (const std::string & value, bool readOnly)
 {
-    return mValue;
+    return std::unique_ptr<PropertyValue>(new StringPropertyValue(value, readOnly));
 }
 
-void PropertyValue::set (const std::string & value)
+std::unique_ptr<PropertyValue> PropertyValue::createIntegerPropertyValue (int value, bool readOnly)
 {
-    if (mReadOnly)
-    {
-        return;
-    }
-    
-    mValue = value;
+    return std::unique_ptr<PropertyValue>(new IntegerPropertyValue(value, readOnly));
+}
+
+std::unique_ptr<PropertyValue> PropertyValue::createFloatingPropertyValue (double value, bool readOnly)
+{
+    return std::unique_ptr<PropertyValue>(new FloatingPropertyValue(value, readOnly));
+}
+
+std::unique_ptr<PropertyValue> PropertyValue::createBooleanPropertyValue (bool value, bool readOnly)
+{
+    return std::unique_ptr<PropertyValue>(new BooleanPropertyValue(value, readOnly));
+}
+
+std::string PropertyValue::getString () const
+{
+    throw std::runtime_error("Wrong type of PropertyValue");
+}
+
+int PropertyValue::getInteger () const
+{
+    throw std::runtime_error("Wrong type of PropertyValue");
+}
+
+double PropertyValue::getFloating () const
+{
+    throw std::runtime_error("Wrong type of PropertyValue");
+}
+
+bool PropertyValue::getBoolean () const
+{
+    throw std::runtime_error("Wrong type of PropertyValue");
+}
+
+void PropertyValue::setString (const std::string & value)
+{
+    throw std::runtime_error("Wrong type of PropertyValue");
+}
+
+void PropertyValue::setInteger (int value)
+{
+    throw std::runtime_error("Wrong type of PropertyValue");
+}
+
+void PropertyValue::setFloating (double value)
+{
+    throw std::runtime_error("Wrong type of PropertyValue");
+}
+
+void PropertyValue::setBoolean (bool value)
+{
+    throw std::runtime_error("Wrong type of PropertyValue");
 }

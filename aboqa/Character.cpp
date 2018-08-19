@@ -8,11 +8,18 @@
 
 #include "Character.h"
 
+const std::string Character::LocationPropertyGroup = "location";
+const std::string Character::XPropertyValue = "x";
+const std::string Character::YPropertyValue = "y";
+
 Character::Character ()
 { }
 
 void Character::initialize ()
 {
+    auto group = mProperties.addGroup(LocationPropertyGroup);
+    group->addValue(XPropertyValue, 0);
+    group->addValue(YPropertyValue, 0);
 }
 
 std::shared_ptr<Character> Character::createSharedCharacter ()

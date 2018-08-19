@@ -7,15 +7,39 @@
 //
 
 #include "PropertyContainer.h"
-#include "PropertyGroup.h"
 
-PropertyContainer::PropertyContainer ()
-{ }
-
-PropertyContainer::~PropertyContainer ()
-{ }
-
-PropertyValue & PropertyContainer::value (const std::string & group, const std::string & name)
+PropertyGroup * PropertyContainer::addGroup (const std::string & groupName)
 {
-    return mDefaultValue;
+    auto result = mGroups.try_emplace(groupName, std::make_unique<PropertyGroup>());
+    
+    //return result.first->second.get();
+    auto & group = result.first->second;
+    return group.get();
+}
+
+void PropertyContainer::deleteGroup (const std::string & groupName)
+{
+    mGroups.erase(groupName);
+}
+
+PropertyGroup * PropertyContainer::getGroup (const std::string & groupName)
+{
+    auto groupMapResult = mGroups.find(groupName);
+    if (groupMapResult == mGroups.end())
+    {
+        return nullptr;
+    }
+    
+    return groupMapResult->second.get();
+}
+
+PropertyValue * PropertyContainer::getValue (const std::string & groupName, const std::string & valueName)
+{
+    auto group = getGroup(groupName);
+    if (!group)
+    {
+        return nullptr;
+    }
+    
+    return group->getValue(valueName);
 }

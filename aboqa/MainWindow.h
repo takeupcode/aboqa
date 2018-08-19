@@ -59,8 +59,6 @@ private:
     std::vector<std::string> mMap;
     int mMapHeight;
     int mMapWidth;
-    int mY;
-    int mX;
     int mVisibleRange;
 };
 

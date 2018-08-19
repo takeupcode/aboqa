@@ -16,6 +16,10 @@
 class Character : public std::enable_shared_from_this<Character>
 {
 public:
+    const static std::string LocationPropertyGroup;
+    const static std::string XPropertyValue;
+    const static std::string YPropertyValue;
+
     static std::shared_ptr<Character> createSharedCharacter ();
     
     std::shared_ptr<Character> getSharedCharacter ();

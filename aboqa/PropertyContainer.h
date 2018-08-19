@@ -12,24 +12,27 @@
 #include <string>
 #include <unordered_map>
 
-#include "PropertyValue.h"
-
-class PropertyGroup;
+#include "PropertyGroup.h"
 
 class PropertyContainer
 {
 public:
-    PropertyContainer ();
+    PropertyContainer () = default;
     
-    virtual ~PropertyContainer ();
+    virtual ~PropertyContainer () = default;
     
-    PropertyValue & value (const std::string & group, const std::string & name);
+    PropertyGroup * addGroup (const std::string & groupName);
+    
+    void deleteGroup (const std::string & groupName);
+
+    PropertyGroup * getGroup (const std::string & groupName);
+
+    PropertyValue * getValue (const std::string & groupName, const std::string & valueName);
     
 private:
     using GroupMap = std::unordered_map<std::string, std::unique_ptr<PropertyGroup>>;
     
     GroupMap mGroups;
-    PropertyValue mDefaultValue;
 };
 
 #endif // PropertyContainer_h

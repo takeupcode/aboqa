@@ -7,3 +7,47 @@
 //
 
 #include "PropertyGroup.h"
+
+bool PropertyGroup::addValue (const std::string & valueName, const std::string & value, bool readOnly)
+{
+    auto result = mValues.try_emplace(valueName, PropertyValue::createStringPropertyValue(value, readOnly));
+    
+    return result.second;
+}
+
+bool PropertyGroup::addValue (const std::string & valueName, int value, bool readOnly)
+{
+    auto result = mValues.try_emplace(valueName, PropertyValue::createIntegerPropertyValue(value, readOnly));
+    
+    return result.second;
+}
+
+bool PropertyGroup::addValue (const std::string & valueName, double value, bool readOnly)
+{
+    auto result = mValues.try_emplace(valueName, PropertyValue::createFloatingPropertyValue(value, readOnly));
+    
+    return result.second;
+}
+
+bool PropertyGroup::addValue (const std::string & valueName, bool value, bool readOnly)
+{
+    auto result = mValues.try_emplace(valueName, PropertyValue::createBooleanPropertyValue(value, readOnly));
+    
+    return result.second;
+}
+
+void PropertyGroup::deleteValue (const std::string & valueName)
+{
+    mValues.erase(valueName);
+}
+
+PropertyValue * PropertyGroup::getValue (const std::string & valueName)
+{
+    auto valueMapResult = mValues.find(valueName);
+    if (valueMapResult == mValues.end())
+    {
+        return nullptr;
+    }
+    
+    return valueMapResult->second.get();
+}
