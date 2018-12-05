@@ -17,18 +17,18 @@
 
 class Character;
 
-class MainWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::Button *>,
-    public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::DisplayBox *, int, int, bool &>,
-    public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::DisplayBox *, int, int>
+class MainWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::WindowSystem *, TUCUT::Curses::Button *>,
+    public TUCUT::Event::EventSubscriber<TUCUT::Curses::WindowSystem *, TUCUT::Curses::DisplayBox *, int, int, bool &>,
+    public TUCUT::Event::EventSubscriber<TUCUT::Curses::WindowSystem *, TUCUT::Curses::DisplayBox *, int, int>
 {
 public:
     static std::shared_ptr<MainWindow> createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
     
     std::shared_ptr<MainWindow> getSharedMainWindow ();
     
-    bool onKeyPress (TUCUT::Curses::GameManager * gm, int key) override;
+    bool onKeyPress (TUCUT::Curses::WindowSystem * ws, int key) override;
 
-    void onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y, int x, mmask_t buttonState) override;
+    void onMouseEvent (TUCUT::Curses::WindowSystem * ws, short id, int y, int x, mmask_t buttonState) override;
     
 protected:
     MainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
@@ -36,11 +36,11 @@ protected:
     void initialize () override;
 
 private:
-    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button) override;
+    void notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::Button * button) override;
     
-    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x, bool & cancel) override;
+    void notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::DisplayBox * display, int y, int x, bool & cancel) override;
     
-    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x) override;
+    void notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::DisplayBox * display, int y, int x) override;
     
     void updateVisibleDisplay ();
 

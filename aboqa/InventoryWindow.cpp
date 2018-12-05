@@ -11,7 +11,7 @@
 #include "CharacterManager.h"
 
 #include "../submodules/TUCUT/Curses/Colors.h"
-#include "../submodules/TUCUT/Curses/GameManager.h"
+#include "../submodules/TUCUT/Curses/WindowSystem.h"
 #include "../submodules/TUCUT/Curses/Label.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
@@ -52,7 +52,7 @@ std::shared_ptr<InventoryWindow> InventoryWindow::getSharedInventoryWindow ()
     return std::static_pointer_cast<InventoryWindow>(shared_from_this());
 }
 
-bool InventoryWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
+bool InventoryWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
 {
     switch (key)
     {
@@ -62,14 +62,14 @@ bool InventoryWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
                 if (control->wantEnter())
                 {
                     setFocus(control->y(), control->x());
-                    return control->onKeyPress(gm, key);
+                    return control->onKeyPress(ws, key);
                 }
             }
             break;
         default:
             if (parent())
             {
-                return parent()->onKeyPress(gm, key);
+                return parent()->onKeyPress(ws, key);
             }
             return false;
     }
@@ -77,7 +77,7 @@ bool InventoryWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
     return true;
 }
 
-void InventoryWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button)
+void InventoryWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::Button * button)
 {
     if (id != TUCUT::Curses::Button::ClickedEventId)
     {
@@ -86,6 +86,6 @@ void InventoryWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Cu
     
     if (button->name() == exitButtonName)
     {
-        gm->selectNextWindow("main");
+        ws->selectNextWindow("main");
     }
 }

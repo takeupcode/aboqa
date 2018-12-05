@@ -15,14 +15,14 @@
 
 class Character;
 
-class InventoryWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::Button *>
+class InventoryWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::WindowSystem *, TUCUT::Curses::Button *>
 {
 public:
     static std::shared_ptr<InventoryWindow> createSharedInventoryWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
     
     std::shared_ptr<InventoryWindow> getSharedInventoryWindow ();
     
-    bool onKeyPress (TUCUT::Curses::GameManager * gm, int key) override;
+    bool onKeyPress (TUCUT::Curses::WindowSystem * ws, int key) override;
     
 protected:
     InventoryWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
@@ -30,7 +30,7 @@ protected:
     void initialize () override;
     
 private:
-    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button) override;
+    void notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::Button * button) override;
     
     static const std::string windowName;
     static const std::string exitButtonName;

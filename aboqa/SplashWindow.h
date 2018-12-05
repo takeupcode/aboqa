@@ -13,14 +13,14 @@
 #include "../submodules/TUCUT/Curses/Button.h"
 #include "../submodules/TUCUT/Curses/Window.h"
 
-class SplashWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::GameManager *, TUCUT::Curses::Button *>
+class SplashWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::WindowSystem *, TUCUT::Curses::Button *>
 {
 public:
     static std::shared_ptr<SplashWindow> createSharedSplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
     
     std::shared_ptr<SplashWindow> getSharedSplashWindow ();
     
-    bool onKeyPress (TUCUT::Curses::GameManager * gm, int key) override;
+    bool onKeyPress (TUCUT::Curses::WindowSystem * ws, int key) override;
     
 protected:
     SplashWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
@@ -28,7 +28,7 @@ protected:
     void initialize () override;
 
 private:
-    void notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button) override;
+    void notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::Button * button) override;
     
     static const std::string windowName;
     static const std::string playButtonName;

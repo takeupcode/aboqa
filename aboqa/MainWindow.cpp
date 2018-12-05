@@ -13,7 +13,7 @@
 #include <sstream>
 
 #include "../submodules/TUCUT/Curses/Colors.h"
-#include "../submodules/TUCUT/Curses/GameManager.h"
+#include "../submodules/TUCUT/Curses/WindowSystem.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
 const std::string MainWindow::windowName = "MainWindow";
@@ -125,7 +125,7 @@ std::shared_ptr<MainWindow> MainWindow::getSharedMainWindow ()
     return std::static_pointer_cast<MainWindow>(shared_from_this());
 }
 
-bool MainWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
+bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
 {
     switch (key)
     {
@@ -135,14 +135,14 @@ bool MainWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
                 if (control->wantEnter())
                 {
                     setFocus(control->y(), control->x());
-                    return control->onKeyPress(gm, key);
+                    return control->onKeyPress(ws, key);
                 }
             }
             break;
         default:
             if (parent())
             {
-                return parent()->onKeyPress(gm, key);
+                return parent()->onKeyPress(ws, key);
             }
             return false;
     }
@@ -150,7 +150,7 @@ bool MainWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
     return true;
 }
 
-void MainWindow::onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y, int x, mmask_t buttonState)
+void MainWindow::onMouseEvent (TUCUT::Curses::WindowSystem * ws, short id, int y, int x, mmask_t buttonState)
 {
     if (buttonState & BUTTON1_CLICKED)
     {
@@ -166,7 +166,7 @@ void MainWindow::onMouseEvent (TUCUT::Curses::GameManager * gm, short id, int y,
     }
 }
 
-void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button)
+void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::Button * button)
 {
     if (id != TUCUT::Curses::Button::ClickedEventId)
     {
@@ -175,15 +175,15 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
     
     if (button->name() == exitButtonName)
     {
-        gm->selectNextWindow("exit");
+        ws->selectNextWindow("exit");
     }
     else if (button->name() == inventoryButtonName)
     {
-        gm->selectNextWindow("inventory");
+        ws->selectNextWindow("inventory");
     }
 }
 
-void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x, bool & cancel)
+void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::DisplayBox * display, int y, int x, bool & cancel)
 {
     if (id == TUCUT::Curses::DisplayBox::BeforeCenterChangedEventId)
     {
@@ -194,7 +194,7 @@ void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
     }
 }
 
-void MainWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::DisplayBox * display, int y, int x)
+void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::DisplayBox * display, int y, int x)
 {
     if (id == TUCUT::Curses::DisplayBox::ClickedEventId)
     {

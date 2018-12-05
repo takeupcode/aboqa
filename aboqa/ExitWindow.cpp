@@ -9,7 +9,7 @@
 #include "ExitWindow.h"
 
 #include "../submodules/TUCUT/Curses/Colors.h"
-#include "../submodules/TUCUT/Curses/GameManager.h"
+#include "../submodules/TUCUT/Curses/WindowSystem.h"
 #include "../submodules/TUCUT/Curses/Label.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
@@ -54,7 +54,7 @@ std::shared_ptr<ExitWindow> ExitWindow::getSharedExitWindow ()
     return std::static_pointer_cast<ExitWindow>(shared_from_this());
 }
 
-bool ExitWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
+bool ExitWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
 {
     switch (key)
     {
@@ -64,14 +64,14 @@ bool ExitWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
                 if (control->wantEnter())
                 {
                     setFocus(control->y(), control->x());
-                    return control->onKeyPress(gm, key);
+                    return control->onKeyPress(ws, key);
                 }
             }
             break;
         default:
             if (parent())
             {
-                return parent()->onKeyPress(gm, key);
+                return parent()->onKeyPress(ws, key);
             }
             return false;
     }
@@ -79,7 +79,7 @@ bool ExitWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
     return true;
 }
 
-void ExitWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button)
+void ExitWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::Button * button)
 {
     if (id != TUCUT::Curses::Button::ClickedEventId)
     {
@@ -88,6 +88,7 @@ void ExitWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses:
     
     if (button->name() == exitButtonName)
     {
-        gm->exit();
+        TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
+        pGameMgr->exit();
     }
 }

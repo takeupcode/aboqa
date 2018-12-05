@@ -12,7 +12,7 @@
 #include <memory>
 
 #include "../submodules/TUCUT/Curses/Colors.h"
-#include "../submodules/TUCUT/Curses/GameManager.h"
+#include "../submodules/TUCUT/Curses/WindowSystem.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
 #include "CharacterManager.h"
@@ -50,23 +50,25 @@ int main(int argc, const char *argv[])
     auto characterManager = CharacterManager::instance();
     characterManager->initialize();
     
-    TUCUT::Curses::GameManager gm;
-    gm.initialize();
+    TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
+    
+    std::string systemToken = "CursesWindowSystem";
+    auto ws = pGameMgr->getOrCreateGameSystem<TUCUT::Curses::WindowSystem>(systemToken);
 
-    gm.setMinScreenDimensions(10, 35);
-    gm.setMaxScreenDimensions(60, 200);
+    ws->setMinScreenDimensions(10, 35);
+    ws->setMaxScreenDimensions(60, 200);
 
-    gm.addWindow(SplashWindow::createSharedSplashWindow("splash", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
+    ws->addWindow(SplashWindow::createSharedSplashWindow("splash", 0, 0, ws->screenHeight(), ws->screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
     
-    gm.addWindow(MainWindow::createSharedMainWindow("main", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, TUCUT::Curses::Colors::COLOR_DIM_YELLOW, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, true));
+    ws->addWindow(MainWindow::createSharedMainWindow("main", 0, 0, ws->screenHeight(), ws->screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, TUCUT::Curses::Colors::COLOR_DIM_YELLOW, TUCUT::Curses::Colors::COLOR_BRIGHT_WHITE, true));
     
-    gm.addWindow(ExitWindow::createSharedExitWindow("exit", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
+    ws->addWindow(ExitWindow::createSharedExitWindow("exit", 0, 0, ws->screenHeight(), ws->screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
     
-    gm.addWindow(InventoryWindow::createSharedInventoryWindow("inventory", 0, 0, gm.screenHeight(), gm.screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
+    ws->addWindow(InventoryWindow::createSharedInventoryWindow("inventory", 0, 0, ws->screenHeight(), ws->screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
 
-    gm.selectNextWindow("splash");
+    ws->selectNextWindow("splash");
     
-    gm.play();
+    pGameMgr->play();
     
     characterManager->deinitialize();
 

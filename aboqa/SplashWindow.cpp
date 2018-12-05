@@ -9,7 +9,7 @@
 #include "SplashWindow.h"
 
 #include "../submodules/TUCUT/Curses/Colors.h"
-#include "../submodules/TUCUT/Curses/GameManager.h"
+#include "../submodules/TUCUT/Curses/WindowSystem.h"
 #include "../submodules/TUCUT/Curses/Label.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
@@ -61,7 +61,7 @@ std::shared_ptr<SplashWindow> SplashWindow::getSharedSplashWindow ()
     return std::static_pointer_cast<SplashWindow>(shared_from_this());
 }
 
-bool SplashWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
+bool SplashWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
 {
     switch (key)
     {
@@ -71,14 +71,14 @@ bool SplashWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
             if (control->wantEnter())
             {
                 setFocus(control->y(), control->x());
-                return control->onKeyPress(gm, key);
+                return control->onKeyPress(ws, key);
             }
         }
         break;
     default:
         if (parent())
         {
-            return parent()->onKeyPress(gm, key);
+            return parent()->onKeyPress(ws, key);
         }
         return false;
     }
@@ -86,7 +86,7 @@ bool SplashWindow::onKeyPress (TUCUT::Curses::GameManager * gm, int key)
     return true;
 }
 
-void SplashWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curses::Button * button)
+void SplashWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::Button * button)
 {
     if (id != TUCUT::Curses::Button::ClickedEventId)
     {
@@ -95,10 +95,10 @@ void SplashWindow::notify (int id, TUCUT::Curses::GameManager * gm, TUCUT::Curse
     
     if (button->name() == playButtonName)
     {
-        gm->selectNextWindow("main");
+        ws->selectNextWindow("main");
     }
     else if (button->name() == exitButtonName)
     {
-        gm->selectNextWindow("exit");
+        ws->selectNextWindow("exit");
     }
 }
