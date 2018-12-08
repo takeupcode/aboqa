@@ -35,8 +35,7 @@ void InventoryWindow::initialize ()
     
     TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
     
-    std::string systemToken = "CharacterSystem";
-    auto cs = pGameMgr->getOrCreateGameSystem<CharacterSystem>(systemToken);
+    auto cs = pGameMgr->getOrCreateGameSystem<CharacterSystem>();
     
     mHero = cs->getOrCreateCharacter("hero");
 }

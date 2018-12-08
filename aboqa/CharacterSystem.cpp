@@ -11,6 +11,8 @@
 
 #include <stdexcept>
 
+const std::string CharacterSystem::defaultToken = "CharacterSystem";
+
 std::shared_ptr<CharacterSystem> CharacterSystem::getSharedCharacterSystem ()
 {
     return std::static_pointer_cast<CharacterSystem>(shared_from_this());
@@ -27,8 +29,7 @@ std::shared_ptr<TUCUT::Game::GameObject> CharacterSystem::getOrCreateCharacter (
     {
         TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
         
-        std::string objectToken = "aboqaCharacter";
-        auto gameObj = pGameMgr->createGameObject<TUCUT::Game::GameObject>(objectToken);
+        auto gameObj = pGameMgr->createGameObject<TUCUT::Game::GameObject>();
 
         auto result = mCharacters.try_emplace(characterName, gameObj);
         if (!result.second)
@@ -36,8 +37,7 @@ std::shared_ptr<TUCUT::Game::GameObject> CharacterSystem::getOrCreateCharacter (
             throw std::runtime_error("Unable to create game object");
         }
 
-        std::string compToken = "GamePositionComponent";
-        auto positionComp = pGameMgr->getOrCreateGameComponent<TUCUT::Game::PositionComponent>(compToken);
+        auto positionComp = pGameMgr->getOrCreateGameComponent<TUCUT::Game::PositionComponent>();
         
         gameObj->addGameComponent(positionComp);
 

@@ -49,8 +49,8 @@ int main(int argc, const char *argv[])
     
     TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
     
-    std::string systemToken = "CursesWindowSystem";
-    auto ws = pGameMgr->getOrCreateGameSystem<TUCUT::Curses::WindowSystem>(systemToken);
+    auto cs = pGameMgr->getOrCreateGameSystem<CharacterSystem>();
+    auto ws = pGameMgr->getOrCreateGameSystem<TUCUT::Curses::WindowSystem>();
 
     ws->setMinScreenDimensions(10, 35);
     ws->setMaxScreenDimensions(60, 200);
@@ -64,9 +64,6 @@ int main(int argc, const char *argv[])
     ws->addWindow(InventoryWindow::createSharedInventoryWindow("inventory", 0, 0, ws->screenHeight(), ws->screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
 
     ws->selectNextWindow("splash");
-    
-    systemToken = "CharacterSystem";
-    pGameMgr->getOrCreateGameSystem<CharacterSystem>(systemToken);
 
     pGameMgr->play();
 

@@ -17,6 +17,8 @@
 class CharacterSystem : public TUCUT::Game::GameSystem
 {
 public:
+    static const std::string defaultToken;
+    
     std::shared_ptr<CharacterSystem> getSharedCharacterSystem ();
 
     std::shared_ptr<TUCUT::Game::GameObject> getOrCreateCharacter (const std::string & characterName);
