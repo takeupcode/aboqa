@@ -7,13 +7,13 @@
 //
 
 #include "MainWindow.h"
-#include "Character.h"
-#include "CharacterManager.h"
+#include "CharacterSystem.h"
 
 #include <sstream>
 
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
+#include "../submodules/TUCUT/Game/PositionComponent.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
 const std::string MainWindow::windowName = "MainWindow";
@@ -79,13 +79,17 @@ void MainWindow::initialize ()
     
     int y = 12;
     int x = 21;
-    
-    auto characterManager = CharacterManager::instance();
-    mHero = characterManager->getCharacter("hero")->getSharedCharacter();
-    auto locationGroup = mHero->properties().getGroup(Character::LocationPropertyGroup);
-    locationGroup->getValue(Character::YPropertyValue)->setInteger(y);
-    locationGroup->getValue(Character::XPropertyValue)->setInteger(x);
-    
+
+    TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
+
+    std::string systemToken = "CharacterSystem";
+    auto cs = pGameMgr->getOrCreateGameSystem<CharacterSystem>(systemToken);
+
+    mHero = cs->getOrCreateCharacter("hero");
+    auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
+    positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::y)->setInteger(y);
+    positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::x)->setInteger(x);
+
     mDisplayBox->setCenter(y, x);
     mDisplayBox->ensureCenterIsVisible();
     
@@ -222,9 +226,9 @@ void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses
     {
         if (display->name() == displayBoxName)
         {
-            auto locationGroup = mHero->properties().getGroup(Character::LocationPropertyGroup);
-            locationGroup->getValue(Character::YPropertyValue)->setInteger(y);
-            locationGroup->getValue(Character::XPropertyValue)->setInteger(x);
+            auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
+            positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::y)->setInteger(y);
+            positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::x)->setInteger(x);
             updateVisibleDisplay();
             
             std::stringstream ss;
@@ -242,9 +246,9 @@ void MainWindow::updateVisibleDisplay ()
     // **0**
     // x***x
     // xx*xx
-    auto locationGroup = mHero->properties().getGroup(Character::LocationPropertyGroup);
-    int heroY = locationGroup->getValue(Character::YPropertyValue)->getInteger();
-    int heroX = locationGroup->getValue(Character::XPropertyValue)->getInteger();
+    auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
+    int heroY = positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::y)->getInteger();
+    int heroX = positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::x)->getInteger();
 
     for (int y = -mVisibleRange; y <= mVisibleRange; y++)
     {

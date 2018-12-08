@@ -7,8 +7,7 @@
 //
 
 #include "InventoryWindow.h"
-#include "Character.h"
-#include "CharacterManager.h"
+#include "CharacterSystem.h"
 
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
@@ -34,8 +33,12 @@ void InventoryWindow::initialize ()
     exitButton->clicked()->connect(windowName, getSharedInventoryWindow());
     addControl(exitButton);
     
-    auto characterManager = CharacterManager::instance();
-    mHero = characterManager->getCharacter("hero")->getSharedCharacter();
+    TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
+    
+    std::string systemToken = "CharacterSystem";
+    auto cs = pGameMgr->getOrCreateGameSystem<CharacterSystem>(systemToken);
+    
+    mHero = cs->getOrCreateCharacter("hero");
 }
 
 std::shared_ptr<InventoryWindow> InventoryWindow::createSharedInventoryWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border)

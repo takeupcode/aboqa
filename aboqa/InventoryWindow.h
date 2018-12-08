@@ -12,6 +12,7 @@
 #include "../submodules/TUCUT/Event/EventSubscriber.h"
 #include "../submodules/TUCUT/Curses/Button.h"
 #include "../submodules/TUCUT/Curses/Window.h"
+#include "../submodules/TUCUT/Game/GameObject.h"
 
 class Character;
 
@@ -35,7 +36,7 @@ private:
     static const std::string windowName;
     static const std::string exitButtonName;
     
-    std::shared_ptr<Character> mHero;
+    std::shared_ptr<TUCUT::Game::GameObject> mHero;
 };
 
 #endif // InventoryWindow_h

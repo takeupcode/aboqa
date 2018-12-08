@@ -14,6 +14,7 @@
 #include "../submodules/TUCUT/Curses/DisplayBox.h"
 #include "../submodules/TUCUT/Curses/Label.h"
 #include "../submodules/TUCUT/Curses/Window.h"
+#include "../submodules/TUCUT/Game/GameObject.h"
 
 class Character;
 
@@ -55,7 +56,7 @@ private:
     std::shared_ptr<TUCUT::Curses::Button> mExitButton;
     std::shared_ptr<TUCUT::Curses::Button> mInventoryButton;
 
-    std::shared_ptr<Character> mHero;
+    std::shared_ptr<TUCUT::Game::GameObject> mHero;
     std::vector<std::string> mMap;
     int mMapHeight;
     int mMapWidth;

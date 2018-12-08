@@ -15,7 +15,7 @@
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
-#include "CharacterManager.h"
+#include "CharacterSystem.h"
 #include "SplashWindow.h"
 #include "MainWindow.h"
 #include "ExitWindow.h"
@@ -46,9 +46,6 @@ int main(int argc, const char *argv[])
         std::cout << "ncurses not available. Exiting." << std::endl;
         return 1;
     }
-
-    auto characterManager = CharacterManager::instance();
-    characterManager->initialize();
     
     TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
     
@@ -68,9 +65,10 @@ int main(int argc, const char *argv[])
 
     ws->selectNextWindow("splash");
     
+    systemToken = "CharacterSystem";
+    pGameMgr->getOrCreateGameSystem<CharacterSystem>(systemToken);
+
     pGameMgr->play();
-    
-    characterManager->deinitialize();
 
     TUCUT::Log::LogManager::instance()->deinitialize();
     
