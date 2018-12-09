@@ -44,6 +44,7 @@ private:
     void notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::DisplayBox * display, int y, int x) override;
     
     void updateVisibleDisplay ();
+    void updateVisibleDisplayImpl (int heroY, int heroX, bool clear);
 
     static const std::string windowName;
     static const std::string displayBoxName;

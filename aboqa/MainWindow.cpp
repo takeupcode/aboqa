@@ -68,7 +68,7 @@ void MainWindow::initialize ()
         "                              "
     };
 
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 20, 20, mMapHeight, mMapWidth, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, 2, 2, 2, 2);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 20, 20, mMapHeight, mMapWidth, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, 4, 4, 4, 4);
     mDisplayBox->setAnchorTop(0);
     mDisplayBox->setAnchorBottom(0);
     mDisplayBox->setAnchorLeft(0);
@@ -105,7 +105,7 @@ void MainWindow::initialize ()
     mStatus2->setAnchorRight(10);
     addControl(mStatus2);
     
-    mVisibleRange = 3;
+    mVisibleRange = 5;
     updateVisibleDisplay();
 
     mExitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
@@ -247,20 +247,30 @@ void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses
 
 void MainWindow::updateVisibleDisplay ()
 {
+    auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
+    int heroYOld = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::yOld));
+    int heroXOld = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::xOld));
+    
+    updateVisibleDisplayImpl(heroYOld, heroXOld, true);
+    
+    int heroY = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::y));
+    int heroX = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::x));
+    
+    updateVisibleDisplayImpl(heroY, heroX, false);
+
+    std::stringstream ss;
+    ss << "Hero location (x=" << heroX << ", y=" << heroY << ")";
+    
+    mStatus2->setText(ss.str());
+}
+
+void MainWindow::updateVisibleDisplayImpl (int heroY, int heroX, bool clear)
+{
     // xx*xx
     // x***x
     // **0**
     // x***x
     // xx*xx
-    auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
-    int heroY = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::y));
-    int heroX = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::x));
-    
-    std::stringstream ss;
-    ss << "Hero location (x=" << heroX << ", y=" << heroY << ")";
-    
-    mStatus2->setText(ss.str());
-
     for (int y = -mVisibleRange; y <= mVisibleRange; y++)
     {
         int offset = 0;
@@ -297,7 +307,7 @@ void MainWindow::updateVisibleDisplay ()
                 }
             }
             
-            mDisplayBox->setSymbol(mMap[heroY + y][heroX + x], heroY + y, heroX + x);
+            mDisplayBox->setSymbol(clear ? ' ' : mMap[heroY + y][heroX + x], heroY + y, heroX + x);
         }
     }
 }
