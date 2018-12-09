@@ -19,6 +19,7 @@
 const std::string MainWindow::windowName = "MainWindow";
 const std::string MainWindow::displayBoxName = "displayBox";
 const std::string MainWindow::statusName = "status";
+const std::string MainWindow::status2Name = "status2";
 const std::string MainWindow::exitButtonName = "exitButton";
 const std::string MainWindow::inventoryButtonName = "inventoryButton";
 
@@ -86,20 +87,26 @@ void MainWindow::initialize ()
 
     mHero = cs->getOrCreateCharacter("hero");
     auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
-    positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::y)->setInteger(y);
-    positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::x)->setInteger(x);
+    positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::y, y);
+    positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::x, x);
 
     mDisplayBox->setCenter(y, x);
     mDisplayBox->ensureCenterIsVisible();
-    
-    mVisibleRange = 3;
-    updateVisibleDisplay();
 
     mStatus = TUCUT::Curses::Label::createSharedLabel(statusName, "", 0, 0, 3, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::left, TUCUT::Curses::Justification::Vertical::top, true);
     mStatus->setAnchorBottom(0);
     mStatus->setAnchorLeft(20);
     mStatus->setAnchorRight(10);
     addControl(mStatus);
+
+    mStatus2 = TUCUT::Curses::Label::createSharedLabel(status2Name, "", 0, 0, 3, 20, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, TUCUT::Curses::Justification::Horizontal::left, TUCUT::Curses::Justification::Vertical::top, true);
+    mStatus2->setAnchorBottom(4);
+    mStatus2->setAnchorLeft(20);
+    mStatus2->setAnchorRight(10);
+    addControl(mStatus2);
+    
+    mVisibleRange = 3;
+    updateVisibleDisplay();
 
     mExitButton = TUCUT::Curses::Button::createSharedButton(exitButtonName, "Exit", 0, 0, 1, 10, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_RED, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_BRIGHT_RED);
     mExitButton->setAnchorBottom(0);
@@ -190,7 +197,7 @@ void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses
 {
     if (id == TUCUT::Curses::DisplayBox::BeforeCenterChangedEventId)
     {
-        if (display->symbol(y, x) == '.')
+        if (mMap[y][x] == '.')
         {
             cancel = true;
         }
@@ -226,8 +233,8 @@ void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses
         if (display->name() == displayBoxName)
         {
             auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
-            positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::y)->setInteger(y);
-            positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::x)->setInteger(x);
+            positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::y, y);
+            positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::x, x);
             updateVisibleDisplay();
             
             std::stringstream ss;
@@ -246,8 +253,13 @@ void MainWindow::updateVisibleDisplay ()
     // x***x
     // xx*xx
     auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
-    int heroY = positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::y)->getInteger();
-    int heroX = positionComp->getPropertyValue(mHero, TUCUT::Game::PositionComponent::x)->getInteger();
+    int heroY = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::y));
+    int heroX = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::x));
+    
+    std::stringstream ss;
+    ss << "Hero location (x=" << heroX << ", y=" << heroY << ")";
+    
+    mStatus2->setText(ss.str());
 
     for (int y = -mVisibleRange; y <= mVisibleRange; y++)
     {

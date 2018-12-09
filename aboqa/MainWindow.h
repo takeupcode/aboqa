@@ -48,11 +48,13 @@ private:
     static const std::string windowName;
     static const std::string displayBoxName;
     static const std::string statusName;
+    static const std::string status2Name;
     static const std::string exitButtonName;
     static const std::string inventoryButtonName;
 
     std::shared_ptr<TUCUT::Curses::DisplayBox> mDisplayBox;
     std::shared_ptr<TUCUT::Curses::Label> mStatus;
+    std::shared_ptr<TUCUT::Curses::Label> mStatus2;
     std::shared_ptr<TUCUT::Curses::Button> mExitButton;
     std::shared_ptr<TUCUT::Curses::Button> mInventoryButton;
 
