@@ -68,14 +68,11 @@ void MainWindow::initialize ()
         "                              "
     };
 
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 20, 20, mMapHeight, mMapWidth, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, true, 4, 4, 4, 4);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 20, 20, mMapHeight, mMapWidth, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN);
     mDisplayBox->setAnchorTop(0);
     mDisplayBox->setAnchorBottom(0);
     mDisplayBox->setAnchorLeft(0);
     mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
-    mDisplayBox->scrollChanged()->connect(windowName, getSharedMainWindow());
-    mDisplayBox->beforeCenterChanged()->connect(windowName, getSharedMainWindow());
-    mDisplayBox->afterCenterChanged()->connect(windowName, getSharedMainWindow());
     addControl(mDisplayBox);
     
     int y = 12;
@@ -137,9 +134,12 @@ std::shared_ptr<MainWindow> MainWindow::getSharedMainWindow ()
 
 bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
 {
+    std::string keyStr = "unhandled";
+    
     switch (key)
     {
         case 10: // Enter
+            keyStr = "enter";
             for (auto & control: mControls)
             {
                 if (control->wantEnter())
@@ -149,6 +149,23 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
                 }
             }
             break;
+            
+        case KEY_UP:
+            keyStr = "up";
+            break;
+            
+        case KEY_DOWN:
+            keyStr = "down";
+            break;
+            
+        case KEY_LEFT:
+            keyStr = "left";
+            break;
+            
+        case KEY_RIGHT:
+            keyStr = "right";
+            break;
+            
         default:
             if (parent())
             {
@@ -157,6 +174,11 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
             return false;
     }
     
+    std::stringstream ss;
+    ss << "Pressed key " << keyStr;
+    
+    mStatus->setText(ss.str());
+
     return true;
 }
 

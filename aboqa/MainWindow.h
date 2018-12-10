@@ -60,6 +60,7 @@ private:
     std::shared_ptr<TUCUT::Curses::Button> mInventoryButton;
 
     std::shared_ptr<TUCUT::Game::GameObject> mHero;
+    std::shared_ptr<TUCUT::Game::GameObject> mCreature;
     std::vector<std::string> mMap;
     int mMapHeight;
     int mMapWidth;

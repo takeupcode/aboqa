@@ -8,6 +8,7 @@
 
 #include "CharacterSystem.h"
 #include "../submodules/TUCUT/Game/PositionComponent.h"
+#include "../submodules/TUCUT/Game/MovementComponent.h"
 
 #include <stdexcept>
 
@@ -38,8 +39,10 @@ std::shared_ptr<TUCUT::Game::GameObject> CharacterSystem::getOrCreateCharacter (
         }
 
         auto positionComp = pGameMgr->getOrCreateGameComponent<TUCUT::Game::PositionComponent>();
-        
         gameObj->addGameComponent(positionComp);
+
+        auto movementComp = pGameMgr->getOrCreateGameComponent<TUCUT::Game::MovementComponent>();
+        gameObj->addGameComponent(movementComp);
 
         return gameObj;
     }
