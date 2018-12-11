@@ -13,7 +13,9 @@
 
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
+#include "../submodules/TUCUT/Game/MovementSystem.h"
 #include "../submodules/TUCUT/Game/PositionComponent.h"
+#include "../submodules/TUCUT/Game/MovementComponent.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
 const std::string MainWindow::windowName = "MainWindow";
@@ -135,7 +137,16 @@ std::shared_ptr<MainWindow> MainWindow::getSharedMainWindow ()
 bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
 {
     std::string keyStr = "unhandled";
+
+    TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
     
+    auto moveCmdId = pGameMgr->getOrCreateGameCommand("GameMove");
+    
+    auto moveEvent = pGameMgr->gameCommandSent(moveCmdId);
+    
+    TUCUT::Game::PropertyGroup moveProps;
+    moveProps.addValue("targetId", mHero->identity());
+
     switch (key)
     {
         case 10: // Enter
@@ -152,18 +163,38 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
             
         case KEY_UP:
             keyStr = "up";
+            if (moveEvent)
+            {
+                moveProps.addValue("yVelocity", -10.0);
+                moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
+            }
             break;
             
         case KEY_DOWN:
             keyStr = "down";
+            if (moveEvent)
+            {
+                moveProps.addValue("yVelocity", 10.0);
+                moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
+            }
             break;
             
         case KEY_LEFT:
             keyStr = "left";
+            if (moveEvent)
+            {
+                moveProps.addValue("xVelocity", -10.0);
+                moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
+            }
             break;
             
         case KEY_RIGHT:
             keyStr = "right";
+            if (moveEvent)
+            {
+                moveProps.addValue("xVelocity", 10.0);
+                moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
+            }
             break;
             
         default:
