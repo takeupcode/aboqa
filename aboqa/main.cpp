@@ -13,6 +13,7 @@
 
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
+#include "../submodules/TUCUT/Game/MovementSystem.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
 #include "CharacterSystem.h"
@@ -31,6 +32,7 @@ int main(int argc, const char *argv[])
     {
         if (strcmp(argv[i], "--debug") == 0)
         {
+            sleep(1000);
             std::cout << "Debugging in terminal. Press enter key to continue." << std::endl;
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
             std::cin.clear();
@@ -51,6 +53,7 @@ int main(int argc, const char *argv[])
     
     auto cs = pGameMgr->getOrCreateGameSystem<CharacterSystem>();
     auto ws = pGameMgr->getOrCreateGameSystem<TUCUT::Curses::WindowSystem>();
+    auto ms = pGameMgr->getOrCreateGameSystem<TUCUT::Game::MovementSystem>();
 
     ws->setMinScreenDimensions(10, 35);
     ws->setMaxScreenDimensions(60, 200);

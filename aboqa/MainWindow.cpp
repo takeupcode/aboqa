@@ -70,7 +70,7 @@ void MainWindow::initialize ()
         "                              "
     };
 
-    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 20, 20, mMapHeight, mMapWidth, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN);
+    mDisplayBox = TUCUT::Curses::DisplayBox::createSharedDisplayBox(displayBoxName, '*', 0, 0, 20, 20, mMapHeight, mMapWidth, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_CYAN, true, false, 4, 4, 4, 4);
     mDisplayBox->setAnchorTop(0);
     mDisplayBox->setAnchorBottom(0);
     mDisplayBox->setAnchorLeft(0);
@@ -134,14 +134,16 @@ std::shared_ptr<MainWindow> MainWindow::getSharedMainWindow ()
     return std::static_pointer_cast<MainWindow>(shared_from_this());
 }
 
+void MainWindow::update ()
+{
+    updateVisibleDisplay();
+}
+
 bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
 {
-    std::string keyStr = "unhandled";
-
     TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
     
     auto moveCmdId = pGameMgr->getOrCreateGameCommand("GameMove");
-    
     auto moveEvent = pGameMgr->gameCommandSent(moveCmdId);
     
     TUCUT::Game::PropertyGroup moveProps;
@@ -150,7 +152,6 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
     switch (key)
     {
         case 10: // Enter
-            keyStr = "enter";
             for (auto & control: mControls)
             {
                 if (control->wantEnter())
@@ -162,37 +163,33 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
             break;
             
         case KEY_UP:
-            keyStr = "up";
             if (moveEvent)
             {
-                moveProps.addValue("yVelocity", -10.0);
+                moveProps.addValue("yVelocity", -4.0);
                 moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
             }
             break;
             
         case KEY_DOWN:
-            keyStr = "down";
             if (moveEvent)
             {
-                moveProps.addValue("yVelocity", 10.0);
+                moveProps.addValue("yVelocity", 4.0);
                 moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
             }
             break;
             
         case KEY_LEFT:
-            keyStr = "left";
             if (moveEvent)
             {
-                moveProps.addValue("xVelocity", -10.0);
+                moveProps.addValue("xVelocity", -4.0);
                 moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
             }
             break;
             
         case KEY_RIGHT:
-            keyStr = "right";
             if (moveEvent)
             {
-                moveProps.addValue("xVelocity", 10.0);
+                moveProps.addValue("xVelocity", 4.0);
                 moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
             }
             break;
@@ -204,11 +201,6 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
             }
             return false;
     }
-    
-    std::stringstream ss;
-    ss << "Pressed key " << keyStr;
-    
-    mStatus->setText(ss.str());
 
     return true;
 }
@@ -246,17 +238,6 @@ void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses
     }
 }
 
-void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::DisplayBox * display, int y, int x, bool & cancel)
-{
-    if (id == TUCUT::Curses::DisplayBox::BeforeCenterChangedEventId)
-    {
-        if (mMap[y][x] == '.')
-        {
-            cancel = true;
-        }
-    }
-}
-
 void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::DisplayBox * display, int y, int x)
 {
     if (id == TUCUT::Curses::DisplayBox::ClickedEventId)
@@ -271,48 +252,59 @@ void MainWindow::notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses
             mStatus->setText(ss.str());
         }
     }
-    else if (id == TUCUT::Curses::DisplayBox::ScrollChangedEventId)
-    {
-        if (display->name() == displayBoxName)
-        {
-            std::stringstream ss;
-            ss << "Scroll location (x=" << x << ", y=" << y << ")";
-            
-            mStatus->setText(ss.str());
-        }
-    }
-    else if (id == TUCUT::Curses::DisplayBox::AfterCenterChangedEventId)
-    {
-        if (display->name() == displayBoxName)
-        {
-            auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
-            positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::y, y);
-            positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::x, x);
-            updateVisibleDisplay();
-            
-            std::stringstream ss;
-            ss << "Center location (x=" << x << ", y=" << y << ")";
-            
-            mStatus->setText(ss.str());
-        }
-    }
 }
 
 void MainWindow::updateVisibleDisplay ()
 {
     auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
     int heroYOld = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::yOld));
+    if (heroYOld < 0)
+    {
+        heroYOld = 0;
+    }
+    if (heroYOld > mMapHeight - 1)
+    {
+        heroYOld = mMapHeight - 1;
+    }
     int heroXOld = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::xOld));
-    
+    if (heroXOld < 0)
+    {
+        heroXOld = 0;
+    }
+    if (heroXOld > mMapWidth - 1)
+    {
+        heroXOld = mMapWidth - 1;
+    }
+
     updateVisibleDisplayImpl(heroYOld, heroXOld, true);
     
+    double heroYdbl = positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::y);
+    double heroXdbl = positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::x);
     int heroY = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::y));
+    if (heroY < 0)
+    {
+        heroY = 0;
+    }
+    if (heroY > mMapHeight - 1)
+    {
+        heroY = mMapHeight - 1;
+    }
     int heroX = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::x));
-    
+    if (heroX < 0)
+    {
+        heroX = 0;
+    }
+    if (heroX > mMapWidth - 1)
+    {
+        heroX = mMapWidth - 1;
+    }
+
     updateVisibleDisplayImpl(heroY, heroX, false);
+    mDisplayBox->setCenter(heroY, heroX);
+    mDisplayBox->ensureCenterIsVisible();
 
     std::stringstream ss;
-    ss << "Hero location (x=" << heroX << ", y=" << heroY << ")";
+    ss << "Hero location (x=" << heroXdbl << ", y=" << heroYdbl << ")";
     
     mStatus2->setText(ss.str());
 }

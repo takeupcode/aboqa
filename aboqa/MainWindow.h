@@ -18,14 +18,16 @@
 
 class Character;
 
-class MainWindow : public TUCUT::Curses::Window, public TUCUT::Event::EventSubscriber<TUCUT::Curses::WindowSystem *, TUCUT::Curses::Button *>,
-    public TUCUT::Event::EventSubscriber<TUCUT::Curses::WindowSystem *, TUCUT::Curses::DisplayBox *, int, int, bool &>,
+class MainWindow : public TUCUT::Curses::Window,
+    public TUCUT::Event::EventSubscriber<TUCUT::Curses::WindowSystem *, TUCUT::Curses::Button *>,
     public TUCUT::Event::EventSubscriber<TUCUT::Curses::WindowSystem *, TUCUT::Curses::DisplayBox *, int, int>
 {
 public:
     static std::shared_ptr<MainWindow> createSharedMainWindow (const std::string & name, int y, int x, int height, int width, int clientForeColor, int clientBackColor, int borderForeColor, int borderBackColor, bool border);
     
     std::shared_ptr<MainWindow> getSharedMainWindow ();
+    
+    void update () override;
     
     bool onKeyPress (TUCUT::Curses::WindowSystem * ws, int key) override;
 
@@ -38,8 +40,6 @@ protected:
 
 private:
     void notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::Button * button) override;
-    
-    void notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::DisplayBox * display, int y, int x, bool & cancel) override;
     
     void notify (int id, TUCUT::Curses::WindowSystem * ws, TUCUT::Curses::DisplayBox * display, int y, int x) override;
     
