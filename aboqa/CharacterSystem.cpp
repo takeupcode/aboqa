@@ -39,6 +39,7 @@ std::shared_ptr<TUCUT::Game::GameObject> CharacterSystem::getOrCreateCharacter (
         }
 
         auto positionComp = pGameMgr->getOrCreateGameComponent<TUCUT::Game::PositionComponent>();
+        positionComp->setMaxPosition({29, 29, 9});
         gameObj->addGameComponent(positionComp);
 
         auto movementComp = pGameMgr->getOrCreateGameComponent<TUCUT::Game::MovementComponent>();
