@@ -86,6 +86,8 @@ void MainWindow::initialize ()
 
     mHero = cs->getOrCreateCharacter("hero");
     auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
+    positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::yOld, y);
+    positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::xOld, x);
     positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::y, y);
     positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::x, x);
 
@@ -258,64 +260,39 @@ void MainWindow::updateVisibleDisplay ()
 {
     auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
     int heroYOld = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::yOld));
-    if (heroYOld < 0)
-    {
-        heroYOld = 0;
-    }
-    if (heroYOld > mMapHeight - 1)
-    {
-        heroYOld = mMapHeight - 1;
-    }
     int heroXOld = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::xOld));
-    if (heroXOld < 0)
+    
+    int heroY = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::y));
+    int heroX = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::x));
+    
+    if (heroY == heroYOld && heroX == heroXOld)
     {
-        heroXOld = 0;
-    }
-    if (heroXOld > mMapWidth - 1)
-    {
-        heroXOld = mMapWidth - 1;
+        return;
     }
 
     updateVisibleDisplayImpl(heroYOld, heroXOld, true);
-    
-    double heroYdbl = positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::y);
-    double heroXdbl = positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::x);
-    int heroY = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::y));
-    if (heroY < 0)
-    {
-        heroY = 0;
-    }
-    if (heroY > mMapHeight - 1)
-    {
-        heroY = mMapHeight - 1;
-    }
-    int heroX = static_cast<int>(positionComp->getFloating(mHero, TUCUT::Game::PositionComponent::x));
-    if (heroX < 0)
-    {
-        heroX = 0;
-    }
-    if (heroX > mMapWidth - 1)
-    {
-        heroX = mMapWidth - 1;
-    }
-
     updateVisibleDisplayImpl(heroY, heroX, false);
+    
     mDisplayBox->setCenter(heroY, heroX);
     mDisplayBox->ensureCenterIsVisible();
 
     std::stringstream ss;
-    ss << "Hero location (x=" << heroXdbl << ", y=" << heroYdbl << ")";
+    ss << "Hero location (x=" << heroX << ", y=" << heroY << ", xOld=" << heroXOld << ", yOld=" << heroYOld << ")";
     
     mStatus2->setText(ss.str());
 }
 
 void MainWindow::updateVisibleDisplayImpl (int heroY, int heroX, bool clear)
 {
-    // xx*xx
-    // x***x
-    // **0**
-    // x***x
-    // xx*xx
+    // For visible range = 2
+    //    -- ++
+    //    21012
+    // -2 xx*xx
+    // -1 x***x
+    //  0 **0**
+    // +1 x***x
+    // +2 xx*xx
+    //
     for (int y = -mVisibleRange; y <= mVisibleRange; y++)
     {
         int offset = 0;
