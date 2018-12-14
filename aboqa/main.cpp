@@ -67,6 +67,8 @@ int main(int argc, const char *argv[])
     ws->addWindow(InventoryWindow::createSharedInventoryWindow("inventory", 0, 0, ws->screenHeight(), ws->screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
 
     ws->selectNextWindow("splash");
+    
+    ms->setInstantMode(true);
 
     pGameMgr->play();
 
