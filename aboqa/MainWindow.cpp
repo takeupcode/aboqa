@@ -86,8 +86,6 @@ void MainWindow::initialize ()
 
     mHero = cs->getOrCreateCharacter("hero");
     auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
-    positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::yOld, y);
-    positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::xOld, x);
     positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::y, y);
     positionComp->setFloating(mHero, TUCUT::Game::PositionComponent::x, x);
 
