@@ -165,7 +165,7 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
         case KEY_UP:
             if (moveEvent)
             {
-                moveProps.addValue(TUCUT::Game::IMovementSystem::yVelocityName, -1.0);
+                moveProps.addValue(TUCUT::Game::IMovementSystem::yAccelerationName, -1.0);
                 moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
             }
             break;
@@ -173,7 +173,7 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
         case KEY_DOWN:
             if (moveEvent)
             {
-                moveProps.addValue(TUCUT::Game::IMovementSystem::yVelocityName, 1.0);
+                moveProps.addValue(TUCUT::Game::IMovementSystem::yAccelerationName, 1.0);
                 moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
             }
             break;
@@ -181,7 +181,7 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
         case KEY_LEFT:
             if (moveEvent)
             {
-                moveProps.addValue(TUCUT::Game::IMovementSystem::xVelocityName, -1.0);
+                moveProps.addValue(TUCUT::Game::IMovementSystem::xAccelerationName, -1.0);
                 moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
             }
             break;
@@ -189,7 +189,7 @@ bool MainWindow::onKeyPress (TUCUT::Curses::WindowSystem * ws, int key)
         case KEY_RIGHT:
             if (moveEvent)
             {
-                moveProps.addValue(TUCUT::Game::IMovementSystem::xVelocityName, 1.0);
+                moveProps.addValue(TUCUT::Game::IMovementSystem::xAccelerationName, 1.0);
                 moveEvent->signal(TUCUT::Game::MovementSystem::moveCmd, moveProps);
             }
             break;

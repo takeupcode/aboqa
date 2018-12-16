@@ -44,6 +44,8 @@ std::shared_ptr<TUCUT::Game::GameObject> CharacterSystem::getOrCreateCharacter (
 
         auto movementComp = pGameMgr->getOrCreateGameComponent<TUCUT::Game::MovementComponent>();
         gameObj->addGameComponent(movementComp);
+        movementComp->setFloating(gameObj, TUCUT::Game::IMovementComponent::xVelocityMax, 1.0);
+        movementComp->setFloating(gameObj, TUCUT::Game::IMovementComponent::yVelocityMax, 1.0);
 
         return gameObj;
     }
