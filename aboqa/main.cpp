@@ -13,6 +13,7 @@
 
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
+#include "../submodules/TUCUT/Curses/TextRegion.h"
 #include "../submodules/TUCUT/Game/MovementSystem.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
@@ -69,6 +70,7 @@ int main(int argc, const char *argv[])
     ws->selectNextWindow("splash");
     
     ms->setInstantMode(true);
+    ms->setRegion(TUCUT::Game::GameRegion::createGameRegion<TUCUT::Curses::TextRegion>(30, 30));
 
     pGameMgr->play();
 
