@@ -13,6 +13,7 @@
 #include "../submodules/TUCUT/Curses/Button.h"
 #include "../submodules/TUCUT/Curses/DisplayBox.h"
 #include "../submodules/TUCUT/Curses/Label.h"
+#include "../submodules/TUCUT/Curses/TextRegion.h"
 #include "../submodules/TUCUT/Curses/Window.h"
 #include "../submodules/TUCUT/Game/GameObject.h"
 
@@ -61,7 +62,7 @@ private:
 
     std::shared_ptr<TUCUT::Game::GameObject> mHero;
     std::shared_ptr<TUCUT::Game::GameObject> mCreature;
-    std::vector<std::string> mMap;
+    std::shared_ptr<TUCUT::Curses::TextRegion> mRegion;
     int mMapHeight;
     int mMapWidth;
     int mVisibleRange;

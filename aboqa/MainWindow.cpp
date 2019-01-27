@@ -13,7 +13,6 @@
 
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
-#include "../submodules/TUCUT/Curses/TextRegion.h"
 #include "../submodules/TUCUT/Game/MovementSystem.h"
 #include "../submodules/TUCUT/Game/PositionComponent.h"
 #include "../submodules/TUCUT/Game/MovementComponent.h"
@@ -38,7 +37,7 @@ void MainWindow::initialize ()
     
     mMapHeight = 30;
     mMapWidth = 30;
-    mMap = {
+    std::vector<std::string> map = {
         "     .                        ",
         "     .                        ",
         "     .                        ",
@@ -81,22 +80,22 @@ void MainWindow::initialize ()
     TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
     
     auto ms = pGameMgr->getOrCreateGameSystem<TUCUT::Game::MovementSystem>();
-    auto region = TUCUT::Game::GameRegion::createGameRegion<TUCUT::Curses::TextRegion>(mMapWidth, mMapHeight);
+    mRegion = TUCUT::Game::GameRegion::createGameRegion<TUCUT::Curses::TextRegion>(mMapWidth, mMapHeight);
     
     ms->setInstantMode(true);
-    ms->setRegion(region);
+    ms->setRegion(mRegion);
     
     int x;
     int y;
     
-    region->addTileType("wall", '.');
+    mRegion->addTileType("wall", '.');
     for (y = 0; y < mMapHeight; ++y)
     {
         for (x = 0; x < mMapWidth; ++x)
         {
-            if (mMap[y][x] == '.')
+            if (map[y][x] == '.')
             {
-                region->setTile(x, y, "wall");
+                mRegion->setTile(x, y, "wall");
             }
         }
     }
@@ -349,7 +348,7 @@ void MainWindow::updateVisibleDisplayImpl (int heroY, int heroX, bool clear)
                 }
             }
             
-            mDisplayBox->setSymbol(clear ? ' ' : mMap[heroY + y][heroX + x], heroY + y, heroX + x);
+            mDisplayBox->setSymbol(clear ? ' ' : mRegion->tile(heroX + x, heroY + y), heroY + y, heroX + x);
         }
     }
 }
