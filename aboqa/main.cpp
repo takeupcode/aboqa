@@ -13,7 +13,6 @@
 
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
-#include "../submodules/TUCUT/Curses/TextRegion.h"
 #include "../submodules/TUCUT/Game/MovementSystem.h"
 #include "../submodules/TUCUT/Log/LogManager.h"
 
@@ -54,7 +53,6 @@ int main(int argc, const char *argv[])
     
     auto cs = pGameMgr->getOrCreateGameSystem<CharacterSystem>();
     auto ws = pGameMgr->getOrCreateGameSystem<TUCUT::Curses::WindowSystem>();
-    auto ms = pGameMgr->getOrCreateGameSystem<TUCUT::Game::MovementSystem>();
 
     ws->setMinScreenDimensions(10, 35);
     ws->setMaxScreenDimensions(60, 200);
@@ -68,9 +66,6 @@ int main(int argc, const char *argv[])
     ws->addWindow(InventoryWindow::createSharedInventoryWindow("inventory", 0, 0, ws->screenHeight(), ws->screenWidth(), TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, TUCUT::Curses::Colors::COLOR_DIM_BLACK, TUCUT::Curses::Colors::COLOR_DIM_WHITE, false));
 
     ws->selectNextWindow("splash");
-    
-    ms->setInstantMode(true);
-    ms->setRegion(TUCUT::Game::GameRegion::createGameRegion<TUCUT::Curses::TextRegion>(30, 30));
 
     pGameMgr->play();
 

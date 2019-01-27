@@ -13,6 +13,7 @@
 
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
+#include "../submodules/TUCUT/Curses/TextRegion.h"
 #include "../submodules/TUCUT/Game/MovementSystem.h"
 #include "../submodules/TUCUT/Game/PositionComponent.h"
 #include "../submodules/TUCUT/Game/MovementComponent.h"
@@ -76,13 +77,34 @@ void MainWindow::initialize ()
     mDisplayBox->setAnchorLeft(0);
     mDisplayBox->clicked()->connect(windowName, getSharedMainWindow());
     addControl(mDisplayBox);
-    
-    int y = 12;
-    int x = 21;
 
     TUCUT::Game::GameManager * pGameMgr = TUCUT::Game::GameManager::instance();
+    
+    auto ms = pGameMgr->getOrCreateGameSystem<TUCUT::Game::MovementSystem>();
+    auto region = TUCUT::Game::GameRegion::createGameRegion<TUCUT::Curses::TextRegion>(mMapWidth, mMapHeight);
+    
+    ms->setInstantMode(true);
+    ms->setRegion(region);
+    
+    int x;
+    int y;
+    
+    region->addTileType("wall", '.');
+    for (y = 0; y < mMapHeight; ++y)
+    {
+        for (x = 0; x < mMapWidth; ++x)
+        {
+            if (mMap[y][x] == '.')
+            {
+                region->setTile(x, y, "wall");
+            }
+        }
+    }
 
     auto cs = pGameMgr->getOrCreateGameSystem<CharacterSystem>();
+    
+    y = 12;
+    x = 21;
 
     mHero = cs->getOrCreateCharacter("hero");
     auto positionComp = mHero->getGameComponentFromAbility("GamePosition");
