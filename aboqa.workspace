@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeLite_Workspace Name="aboqa" Database="" Version="10.0.0">
+  <Project Name="aboqa" Path="aboqa.project" Active="Yes"/>
+  <Project Name="s-TUCUT" Path="submodules/TUCUT/s-TUCUT.project" Active="No"/>
+  <BuildMatrix>
+    <WorkspaceConfiguration Name="Debug" Selected="yes">
+      <Environment/>
+      <Project Name="aboqa" ConfigName="Debug"/>
+      <Project Name="s-TUCUT" ConfigName="Debug"/>
+    </WorkspaceConfiguration>
+    <WorkspaceConfiguration Name="Release" Selected="yes">
+      <Environment/>
+      <Project Name="aboqa" ConfigName="Release"/>
+      <Project Name="s-TUCUT" ConfigName="Release"/>
+    </WorkspaceConfiguration>
+  </BuildMatrix>
+</CodeLite_Workspace>
