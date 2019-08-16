@@ -13,7 +13,7 @@ CurrentFileName        :=
 CurrentFilePath        :=
 CurrentFileFullPath    :=
 User                   :=Wahid
-Date                   :=19/07/19
+Date                   :=16/08/19
 CodeLitePath           :=/home/wahid/.codelite
 LinkerName             :=/usr/bin/g++
 SharedObjectLinkerName :=/usr/bin/g++ -shared -fPIC
@@ -60,7 +60,7 @@ AS       := /usr/bin/as
 ## User defined environment variables
 ##
 CodeLiteDir:=/usr/share/codelite
-Objects0=$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_MainWindow.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_ExitWindow.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_main.cpp$(ObjectSuffix) 
+Objects0=$(IntermediateDirectory)/aboqa_main.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_ExitWindow.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_MainWindow.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(ObjectSuffix) $(IntermediateDirectory)/aboqa_SplashWindow.cpp$(ObjectSuffix) 
 
 
 
@@ -98,37 +98,13 @@ PreBuild:
 ##
 ## Objects
 ##
-$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(ObjectSuffix): aboqa/SplashWindow.cpp $(IntermediateDirectory)/aboqa_SplashWindow.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/SplashWindow.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(DependSuffix): aboqa/SplashWindow.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(DependSuffix) -MM aboqa/SplashWindow.cpp
+$(IntermediateDirectory)/aboqa_main.cpp$(ObjectSuffix): aboqa/main.cpp $(IntermediateDirectory)/aboqa_main.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_main.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/aboqa_main.cpp$(DependSuffix): aboqa/main.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_main.cpp$(DependSuffix) -MM aboqa/main.cpp
 
-$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(PreprocessSuffix): aboqa/SplashWindow.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_SplashWindow.cpp$(PreprocessSuffix) aboqa/SplashWindow.cpp
-
-$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(ObjectSuffix): aboqa/CharacterSystem.cpp $(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/CharacterSystem.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(DependSuffix): aboqa/CharacterSystem.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(DependSuffix) -MM aboqa/CharacterSystem.cpp
-
-$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(PreprocessSuffix): aboqa/CharacterSystem.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(PreprocessSuffix) aboqa/CharacterSystem.cpp
-
-$(IntermediateDirectory)/aboqa_MainWindow.cpp$(ObjectSuffix): aboqa/MainWindow.cpp $(IntermediateDirectory)/aboqa_MainWindow.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/MainWindow.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_MainWindow.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/aboqa_MainWindow.cpp$(DependSuffix): aboqa/MainWindow.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_MainWindow.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_MainWindow.cpp$(DependSuffix) -MM aboqa/MainWindow.cpp
-
-$(IntermediateDirectory)/aboqa_MainWindow.cpp$(PreprocessSuffix): aboqa/MainWindow.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_MainWindow.cpp$(PreprocessSuffix) aboqa/MainWindow.cpp
-
-$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(ObjectSuffix): aboqa/InventoryWindow.cpp $(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/InventoryWindow.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(DependSuffix): aboqa/InventoryWindow.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(DependSuffix) -MM aboqa/InventoryWindow.cpp
-
-$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(PreprocessSuffix): aboqa/InventoryWindow.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(PreprocessSuffix) aboqa/InventoryWindow.cpp
+$(IntermediateDirectory)/aboqa_main.cpp$(PreprocessSuffix): aboqa/main.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_main.cpp$(PreprocessSuffix) aboqa/main.cpp
 
 $(IntermediateDirectory)/aboqa_ExitWindow.cpp$(ObjectSuffix): aboqa/ExitWindow.cpp $(IntermediateDirectory)/aboqa_ExitWindow.cpp$(DependSuffix)
 	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/ExitWindow.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_ExitWindow.cpp$(ObjectSuffix) $(IncludePath)
@@ -138,13 +114,37 @@ $(IntermediateDirectory)/aboqa_ExitWindow.cpp$(DependSuffix): aboqa/ExitWindow.c
 $(IntermediateDirectory)/aboqa_ExitWindow.cpp$(PreprocessSuffix): aboqa/ExitWindow.cpp
 	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_ExitWindow.cpp$(PreprocessSuffix) aboqa/ExitWindow.cpp
 
-$(IntermediateDirectory)/aboqa_main.cpp$(ObjectSuffix): aboqa/main.cpp $(IntermediateDirectory)/aboqa_main.cpp$(DependSuffix)
-	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/main.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_main.cpp$(ObjectSuffix) $(IncludePath)
-$(IntermediateDirectory)/aboqa_main.cpp$(DependSuffix): aboqa/main.cpp
-	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_main.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_main.cpp$(DependSuffix) -MM aboqa/main.cpp
+$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(ObjectSuffix): aboqa/InventoryWindow.cpp $(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/InventoryWindow.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(DependSuffix): aboqa/InventoryWindow.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(DependSuffix) -MM aboqa/InventoryWindow.cpp
 
-$(IntermediateDirectory)/aboqa_main.cpp$(PreprocessSuffix): aboqa/main.cpp
-	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_main.cpp$(PreprocessSuffix) aboqa/main.cpp
+$(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(PreprocessSuffix): aboqa/InventoryWindow.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_InventoryWindow.cpp$(PreprocessSuffix) aboqa/InventoryWindow.cpp
+
+$(IntermediateDirectory)/aboqa_MainWindow.cpp$(ObjectSuffix): aboqa/MainWindow.cpp $(IntermediateDirectory)/aboqa_MainWindow.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/MainWindow.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_MainWindow.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/aboqa_MainWindow.cpp$(DependSuffix): aboqa/MainWindow.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_MainWindow.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_MainWindow.cpp$(DependSuffix) -MM aboqa/MainWindow.cpp
+
+$(IntermediateDirectory)/aboqa_MainWindow.cpp$(PreprocessSuffix): aboqa/MainWindow.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_MainWindow.cpp$(PreprocessSuffix) aboqa/MainWindow.cpp
+
+$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(ObjectSuffix): aboqa/CharacterSystem.cpp $(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/CharacterSystem.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(DependSuffix): aboqa/CharacterSystem.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(DependSuffix) -MM aboqa/CharacterSystem.cpp
+
+$(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(PreprocessSuffix): aboqa/CharacterSystem.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_CharacterSystem.cpp$(PreprocessSuffix) aboqa/CharacterSystem.cpp
+
+$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(ObjectSuffix): aboqa/SplashWindow.cpp $(IntermediateDirectory)/aboqa_SplashWindow.cpp$(DependSuffix)
+	$(CXX) $(IncludePCH) $(SourceSwitch) "/home/wahid/Storage/GitHub/aboqa/aboqa/SplashWindow.cpp" $(CXXFLAGS) $(ObjectSwitch)$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(ObjectSuffix) $(IncludePath)
+$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(DependSuffix): aboqa/SplashWindow.cpp
+	@$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) -MG -MP -MT$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(ObjectSuffix) -MF$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(DependSuffix) -MM aboqa/SplashWindow.cpp
+
+$(IntermediateDirectory)/aboqa_SplashWindow.cpp$(PreprocessSuffix): aboqa/SplashWindow.cpp
+	$(CXX) $(CXXFLAGS) $(IncludePCH) $(IncludePath) $(PreprocessOnlySwitch) $(OutputSwitch) $(IntermediateDirectory)/aboqa_SplashWindow.cpp$(PreprocessSuffix) aboqa/SplashWindow.cpp
 
 
 -include $(IntermediateDirectory)/*$(DependSuffix)

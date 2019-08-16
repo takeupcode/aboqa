@@ -13,6 +13,7 @@
 
 #include "../submodules/TUCUT/Curses/Colors.h"
 #include "../submodules/TUCUT/Curses/WindowSystem.h"
+#include "../submodules/TUCUT/Curses/Visibility.h"
 #include "../submodules/TUCUT/Game/MovementSystem.h"
 #include "../submodules/TUCUT/Game/PositionComponent.h"
 #include "../submodules/TUCUT/Game/MovementComponent.h"
@@ -294,11 +295,6 @@ void MainWindow::updateVisibleDisplay ()
     
     mDisplayBox->setCenter(heroY, heroX);
     mDisplayBox->ensureCenterIsVisible();
-
-    std::stringstream ss;
-    ss << "Hero location (x=" << heroX << ", y=" << heroY << ", xOld=" << heroXOld << ", yOld=" << heroYOld << ")";
-    
-    mStatus2->setText(ss.str());
 }
 
 void MainWindow::updateVisibleDisplayImpl (int heroY, int heroX, bool clear)
@@ -348,7 +344,27 @@ void MainWindow::updateVisibleDisplayImpl (int heroY, int heroX, bool clear)
                 }
             }
             
-            mDisplayBox->setSymbol(clear ? ' ' : mRegion->tile(heroX + x, heroY + y), heroY + y, heroX + x);
+            bool tileVisible;
+            if (clear)
+            {
+                tileVisible = false;
+            }
+            else
+            {
+                // We want to try showing tiles. See if this tile is actually visible.
+                tileVisible = TUCUT::Curses::Visibility::isVisible({heroX, heroY}, {x, y}, mVisibleRange, mRegion.get());
+            }
+            
+            mDisplayBox->setSymbol(tileVisible ? mRegion->tile(heroX + x, heroY + y) : ' ', heroY + y, heroX + x);
+
+            if (x == -3 && y == 0)
+            {
+                std::stringstream ss;
+                ss << "heroX=" << heroX << ", heroY=" << heroY << ", x=" << x << ", y=" << y << ", tile='" << mRegion->tile(heroX + x, heroY + y)
+                    << "', visible=" << std::boolalpha << TUCUT::Curses::Visibility::isVisible({heroX, heroY}, {x, y}, mVisibleRange, mRegion.get());
+                
+                mStatus2->setText(ss.str());
+            }
         }
     }
 }
